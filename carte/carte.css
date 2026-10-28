@@ -1,0 +1,110 @@
+/* ================================================================
+   CARTE 1740 — styles, version 1 (fenêtre de test)
+   © Elym
+   ================================================================ */
+
+/* ---------- Bouton boussole dans la boîte des pastilles ---------- */
+.carte-bouton {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 24px;               /* remplacé par la taille de la 1re pastille */
+	height: 24px;
+	padding: 0;
+	border: 1px solid #c9ced6;
+	border-radius: 50%;
+	background: #ffffff;
+	color: var(--header_th_back, #4f7cb3);
+	cursor: pointer;
+	vertical-align: middle;
+	transition: transform 0.15s ease;
+}
+
+.carte-bouton svg {
+	width: 75%;
+	height: 75%;
+	display: block;
+}
+
+.carte-bouton:hover { transform: scale(1.1); }
+
+.carte-bouton:focus-visible {
+	outline: 2px solid var(--header_th_back, #4f7cb3);
+	outline-offset: 2px;
+}
+
+.carte-bouton[aria-expanded="true"] {
+	background: var(--header_th_back, #4f7cb3);
+	color: #ffffff;
+}
+
+/* ---------- Fond : couvre la page, floute le forum ---------- */
+.carte-fond {
+	position: fixed;
+	inset: 0;
+	z-index: 10000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 32px;             /* espace libre autour de la fenêtre */
+	box-sizing: border-box;
+	background: rgba(20, 24, 30, 0.35);
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+	opacity: 0;
+	transition: opacity 0.25s ease;   /* même durée que DUREE_FONDU */
+}
+
+.carte-fond[hidden] { display: none; }
+
+.carte-fond.est-visible { opacity: 1; }
+
+/* ---------- Fenêtre de la carte ---------- */
+.carte-fenetre {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 950px;          /* largeur du corps du forum */
+	height: 100%;
+	max-height: 620px;
+	background: #ffffff;
+	border: 1px solid #c9ced6;
+	border-radius: 8px;
+	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+	overflow: auto;
+	transform: scale(0.97);
+	transition: transform 0.25s ease;
+}
+
+.carte-fond.est-visible .carte-fenetre { transform: scale(1); }
+
+.carte-fenetre:focus { outline: none; }
+
+/* Contenu provisoire */
+.carte-contenu {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	padding: 24px;
+	box-sizing: border-box;
+	color: #555b63;
+	font-size: 16px;
+	text-align: center;
+}
+
+/* Empêche la page de défiler derrière la fenêtre */
+html.carte-ouverte,
+html.carte-ouverte body { overflow: hidden; }
+
+/* Petits écrans : marges réduites */
+@media (max-width: 600px) {
+	.carte-fond { padding: 16px; }
+}
+
+/* Mouvements réduits : pas de fondu ni de zoom */
+@media (prefers-reduced-motion: reduce) {
+	.carte-fond,
+	.carte-fenetre,
+	.carte-bouton { transition: none; }
+}
