@@ -1,0 +1,267 @@
+/* ================================================================
+   JOURNAL 1740 — styles, version 1
+   © Elym
+   ================================================================ */
+
+.journal-boite {
+	--jr-fond: #ffffff;
+	--jr-texte: #2f343b;
+	--jr-discret: #7a7f87;
+	--jr-bordure: #dde1e6;
+	--jr-survol: #f2f5f8;
+	--jr-accent: #3b4250;
+	--jr-notif: #c0392b;
+}
+
+/* ---------- Icône dans la barre des pastilles ---------- */
+.journal-bouton {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	border-radius: 50%;
+	background: #ffffff;
+	color: #3b4250;
+	cursor: pointer;
+}
+
+.journal-bouton svg { width: 72%; height: 72%; display: block; }
+
+#barre-couleurs .journal-bouton[aria-expanded="true"],
+.journal-bouton[aria-expanded="true"] {
+	background: #3b4250;
+	color: #ffffff;
+}
+
+.journal-bouton:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; }
+
+/* Nombre de sujets avec du nouveau */
+.journal-compteur {
+	position: absolute;
+	top: -6px;
+	right: -8px;
+	min-width: 16px;
+	height: 16px;
+	padding: 0 4px;
+	box-sizing: border-box;
+	border-radius: 8px;
+	background: #c0392b;
+	color: #ffffff;
+	font: bold 10px/16px system-ui, sans-serif;
+	text-align: center;
+	pointer-events: none;
+}
+
+.journal-compteur[hidden] { display: none; }
+
+/* ---------- Boîte flottante ---------- */
+.journal-boite {
+	position: fixed;
+	top: 50%;
+	left: 56px;                 /* recalculé par le script : à droite de la barre */
+	z-index: 9998;
+	width: 300px;
+	max-width: calc(100vw - 72px);
+	max-height: 70vh;
+	display: flex;
+	flex-direction: column;
+	background: var(--jr-fond);
+	color: var(--jr-texte);
+	border: 1px solid var(--jr-bordure);
+	border-radius: 8px;
+	box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+	font-size: 13px;
+	opacity: 0;
+	transform: translate(-6px, -50%);
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.journal-boite[hidden] { display: none; }
+
+.journal-boite.est-visible { opacity: 1; transform: translate(0, -50%); }
+
+.journal-entete {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 10px 12px 6px;
+}
+
+.journal-titre {
+	margin: 0;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+/* ---------- Bouton Suivre (boîte et titre du sujet) ---------- */
+.journal-suivre {
+	padding: 3px 9px;
+	border: 1px solid var(--jr-accent, #3b4250);
+	border-radius: 12px;
+	background: transparent;
+	color: var(--jr-accent, #3b4250);
+	font: inherit;
+	font-size: 12px;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.journal-suivre.est-suivi {
+	background: var(--jr-accent, #3b4250);
+	color: #ffffff;
+}
+
+.journal-suivre-titre {
+	margin-left: 10px;
+	vertical-align: middle;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+/* ---------- Onglets ---------- */
+.journal-onglets {
+	display: flex;
+	border-bottom: 1px solid var(--jr-bordure);
+	padding: 0 8px;
+}
+
+.journal-onglet {
+	position: relative;
+	flex: 1;
+	padding: 8px 4px;
+	border: none;
+	border-bottom: 2px solid transparent;
+	background: transparent;
+	color: var(--jr-discret);
+	font: inherit;
+	cursor: pointer;
+}
+
+.journal-onglet.est-actif {
+	color: var(--jr-texte);
+	border-bottom-color: var(--jr-accent);
+	font-weight: bold;
+}
+
+/* Petit point rouge : cet onglet contient du nouveau */
+.journal-onglet.a-du-nouveau::after {
+	content: "";
+	display: inline-block;
+	width: 6px;
+	height: 6px;
+	margin-left: 5px;
+	border-radius: 50%;
+	background: var(--jr-notif);
+	vertical-align: middle;
+}
+
+/* ---------- Liste des sujets ---------- */
+.journal-liste {
+	flex: 1;
+	min-height: 0;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	margin: 0;
+	padding: 4px 0;
+	list-style: none;
+}
+
+.journal-sujet {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 7px 10px 7px 12px;
+}
+
+.journal-sujet:hover { background: var(--jr-survol); }
+
+.journal-notif {
+	flex: none;
+	width: 10px;
+	height: 10px;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background: transparent;
+}
+
+.journal-sujet.est-nouveau .journal-notif {
+	background: var(--jr-notif);
+	cursor: pointer;
+	box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.18);
+}
+
+.journal-texte {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.journal-lien {
+	color: var(--jr-texte);
+	text-decoration: none;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.journal-sujet.est-nouveau .journal-lien { font-weight: bold; }
+
+.journal-lien:hover { text-decoration: underline; }
+
+.journal-meta {
+	color: var(--jr-discret);
+	font-size: 11px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.journal-meta:empty { display: none; }
+
+.journal-action {
+	flex: none;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	border: none;
+	border-radius: 4px;
+	background: transparent;
+	color: var(--jr-discret);
+	font-size: 15px;
+	line-height: 24px;
+	cursor: pointer;
+}
+
+.journal-action:hover { background: var(--jr-bordure); color: var(--jr-texte); }
+
+.journal-vide {
+	padding: 16px 14px;
+	color: var(--jr-discret);
+	font-style: italic;
+	line-height: 1.45;
+}
+
+.journal-etat {
+	padding: 0 12px 8px;
+	color: var(--jr-discret);
+	font-size: 11px;
+}
+
+.journal-etat:empty { display: none; }
+
+.journal-boite button:focus-visible,
+.journal-boite a:focus-visible {
+	outline: 2px solid var(--jr-accent);
+	outline-offset: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.journal-boite { transition: none; }
+}
