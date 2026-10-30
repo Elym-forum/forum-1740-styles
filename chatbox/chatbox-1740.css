@@ -1,1384 +1,448 @@
 /* ================================================================
-   CHATBOX 1740 — version 7
-   Salons publics, connexion au choix, son optionnel, compteur dans
-   l'onglet du navigateur, modération, taille du texte, couleur du
-   pseudo, mentions @, gras, italique, liens et émojis,
-   liste des membres présents / absents, avis d'arrivée et de départ,
-   mention [Modo], rappel des règles, crédit, nombre de membres
-   connectés visible même sans se connecter.
-
-   À placer dans : Panneau d'administration > Modules >
-   HTML & JAVASCRIPT > Gestion des codes Javascript
-   Placement : Sur la page d'accueil
-   La chatbox s'affiche dans <div id="chatbox-1740"></div>
-   (dans le template index_body).
+   CHATBOX 1740 — styles (version 7)
+   À placer dans : Affichage > Images et Couleurs > Couleurs >
+   Feuille de style CSS
+   Les sections marquées NOUVEAU sont celles ajoutées à la version 3.
    ================================================================ */
-(function () {
-	'use strict';
 
-	/* ============================ RÉGLAGES ============================ */
-	var CONFIG_FIREBASE = {
-		apiKey: 'AIzaSyDDcuv3eoyBSNj5QyxMHWwX9Fijq6J9p2A',
-		authDomain: 'chatbox-cf02e.firebaseapp.com',
-		databaseURL: 'https://chatbox-cf02e-default-rtdb.firebaseio.com',
-		projectId: 'chatbox-cf02e',
-		storageBucket: 'chatbox-cf02e.firebasestorage.app',
-		messagingSenderId: '1056162271495',
-		appId: '1:1056162271495:web:ecccb47fc9ec70c3ca75a2'
-	};
+#chatbox-1740 {
+	/* Couleurs provisoires, assorties au thème Forumactif de base */
+	--cb-fond: #ffffff;            /* fond général de la chatbox */
+	--cb-fond-messages: #f3f8fe;   /* fond de la zone des messages */
+	--cb-texte: #333333;
+	--cb-discret: #7a7f87;         /* heures, libellés, avis */
+	--cb-accent: #4b8ef5;          /* bleu des en-têtes et boutons */
+	--cb-accent-texte: #ffffff;    /* texte posé sur le bleu */
+	--cb-lien: #2f6fd6;
+	--cb-bordure: #e1e5ea;
+	--cb-mention: rgba(75, 142, 245, 0.10);
 
-	// id : identifiant technique (doit correspondre aux règles Firebase)
-	// nom : ce qui s'affiche sur l'onglet (modifiable librement)
-	var SALONS = [
-		{ id: 'salon1', nom: 'Salon 1' },
-		{ id: 'salon2', nom: 'Salon 2' },
-		{ id: 'salon3', nom: 'Salon 3' }
-	];
+	background: var(--cb-fond);
+	color: var(--cb-texte);
+	border-radius: 6px;
+	overflow: hidden;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+	margin: 16px 0;
+	font-size: 14px;
+}
 
-	var TITRE = 'Chatbox';
+#chatbox-1740 [hidden] { display: none !important; }
 
-	// Nombre de membres connectés, affiché à côté du titre.
-	// Hors connexion, il est relu toutes les INTERVALLE_COMPTE_S secondes
-	// par une petite demande ponctuelle (aucune connexion permanente).
-	var INTERVALLE_COMPTE_S = 60;
-	function texteCompte(n) {
-		if (n === 0) {
-			return 'Aucun membre connecté';
-		}
-		return n + (n > 1 ? ' membres connectés' : ' membre connecté');
+/* ---------- Barre du haut : titre + Se connecter ---------- */
+.chatbox-barre {
+	background: var(--cb-accent);
+	color: var(--cb-accent-texte);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 12px 16px;
+}
+
+.chatbox-titre { font-weight: bold; }
+
+/* NOUVEAU (version 7) — nombre de membres connectés, à côté du titre */
+.chatbox-compte {
+	margin-left: 10px;
+	font-weight: normal;
+	font-size: 12px;
+	opacity: 0.75;
+}
+
+.chatbox-compte:empty { display: none; }
+
+.chatbox-bouton-connexion {
+	padding: 6px 12px;
+	background: transparent;
+	color: var(--cb-accent-texte);
+	border: 1px solid var(--cb-accent-texte);
+	border-radius: 4px;
+	cursor: pointer;
+	font: inherit;
+}
+
+#chatbox-1740.est-connecte .chatbox-barre {
+	border-bottom: none;
+}
+
+/* ---------- Onglets des salons ---------- */
+.chatbox-onglets {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	padding: 8px 8px 0;
+	border-bottom: 1px solid var(--cb-bordure);
+}
+
+.chatbox-onglet {
+	background: transparent;
+	color: var(--cb-discret);
+	border: none;
+	border-bottom: 2px solid transparent;
+	padding: 8px 12px;
+	cursor: pointer;
+	font: inherit;
+}
+
+.chatbox-onglet.est-actif {
+	color: var(--cb-texte);
+	border-bottom-color: var(--cb-accent);
+}
+
+.chatbox-pastille {
+	display: inline-block;
+	margin-left: 6px;
+	min-width: 18px;
+	padding: 0 5px;
+	border-radius: 9px;
+	background: var(--cb-accent);
+	color: var(--cb-accent-texte);
+	font-size: 11px;
+	line-height: 18px;
+	text-align: center;
+}
+
+/* ---------- Messages ---------- */
+.chatbox-messages {
+	height: 300px;
+	overflow-y: auto;
+	padding: 8px 12px;
+	background: var(--cb-fond-messages);
+}
+
+.chatbox-message {
+	position: relative;
+	padding: 3px 24px 3px 4px;
+	line-height: 1.45;
+	word-wrap: break-word;
+	border-radius: 3px;
+}
+
+.chatbox-heure {
+	color: var(--cb-discret);
+	font-size: 0.85em;
+	margin-right: 6px;
+}
+
+.chatbox-auteur {
+	font-weight: bold;
+	margin-right: 6px;
+	color: var(--cb-texte);
+}
+
+/* NOUVEAU — message qui me mentionne */
+.chatbox-message.est-mention {
+	background: var(--cb-mention);
+	box-shadow: inset 3px 0 0 var(--cb-accent);
+}
+
+/* NOUVEAU — mise en forme dans les messages */
+.chatbox-mention { font-weight: bold; color: var(--cb-lien); }
+.chatbox-mention.est-moi { text-decoration: underline; }
+
+.chatbox-lien {
+	color: var(--cb-lien);
+	text-decoration: underline;
+	word-break: break-all;
+}
+
+/* NOUVEAU — bouton de suppression (administrateurs et modérateurs) */
+.chatbox-supprimer {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	width: 20px;
+	height: 20px;
+	padding: 0;
+	background: transparent;
+	color: var(--cb-discret);
+	border: none;
+	cursor: pointer;
+	font-size: 16px;
+	line-height: 20px;
+	opacity: 0.4;
+}
+
+.chatbox-message:hover .chatbox-supprimer,
+.chatbox-supprimer:focus { opacity: 1; color: var(--cb-accent); }
+
+/* ---------- Zone de saisie ---------- */
+/* NOUVEAU — conteneur pour placer suggestions et émojis au-dessus */
+.chatbox-zone-saisie { position: relative; }
+
+.chatbox-formulaire {
+	display: flex;
+	gap: 6px;
+	padding: 8px;
+	border-top: 1px solid var(--cb-bordure);
+}
+
+/* Préfixé par #chatbox-1740 pour passer devant input[type="text"] de Forumactif */
+#chatbox-1740 .chatbox-saisie {
+	flex: 1;
+	min-width: 0;
+	padding: 8px 12px;
+	background: var(--cb-fond-messages);
+	color: var(--cb-texte);
+	border: 1px solid var(--cb-bordure);
+	border-radius: 4px;
+	font: inherit;
+}
+
+.chatbox-envoyer {
+	padding: 8px 14px;
+	background: var(--cb-accent);
+	color: var(--cb-accent-texte);
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font: inherit;
+}
+
+/* NOUVEAU — boutons Gras, Italique, Émojis */
+.chatbox-format {
+	width: 34px;
+	padding: 0;
+	background: transparent;
+	color: var(--cb-texte);
+	border: 1px solid var(--cb-bordure);
+	border-radius: 4px;
+	cursor: pointer;
+	font: inherit;
+}
+
+.chatbox-format-gras { font-weight: bold; }
+.chatbox-format-italique { font-style: italic; font-family: Georgia, serif; }
+
+/* NOUVEAU — panneau d'émojis */
+.chatbox-panneau-emojis {
+	position: absolute;
+	bottom: 100%;
+	left: 8px;
+	z-index: 10;
+	display: grid;
+	grid-template-columns: repeat(10, 32px);
+	gap: 2px;
+	max-width: calc(100% - 16px);
+	max-height: 200px;
+	overflow-y: auto;
+	padding: 6px;
+	background: var(--cb-fond);
+	border: 1px solid var(--cb-bordure);
+	border-radius: 6px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.chatbox-emoji {
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	background: transparent;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 18px;
+}
+
+.chatbox-emoji:hover,
+.chatbox-emoji:focus { background: var(--cb-fond-messages); }
+
+/* NOUVEAU — suggestions de pseudos après @ */
+.chatbox-suggestions {
+	position: absolute;
+	bottom: 100%;
+	left: 120px;
+	z-index: 11;
+	min-width: 160px;
+	margin: 0;
+	padding: 4px 0;
+	list-style: none;
+	background: var(--cb-fond);
+	border: 1px solid var(--cb-bordure);
+	border-radius: 6px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.chatbox-suggestion {
+	padding: 6px 12px;
+	cursor: pointer;
+}
+
+.chatbox-suggestion.est-choisie {
+	background: var(--cb-fond-messages);
+	color: var(--cb-lien);
+}
+
+/* ---------- NOUVEAU — Outils : taille, son, couleur ---------- */
+.chatbox-outils {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 16px;
+	padding: 0 8px 8px;
+	font-size: 12px;
+	color: var(--cb-discret);
+}
+
+.chatbox-outil {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.chatbox-outil-libelle { margin-right: 2px; }
+
+.chatbox-bouton-outil {
+	padding: 3px 8px;
+	background: transparent;
+	color: var(--cb-texte);
+	border: 1px solid var(--cb-bordure);
+	border-radius: 4px;
+	cursor: pointer;
+	font: inherit;
+}
+
+.chatbox-bouton-outil:disabled { opacity: 0.4; cursor: default; }
+
+.chatbox-pastille-couleur {
+	width: 18px;
+	height: 18px;
+	padding: 0;
+	border: 2px solid transparent;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.chatbox-couleur-aucune {
+	background: var(--cb-texte);
+}
+
+.chatbox-pastille-couleur.est-choisie {
+	border-color: var(--cb-texte);
+	box-shadow: 0 0 0 2px var(--cb-fond);
+}
+
+.chatbox-id-moderation {
+	flex-basis: 100%;
+	font-size: 11px;
+	user-select: all;
+}
+
+/* Pied : messages d'état à gauche, crédit à droite */
+.chatbox-pied {
+	align-items: flex-end;
+	gap: 12px;
+	padding: 0 10px 6px;
+}
+
+.chatbox-etat {
+	flex: 1;
+	min-width: 0;
+	color: var(--cb-discret);
+	font-size: 12px;
+	min-height: 1em;
+}
+
+/* NOUVEAU (version 4) — menu déroulant du choix de son */
+.chatbox-choix-son {
+	padding: 3px 6px;
+	background: var(--cb-fond-messages);
+	color: var(--cb-texte);
+	border: 1px solid var(--cb-bordure);
+	border-radius: 4px;
+	font: inherit;
+	cursor: pointer;
+}
+
+/* ================================================================
+   NOUVEAU (version 5) — liste des membres, avis, mention [Modo]
+   ================================================================ */
+
+/* NOUVEAU (version 6) — rappel des règles, fixe sous les onglets */
+.chatbox-avis {
+	padding: 6px 12px;
+	background: var(--cb-fond);
+	border-bottom: 1px solid var(--cb-bordure);
+	color: var(--cb-discret);
+	font-size: 12px;
+	font-style: italic;
+	line-height: 1.4;
+}
+
+/* Messages à gauche, membres à droite */
+.chatbox-principal {
+	display: flex;
+	background: var(--cb-fond-messages);
+}
+
+.chatbox-principal .chatbox-salons {
+	flex: 1;
+	min-width: 0;
+}
+
+.chatbox-membres {
+	width: 170px;
+	height: 300px;
+	overflow-y: auto;
+	padding: 8px 10px;
+	border-left: 1px solid var(--cb-bordure);
+	font-size: 13px;
+}
+
+.chatbox-membres-titre {
+	margin: 4px 0;
+	color: var(--cb-discret);
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.chatbox-membres-liste {
+	margin: 0 0 10px;
+	padding: 0;
+	list-style: none;
+}
+
+.chatbox-membre { padding: 2px 0; }
+
+.chatbox-membre-nom {
+	padding: 0;
+	background: none;
+	border: none;
+	color: var(--cb-texte);
+	font: inherit;
+	cursor: pointer;
+	text-align: left;
+}
+
+.chatbox-membre-nom:hover { text-decoration: underline; }
+
+/* Membres absents : plus discrets */
+.chatbox-membres-absents .chatbox-membre { opacity: 0.5; }
+
+/* Mention [Modo] devant le pseudo */
+.chatbox-badge-modo {
+	margin-right: 4px;
+	color: var(--cb-accent);
+	font-size: 0.85em;
+	font-weight: bold;
+}
+
+/* Avis « a rejoint / a quitté la chatbox » */
+.chatbox-evenement {
+	color: var(--cb-discret);
+	font-style: italic;
+	font-size: 0.9em;
+}
+
+/* Petit écran : la liste des membres passe sous les messages */
+@media (max-width: 600px) {
+	.chatbox-principal { flex-direction: column; }
+	.chatbox-membres {
+		width: auto;
+		height: auto;
+		max-height: 110px;
+		border-left: none;
+		border-top: 1px solid var(--cb-bordure);
 	}
-
-	// Rappel affiché en permanence sous les onglets
-	var TEXTE_AVIS = 'Les conversations doivent rester cordiales et respectueuses. ' +
-		'Rappel : le contenu de la chatbox n\'est pas privé et peut être vérifié au besoin.';
-	var TEXTE_CONNEXION = 'Se connecter';
-	var TEXTE_DECONNEXION = 'Se déconnecter';
-
-	// Couleurs de pseudo proposées (8 au maximum, à cause des règles).
-	// Attention : chaque message retient le NUMÉRO de sa couleur dans la
-	// liste. Pour modifier une teinte, change-la sur place plutôt que de
-	// réordonner la liste.
-	var PALETTE = [
-		{ nom: 'Ocre',        couleur: '#c9a45c' },
-		{ nom: 'Sauge',       couleur: '#8fae8b' },
-		{ nom: 'Ardoise',     couleur: '#8aa4c8' },
-		{ nom: 'Lavande',     couleur: '#a99bc9' },
-		{ nom: 'Rose cendré', couleur: '#c99aa6' },
-		{ nom: 'Rouille',     couleur: '#c47a5a' },
-		{ nom: 'Sable',       couleur: '#c8b89a' },
-		{ nom: 'Pierre',      couleur: '#a7a39b' }
-	];
-
-	/* ---------- ÉMOJIS ----------
-	   Écrits sous forme de CODES, parce que Forumactif abîme les émojis
-	   collés directement dans un script. Ils apparaissent dans le
-	   sélecteur dans le même ordre que dans cette liste.
-	   - Ajouter : cherche l'émoji sur emojipedia.org, repère la ligne
-	     « Codepoints » (ex. U+1F600) et ajoute '1F600' (sans le U+).
-	   - Si plusieurs codes sont indiqués (ex. U+2764 U+FE0F), écris-les
-	     tous, séparés par une espace : '2764 FE0F'.
-	   - Retirer : efface le code et sa virgule.
-	   - Une ligne de 10 codes = une rangée du sélecteur. */
-	var EMOJIS = [
-		'1F600', '1F604', '1F602', '1F642', '1F609', '1F60A', '1F60D', '1F970', '1F605', '1F607',
-		'1F914', '1F60F', '1F62E', '1F631', '1F622', '1F62D', '1F621', '1F634', '1F644', '1F97A',
-		'1F44D', '1F44E', '1F44F', '1F64F', '1F44B', '2764 FE0F', '1F5A4', '1F494', '2728', '1F389',
-		'1F56F FE0F', '1F319', '2B50', '1F332', '1F342', '1F344', '1F33E', '2744 FE0F', '1F525', '1F327 FE0F',
-		'1F43A', '1F989', '1F40D', '1F408 200D 2B1B', '1F480', '1F47B', '1FA78', '1F5E1 FE0F', '1FA93', '26B0 FE0F',
-		'1F37A', '1F377', '1F35E', '1F9C0', '1F4DC', '1F52E', '1F5DD FE0F', '26EA', '1F514', '1F441 FE0F'
-	];
-
-	/* ---------- SONS ----------
-	   Le premier de la liste est le choix par défaut (aucun son).
-	   id  : identifiant unique, sans espace ni accent
-	   nom : ce qui s'affiche dans le menu
-
-	   Trois façons de définir un son :
-
-	   1) notes : une ou plusieurs notes fabriquées par le navigateur.
-	      Chaque note = [départ, arrivée, délai, durée, volume, forme]
-	        départ / arrivée : hauteur en Hz au début et à la fin
-	                           (identiques = note fixe; 440 = la, plus
-	                           grand = plus aigu, plus petit = plus grave)
-	        délai  : secondes avant que la note commence
-	        durée  : durée de la note en secondes
-	        volume : entre 0 et 1 (rester bas : 0.03 à 0.1)
-	        forme  : 'sine' (doux), 'triangle' (rond),
-	                 'square' (criard), 'sawtooth' (grinçant)
-
-	   2) souffle : un bruit filtré, comme un souffle ou un vent.
-	        { duree: secondes, volume: 0 à 1, frequence: Hz }
-
-	   3) fichier : l'adresse directe d'un fichier .mp3 ou .ogg hébergé
-	      en ligne (l'adresse doit se terminer par le fichier lui-même).
-	        { id: 'corbeau', nom: 'Corbeau',
-	          fichier: 'https://exemple.com/corbeau.mp3', volume: 0.4 }
-	*/
-	var SONS = [
-		{ id: 'aucun',  nom: 'Aucun' },
-		{ id: 'autel',  nom: 'Autel',  notes: [[1320, 1320, 0, 0.35, 0.04, 'sine'], [1760, 1760, 0, 0.25, 0.02, 'sine'],
-		                                       [1320, 1320, 0.12, 0.4, 0.035, 'sine'], [1760, 1760, 0.12, 0.3, 0.018, 'sine']] },
-		{ id: 'etain',  nom: '\u00C9tain', notes: [[620, 620, 0, 0.5, 0.06, 'sine'], [1460, 1460, 0, 0.25, 0.025, 'sine'],
-		                                       [1980, 1980, 0, 0.12, 0.015, 'sine']],
-		                                souffle: { duree: 0.04, volume: 0.05, frequence: 2500 } },
-		{ id: 'grelot', nom: 'Grelot', notes: [[1850, 1850, 0, 0.12, 0.03, 'sine'], [1580, 1580, 0.05, 0.12, 0.03, 'sine'],
-		                                       [1900, 1900, 0.1, 0.15, 0.025, 'sine']],
-		                                souffle: { duree: 0.2, volume: 0.025, frequence: 3500 } },
-		{ id: 'hibou',  nom: 'Hibou',  notes: [[420, 380, 0, 0.25, 0.06, 'sine'], [400, 360, 0.32, 0.45, 0.06, 'sine']] },
-		{ id: 'ecu',    nom: '\u00C9cu', notes: [[1400, 1400, 0, 0.18, 0.04, 'sine'], [2000, 2000, 0, 0.1, 0.02, 'sine'],
-		                                       [1400, 1400, 0.15, 0.15, 0.03, 'sine'], [1400, 1400, 0.25, 0.12, 0.02, 'sine']] },
-		{ id: 'psaume', nom: 'Psaume', notes: [[392, 392, 0, 0.9, 0.03, 'triangle'], [494, 494, 0, 0.9, 0.025, 'triangle'],
-		                                       [587, 587, 0, 0.9, 0.025, 'triangle']] }
-	];
-
-	var TAILLES = [12, 13, 14, 16, 18, 20, 22];  // tailles de texte (px)
-	var TAILLE_PAR_DEFAUT = 2;                   // position dans la liste (14 px)
-
-	var TEXTE_MODO = '[Modo]';     // mention devant le pseudo de l'équipe
-	var DELAI_ABSENCE_MIN = 7;     // minutes hors de l'onglet avant « absent »
-	var DELAI_DEPART_S = 60;       // secondes d'attente avant d'annoncer un départ
-	                               // (évite les « a quitté / a rejoint » quand on
-	                               // passe rapidement de l'accueil à un sujet)
-
-	var NB_MESSAGES = 50;      // messages affichés par salon
-	var LONGUEUR_MAX = 500;    // caractères par message
-	var VERSION_FIREBASE = '10.12.2';
-	/* ================================================================== */
-
-	var db = null;
-	var preparation = null;
-	var ecoutes = [];
-	var estConnecte = false;
-	var salonActif = null;
-	var debut = 0;
-	var elements = {};
-
-	var conteneur, corps, boutonConnexion, saisie, zoneEtat, zoneSalons, pied;
-	var panneauEmojis, boutonEmojis, suggestions, choixSon, boutonPlus, boutonMoins;
-	var boutonsCouleur = [], zoneIdModeration = null;
-
-	var monPseudo = '';
-	var compteEl = null;
-	var jetonRest = null;
-	var estModerateur = false;
-	var pseudosConnus = {};          // clé normalisée -> pseudo tel qu'affiché
-	var regexMentions = null;
-	var debutMention = -1;
-	var indexSuggestion = 0;
-
-	var titreOriginal = document.title;
-	var sonChoisi = 'aucun', contexteAudio = null, dernierSon = 0;
-	var indexTaille = TAILLE_PAR_DEFAUT;
-	var indexCouleur = -1;           // -1 = couleur normale
-
-	// Présence
-	var zoneMembres = null;
-	var maPresence = null;           // ma connexion dans /presence
-	var refConnecte = null, refPresences = null;
-	var etatPresence = 'actif';
-	var minuterieAbsence = null;
-	var presentsPrecedents = {};     // membreId -> pseudo
-	var premierePresence = true;
-	var departsEnAttente = {};       // membreId -> minuterie
-
-	$(function () {
-		conteneur = document.getElementById('chatbox-1740');
-		if (!conteneur) return;
-
-		// Invités : on retire la chatbox de la page
-		if (typeof _userdata === 'undefined' || !_userdata.session_logged_in) {
-			conteneur.parentNode.removeChild(conteneur);
-			return;
-		}
-
-		monPseudo = String(_userdata.username);
-		var niveau = parseInt(_userdata.user_level, 10);
-		estModerateur = (niveau === 1 || niveau === 2); // 1 = administrateur, 2 = modérateur
-		retenirPseudo(monPseudo);
-
-		lirePreferences();
-		construireInterface();
-
-		// Les navigateurs n'autorisent le son qu'après une première interaction
-		document.addEventListener('click', reveillerAudio);
-		document.addEventListener('keydown', reveillerAudio);
-
-		document.addEventListener('visibilitychange', function () {
-			if (!estConnecte) return;
-			if (!document.hidden) {
-				elements[salonActif].nonLus = 0;
-				majPastille(salonActif);
-			}
-			surveillerAbsence();
-		});
-
-		// Nombre de connectés, même sans être connecté à la chatbox
-		setInterval(function () {
-			if (!estConnecte && !document.hidden) {
-				compterSansConnexion();
-			}
-		}, INTERVALLE_COMPTE_S * 1000);
-		document.addEventListener('visibilitychange', function () {
-			if (!estConnecte && !document.hidden) {
-				compterSansConnexion();
-			}
-		});
-
-		if (lireMemoire('connecte') === 'oui') {
-			connecter();
-		} else {
-			afficherDeconnecte();
-			compterSansConnexion();
-		}
-	});
-
-	/* ================================================================
-	   CONNEXION / DÉCONNEXION
-	   ================================================================ */
-	function basculer() {
-		if (estConnecte) deconnecter();
-		else connecter();
-	}
-
-	function connecter() {
-		boutonConnexion.disabled = true;
-		boutonConnexion.textContent = 'Connexion…';
-
-		preparerFirebase().then(function () {
-			db.goOnline();
-			debut = Date.now();
-			SALONS.forEach(function (s) { ecouterSalon(s.id); });
-
-			estConnecte = true;
-			demarrerPresence();
-			corps.hidden = false;
-			conteneur.classList.add('est-connecte');
-			boutonConnexion.disabled = false;
-			boutonConnexion.textContent = TEXTE_DECONNEXION;
-			boutonConnexion.setAttribute('aria-expanded', 'true');
-			afficherEtat('');
-			ecrireMemoire('connecte', 'oui');
-			ouvrirSalon(salonActif);
-
-			if (zoneIdModeration && firebase.auth().currentUser) {
-				zoneIdModeration.textContent = 'Identifiant de modération : ' + firebase.auth().currentUser.uid;
-			}
-		}).catch(function (e) {
-			afficherDeconnecte();
-			boutonConnexion.textContent = TEXTE_CONNEXION + ' (échec, réessayer)';
-			if (window.console) console.warn('Chatbox 1740 :', e);
-		});
-	}
-
-	function deconnecter() {
-		ecoutes.forEach(function (requete) { requete.off(); });
-		ecoutes = [];
-		arreterPresence();
-		if (db) db.goOffline();
-
-		SALONS.forEach(function (s) {
-			elements[s.id].liste.innerHTML = '';
-			elements[s.id].nonLus = 0;
-			majPastille(s.id);
-		});
-		fermerSuggestions();
-		panneauEmojis.hidden = true;
-
-		ecrireMemoire('connecte', 'non');
-		// Laisse le temps à notre présence d'être effacée avant de recompter
-		setTimeout(compterSansConnexion, 1500);
-		afficherDeconnecte();
-	}
-
-	function afficherDeconnecte() {
-		estConnecte = false;
-		corps.hidden = true;
-		conteneur.classList.remove('est-connecte');
-		boutonConnexion.disabled = false;
-		boutonConnexion.textContent = TEXTE_CONNEXION;
-		boutonConnexion.setAttribute('aria-expanded', 'false');
-		majTitre();
-	}
-
-	function preparerFirebase() {
-		if (preparation) return preparation;
-
-		var base = 'https://www.gstatic.com/firebasejs/' + VERSION_FIREBASE + '/';
-		preparation = chargerScripts([
-			base + 'firebase-app-compat.js',
-			base + 'firebase-auth-compat.js',
-			base + 'firebase-database-compat.js'
-		]).then(function () {
-			if (!firebase.apps.length) firebase.initializeApp(CONFIG_FIREBASE);
-			db = firebase.database();
-			return new Promise(function (resoudre, rejeter) {
-				var fini = false;
-				firebase.auth().onAuthStateChanged(function (utilisateur) {
-					if (utilisateur && !fini) { fini = true; resoudre(); }
-				});
-				firebase.auth().signInAnonymously().catch(rejeter);
-			});
-		});
-
-		preparation.catch(function () { preparation = null; });
-		return preparation;
-	}
-
-	function chargerScripts(liste) {
-		return liste.reduce(function (chaine, url) {
-			return chaine.then(function () {
-				return new Promise(function (resoudre, rejeter) {
-					$.ajax({ url: url, dataType: 'script', cache: true })
-						.done(function () { resoudre(); })
-						.fail(function () { rejeter(new Error('Chargement impossible : ' + url)); });
-				});
-			});
-		}, Promise.resolve());
-	}
-
-	/* ================================================================
-	   INTERFACE
-	   ================================================================ */
-	function construireInterface() {
-		conteneur.innerHTML = '';
-		conteneur.classList.add('chatbox');
-
-		/* ---------- Barre toujours visible ---------- */
-		var barre = creer('div', 'chatbox-barre');
-		var titre = creer('div', 'chatbox-titre');
-		titre.textContent = TITRE;
-		compteEl = creer('span', 'chatbox-compte');
-		compteEl.setAttribute('aria-live', 'polite');
-		titre.appendChild(compteEl);
-		boutonConnexion = creerBouton('chatbox-bouton-connexion', '', null, basculer);
-		boutonConnexion.setAttribute('aria-controls', 'chatbox-1740-corps');
-		barre.appendChild(titre);
-		barre.appendChild(boutonConnexion);
-
-		/* ---------- Corps (visible une fois connecté) ---------- */
-		corps = creer('div', 'chatbox-corps');
-		corps.id = 'chatbox-1740-corps';
-		corps.hidden = true;
-
-		// Onglets et listes de messages
-		var onglets = creer('div', 'chatbox-onglets');
-		onglets.setAttribute('role', 'tablist');
-		zoneSalons = creer('div', 'chatbox-salons');
-
-		SALONS.forEach(function (s) {
-			var onglet = creerBouton('chatbox-onglet', '', null, function () { ouvrirSalon(s.id); });
-			onglet.setAttribute('role', 'tab');
-			onglet.setAttribute('data-salon', s.id);
-			var nom = creer('span', 'chatbox-onglet-nom');
-			nom.textContent = s.nom;
-			var pastille = creer('span', 'chatbox-pastille');
-			pastille.hidden = true;
-			onglet.appendChild(nom);
-			onglet.appendChild(pastille);
-
-			var liste = creer('div', 'chatbox-messages');
-			liste.setAttribute('role', 'log');
-			liste.setAttribute('aria-label', s.nom);
-			liste.setAttribute('data-salon', s.id);
-			liste.hidden = true;
-
-			onglets.appendChild(onglet);
-			zoneSalons.appendChild(liste);
-			elements[s.id] = { onglet: onglet, pastille: pastille, liste: liste, nonLus: 0 };
-		});
-
-		// Zone de saisie : suggestions @, émojis, formulaire
-		var zoneSaisie = creer('div', 'chatbox-zone-saisie');
-
-		suggestions = creer('ul', 'chatbox-suggestions');
-		suggestions.setAttribute('role', 'listbox');
-		suggestions.hidden = true;
-
-		panneauEmojis = creer('div', 'chatbox-panneau-emojis');
-		panneauEmojis.hidden = true;
-		EMOJIS.forEach(function (codes) {
-			var emoji = versEmoji(codes);
-			var b = creerBouton('chatbox-emoji', emoji, 'Insérer ' + emoji, function () {
-				inserer(emoji);
-				panneauEmojis.hidden = true;
-				boutonEmojis.setAttribute('aria-expanded', 'false');
-			});
-			panneauEmojis.appendChild(b);
-		});
-
-		var formulaire = creer('form', 'chatbox-formulaire');
-		var boutonGras = creerBouton('chatbox-format chatbox-format-gras', 'G', 'Gras', function () { entourer('**'); });
-		var boutonItalique = creerBouton('chatbox-format chatbox-format-italique', 'I', 'Italique', function () { entourer('*'); });
-		boutonEmojis = creerBouton('chatbox-format chatbox-format-emoji', versEmoji('1F642'), 'Émojis', function () {
-			panneauEmojis.hidden = !panneauEmojis.hidden;
-			boutonEmojis.setAttribute('aria-expanded', panneauEmojis.hidden ? 'false' : 'true');
-		});
-		boutonEmojis.setAttribute('aria-expanded', 'false');
-
-		saisie = creer('input', 'chatbox-saisie');
-		saisie.type = 'text';
-		saisie.maxLength = LONGUEUR_MAX;
-		saisie.placeholder = 'Écrire un message… (@ pour mentionner)';
-		saisie.setAttribute('aria-label', 'Écrire un message');
-		saisie.setAttribute('autocomplete', 'off');
-		saisie.addEventListener('input', majSuggestions);
-		saisie.addEventListener('keydown', clavierSaisie);
-		saisie.addEventListener('blur', fermerSuggestions);
-
-		var boutonEnvoyer = creer('button', 'chatbox-envoyer');
-		boutonEnvoyer.type = 'submit';
-		boutonEnvoyer.textContent = 'Envoyer';
-
-		formulaire.appendChild(boutonGras);
-		formulaire.appendChild(boutonItalique);
-		formulaire.appendChild(boutonEmojis);
-		formulaire.appendChild(saisie);
-		formulaire.appendChild(boutonEnvoyer);
-		formulaire.addEventListener('submit', envoyer);
-
-		zoneSaisie.appendChild(suggestions);
-		zoneSaisie.appendChild(panneauEmojis);
-		zoneSaisie.appendChild(formulaire);
-
-		// Outils : taille, son, couleur du pseudo
-		var outils = creer('div', 'chatbox-outils');
-
-		var groupeTaille = creer('div', 'chatbox-outil chatbox-outil-taille');
-		var libelleTaille = creer('span', 'chatbox-outil-libelle');
-		libelleTaille.textContent = 'Texte';
-		boutonMoins = creerBouton('chatbox-bouton-outil', 'A−', 'Réduire le texte', function () { changerTaille(-1); });
-		boutonPlus = creerBouton('chatbox-bouton-outil', 'A+', 'Agrandir le texte', function () { changerTaille(1); });
-		groupeTaille.appendChild(libelleTaille);
-		groupeTaille.appendChild(boutonMoins);
-		groupeTaille.appendChild(boutonPlus);
-
-		var groupeSon = creer('div', 'chatbox-outil chatbox-outil-son');
-		var libelleSon = creer('label', 'chatbox-outil-libelle');
-		libelleSon.textContent = 'Son';
-		libelleSon.htmlFor = 'chatbox-1740-son';
-		choixSon = creer('select', 'chatbox-choix-son');
-		choixSon.id = 'chatbox-1740-son';
-		SONS.forEach(function (s) {
-			var option = document.createElement('option');
-			option.value = s.id;
-			option.textContent = s.nom;
-			choixSon.appendChild(option);
-		});
-		choixSon.addEventListener('change', changerSon);
-		groupeSon.appendChild(libelleSon);
-		groupeSon.appendChild(choixSon);
-
-		var groupeCouleur = creer('div', 'chatbox-outil chatbox-outil-couleur');
-		var libelleCouleur = creer('span', 'chatbox-outil-libelle');
-		libelleCouleur.textContent = 'Pseudo';
-		groupeCouleur.appendChild(libelleCouleur);
-		var aucune = creerBouton('chatbox-pastille-couleur chatbox-couleur-aucune', '', 'Couleur normale', function () { choisirCouleur(-1); });
-		groupeCouleur.appendChild(aucune);
-		boutonsCouleur.push(aucune);
-		PALETTE.forEach(function (p, i) {
-			var b = creerBouton('chatbox-pastille-couleur', '', p.nom, function () { choisirCouleur(i); });
-			b.style.backgroundColor = p.couleur;
-			b.title = p.nom;
-			groupeCouleur.appendChild(b);
-			boutonsCouleur.push(b);
-		});
-
-		outils.appendChild(groupeTaille);
-		outils.appendChild(groupeSon);
-		outils.appendChild(groupeCouleur);
-
-		if (estModerateur) {
-			zoneIdModeration = creer('div', 'chatbox-id-moderation');
-			outils.appendChild(zoneIdModeration);
-		}
-
-		zoneEtat = creer('div', 'chatbox-etat');
-		zoneEtat.setAttribute('aria-live', 'polite');
-
-		// Rappel des règles, fixe entre les onglets et les messages
-		var avis = creer('div', 'chatbox-avis');
-		avis.setAttribute('role', 'note');
-		avis.textContent = TEXTE_AVIS;
-
-		// Pied : état à gauche, crédit à droite
-		pied = creer('div', 'chatbox-pied');
-		pied.appendChild(zoneEtat);
-
-		// Messages à gauche, membres à droite
-		var principal = creer('div', 'chatbox-principal');
-		zoneMembres = creer('div', 'chatbox-membres');
-		zoneMembres.setAttribute('aria-label', 'Membres dans la chatbox');
-		principal.appendChild(zoneSalons);
-		principal.appendChild(zoneMembres);
-
-		corps.appendChild(onglets);
-		corps.appendChild(avis);
-		corps.appendChild(principal);
-		corps.appendChild(zoneSaisie);
-		corps.appendChild(outils);
-		corps.appendChild(pied);
-		installerCredit();
-
-		conteneur.appendChild(barre);
-		conteneur.appendChild(corps);
-
-		// Fermer le panneau d'émojis en cliquant ailleurs ou avec Échap
-		document.addEventListener('click', function (ev) {
-			if (!panneauEmojis.hidden && !panneauEmojis.contains(ev.target) && ev.target !== boutonEmojis) {
-				panneauEmojis.hidden = true;
-				boutonEmojis.setAttribute('aria-expanded', 'false');
-			}
-		});
-		conteneur.addEventListener('keydown', function (ev) {
-			if (ev.key === 'Escape' && !panneauEmojis.hidden) {
-				panneauEmojis.hidden = true;
-				boutonEmojis.setAttribute('aria-expanded', 'false');
-				boutonEmojis.focus();
-			}
-		});
-
-		var memorise = lireMemoire('salon');
-		salonActif = elements[memorise] ? memorise : SALONS[0].id;
-
-		appliquerTaille();
-		choixSon.value = sonChoisi;
-		majBoutonsCouleur();
-	}
-
-	function ouvrirSalon(id) {
-		salonActif = id;
-		SALONS.forEach(function (s) {
-			var e = elements[s.id];
-			var actif = (s.id === id);
-			e.onglet.classList.toggle('est-actif', actif);
-			e.onglet.setAttribute('aria-selected', actif ? 'true' : 'false');
-			e.liste.hidden = !actif;
-		});
-		elements[id].nonLus = 0;
-		majPastille(id);
-		elements[id].liste.scrollTop = elements[id].liste.scrollHeight;
-		ecrireMemoire('salon', id);
-	}
-
-	/* ================================================================
-	   RÉCEPTION DES MESSAGES
-	   ================================================================ */
-	function ecouterSalon(id) {
-		var requete = db.ref('salons/' + id + '/messages').orderByChild('date').limitToLast(NB_MESSAGES);
-
-		requete.on('child_added', function (snap) {
-			ajouterMessage(id, snap.key, snap.val());
-		}, function (e) {
-			afficherEtat('Lecture refusée (' + e.code + ').');
-		});
-
-		requete.on('child_removed', function (snap) {
-			var el = elements[id].liste.querySelector('[data-cle="' + snap.key + '"]');
-			if (el) el.parentNode.removeChild(el);
-		});
-
-		ecoutes.push(requete);
-	}
-
-	function ajouterMessage(id, cle, m) {
-		if (!m) return;
-		var e = elements[id];
-		var liste = e.liste;
-		var etaitEnBas = liste.scrollHeight - liste.scrollTop - liste.clientHeight < 40;
-		var estMoi = String(m.membreId) === String(_userdata.user_id);
-
-		retenirPseudo(m.pseudo);
-
-		var ligne = creer('div', 'chatbox-message');
-		ligne.setAttribute('data-cle', cle);
-		ligne.setAttribute('data-date', String(m.date));
-		if (estMoi) ligne.classList.add('est-moi');
-
-		var d = new Date(m.date);
-		var heure = creer('time', 'chatbox-heure');
-		heure.dateTime = d.toISOString();
-		heure.textContent = formaterDate(d);
-
-		var auteur = creer('a', 'chatbox-auteur');
-		auteur.href = '/u' + parseInt(m.membreId, 10);
-		auteur.textContent = m.pseudo;
-		if (typeof m.couleur === 'number' && PALETTE[m.couleur]) {
-			auteur.style.color = PALETTE[m.couleur].couleur;
-		}
-
-		var texte = creer('span', 'chatbox-texte');
-		var meMentionne = rendreTexte(m.texte, texte);
-		if (meMentionne && !estMoi) ligne.classList.add('est-mention');
-
-		ligne.appendChild(heure);
-		if (m.modo === true) ligne.appendChild(creerBadgeModo());
-		ligne.appendChild(auteur);
-		ligne.appendChild(texte);
-
-		if (estModerateur) {
-			var supprimer = creerBouton('chatbox-supprimer', '×', 'Supprimer ce message', function () {
-				if (!window.confirm('Supprimer ce message?')) return;
-				db.ref('salons/' + id + '/messages/' + cle).remove().catch(function (err) {
-					var uid = firebase.auth().currentUser ? firebase.auth().currentUser.uid : '?';
-					afficherEtat('Suppression refusée (' + err.code + '). Cet appareil doit être ajouté aux modérateurs dans Firebase : ' + uid);
-				});
-			});
-			ligne.appendChild(supprimer);
-		}
-
-		// Insertion à sa place selon la date (utile après une suppression)
-		var suivant = null;
-		for (var n = liste.lastElementChild; n && Number(n.getAttribute('data-date')) > m.date; n = n.previousElementSibling) {
-			suivant = n;
-		}
-		liste.insertBefore(ligne, suivant);
-
-		if (etaitEnBas || estMoi) liste.scrollTop = liste.scrollHeight;
-
-		// Non lus, compteur de l'onglet du navigateur et son
-		if (m.date > debut && !estMoi && (id !== salonActif || document.hidden)) {
-			e.nonLus++;
-			majPastille(id);
-			jouerSon();
-		}
-	}
-
-	/* ---------- Mise en forme sécuritaire (aucun HTML n'est interprété) ----------
-	   **gras**   *italique*   liens http(s)://   @mentions
-	   Retourne vrai si le message mentionne le membre connecté. */
-	function rendreTexte(texte, parent) {
-		var etat = { meMentionne: false };
-		var morceaux = String(texte).split(/(https?:\/\/[^\s]+)/i);
-
-		morceaux.forEach(function (morceau, i) {
-			if (!morceau) return;
-			if (i % 2 === 1) {
-				// Lien : on retire la ponctuation collée à la fin
-				var fin = morceau.match(/[.,!?;:)\]]+$/);
-				var url = fin ? morceau.slice(0, -fin[0].length) : morceau;
-				var lien = creer('a', 'chatbox-lien');
-				lien.href = url;
-				lien.target = '_blank';
-				lien.rel = 'noopener noreferrer nofollow';
-				lien.textContent = url.length > 60 ? url.slice(0, 57) + '…' : url;
-				parent.appendChild(lien);
-				if (fin) parent.appendChild(document.createTextNode(fin[0]));
-			} else {
-				rendreFormat(morceau, parent, etat);
-			}
-		});
-		return etat.meMentionne;
-	}
-
-	function rendreFormat(texte, parent, etat) {
-		var regex = /\*\*([^*]+?)\*\*|\*([^*]+?)\*/g;
-		var position = 0, m;
-		while ((m = regex.exec(texte)) !== null) {
-			rendreMentions(texte.slice(position, m.index), parent, etat);
-			var balise = creer(m[1] !== undefined ? 'strong' : 'em', null);
-			rendreMentions(m[1] !== undefined ? m[1] : m[2], balise, etat);
-			parent.appendChild(balise);
-			position = regex.lastIndex;
-		}
-		rendreMentions(texte.slice(position), parent, etat);
-	}
-
-	function rendreMentions(texte, parent, etat) {
-		if (!texte) return;
-		if (!regexMentions) regexMentions = construireRegexMentions();
-		regexMentions.lastIndex = 0;
-		var position = 0, m;
-		while ((m = regexMentions.exec(texte)) !== null) {
-			if (m.index > position) parent.appendChild(document.createTextNode(texte.slice(position, m.index)));
-			var mention = creer('span', 'chatbox-mention');
-			mention.textContent = m[0];
-			if (normaliser(m[1]) === normaliser(monPseudo)) {
-				mention.classList.add('est-moi');
-				etat.meMentionne = true;
-			}
-			parent.appendChild(mention);
-			position = regexMentions.lastIndex;
-		}
-		if (position < texte.length) parent.appendChild(document.createTextNode(texte.slice(position)));
-	}
-
-	function construireRegexMentions() {
-		// Les pseudos connus d'abord (ils peuvent contenir des espaces), du plus long au plus court
-		var noms = Object.keys(pseudosConnus).map(function (k) { return pseudosConnus[k]; });
-		noms.sort(function (a, b) { return b.length - a.length; });
-		var connus = noms.map(function (n) {
-			return n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?=$|[\\s.,!?;:)\\]])';
-		});
-		connus.push('[^\\s@.,!?;:]+');
-		return new RegExp('@(' + connus.join('|') + ')', 'gi');
-	}
-
-	function retenirPseudo(pseudo) {
-		if (!pseudo) return;
-		var cle = normaliser(pseudo);
-		if (!pseudosConnus[cle]) {
-			pseudosConnus[cle] = String(pseudo);
-			regexMentions = null;
-		}
-	}
-
-	/* ================================================================
-	   ENVOI ET OUTILS D'ÉCRITURE
-	   ================================================================ */
-	function envoyer(ev) {
-		ev.preventDefault();
-		if (!estConnecte) return;
-		var texte = saisie.value.trim();
-		if (!texte) return;
-		if (texte.length > LONGUEUR_MAX) texte = texte.slice(0, LONGUEUR_MAX);
-
-		var utilisateur = firebase.auth().currentUser;
-		if (!utilisateur) { afficherEtat('Connexion en cours, réessaie dans un instant.'); return; }
-
-		var message = {
-			uid: utilisateur.uid,
-			membreId: parseInt(_userdata.user_id, 10),
-			pseudo: monPseudo.slice(0, 40),
-			texte: texte,
-			date: firebase.database.ServerValue.TIMESTAMP
-		};
-		if (indexCouleur >= 0) message.couleur = indexCouleur;
-		if (estModerateur) message.modo = true;
-
-		saisie.value = '';
-		fermerSuggestions();
-		db.ref('salons/' + salonActif + '/messages').push(message).then(function () {
-			afficherEtat('');
-		}).catch(function (e) {
-			saisie.value = texte;
-			afficherEtat('Message refusé (' + e.code + ').');
-		});
-	}
-
-	// Entoure la sélection (ou insère les marques autour du curseur)
-	function entourer(marque) {
-		var d = saisie.selectionStart, f = saisie.selectionEnd, v = saisie.value;
-		var selection = v.slice(d, f);
-		saisie.value = v.slice(0, d) + marque + selection + marque + v.slice(f);
-		saisie.focus();
-		if (selection) saisie.setSelectionRange(f + marque.length * 2, f + marque.length * 2);
-		else saisie.setSelectionRange(d + marque.length, d + marque.length);
-	}
-
-	function inserer(texte) {
-		var d = saisie.selectionStart, f = saisie.selectionEnd, v = saisie.value;
-		saisie.value = v.slice(0, d) + texte + v.slice(f);
-		saisie.focus();
-		saisie.setSelectionRange(d + texte.length, d + texte.length);
-	}
-
-	/* ---------- Suggestions de pseudos après @ ---------- */
-	function majSuggestions() {
-		var avant = saisie.value.slice(0, saisie.selectionStart);
-		var m = avant.match(/@([^\s@]*)$/);
-		if (!m) { fermerSuggestions(); return; }
-
-		var requete = normaliser(m[1]);
-		var moi = normaliser(monPseudo);
-		var choix = Object.keys(pseudosConnus)
-			.filter(function (k) { return k !== moi && k.indexOf(requete) === 0; })
-			.sort()
-			.slice(0, 6)
-			.map(function (k) { return pseudosConnus[k]; });
-
-		if (!choix.length) { fermerSuggestions(); return; }
-
-		debutMention = avant.length - m[0].length;
-		indexSuggestion = 0;
-		suggestions.innerHTML = '';
-		choix.forEach(function (pseudo, i) {
-			var li = creer('li', 'chatbox-suggestion');
-			li.setAttribute('role', 'option');
-			li.textContent = pseudo;
-			li.addEventListener('mousedown', function (ev) { ev.preventDefault(); });
-			li.addEventListener('click', function () { choisirSuggestion(pseudo); });
-			li.addEventListener('mouseenter', function () { indexSuggestion = i; surlignerSuggestion(); });
-			suggestions.appendChild(li);
-		});
-		suggestions.hidden = false;
-		surlignerSuggestion();
-	}
-
-	function clavierSaisie(ev) {
-		if (suggestions.hidden) return;
-		var items = suggestions.children;
-		if (ev.key === 'ArrowDown') {
-			ev.preventDefault();
-			indexSuggestion = (indexSuggestion + 1) % items.length;
-			surlignerSuggestion();
-		} else if (ev.key === 'ArrowUp') {
-			ev.preventDefault();
-			indexSuggestion = (indexSuggestion - 1 + items.length) % items.length;
-			surlignerSuggestion();
-		} else if (ev.key === 'Enter' || ev.key === 'Tab') {
-			ev.preventDefault();
-			choisirSuggestion(items[indexSuggestion].textContent);
-		} else if (ev.key === 'Escape') {
-			ev.preventDefault();
-			fermerSuggestions();
-		}
-	}
-
-	function surlignerSuggestion() {
-		Array.prototype.forEach.call(suggestions.children, function (li, i) {
-			li.classList.toggle('est-choisie', i === indexSuggestion);
-			li.setAttribute('aria-selected', i === indexSuggestion ? 'true' : 'false');
-		});
-	}
-
-	function choisirSuggestion(pseudo) {
-		var v = saisie.value;
-		var fin = saisie.selectionStart;
-		var insertion = '@' + pseudo + ' ';
-		saisie.value = v.slice(0, debutMention) + insertion + v.slice(fin);
-		var curseur = debutMention + insertion.length;
-		saisie.focus();
-		saisie.setSelectionRange(curseur, curseur);
-		fermerSuggestions();
-	}
-
-	function fermerSuggestions() {
-		if (suggestions) {
-			suggestions.hidden = true;
-			suggestions.innerHTML = '';
-		}
-		debutMention = -1;
-	}
-
-	/* ================================================================
-	   PRÉFÉRENCES : TAILLE, SON, COULEUR
-	   ================================================================ */
-	function lirePreferences() {
-		var t = parseInt(lireMemoire('taille'), 10);
-		if (!isNaN(t) && t >= 0 && t < TAILLES.length) indexTaille = t;
-		var s = lireMemoire('son');
-		if (s === 'oui') s = 'autel'; // ancien réglage de la version 3
-		SONS.forEach(function (son) { if (son.id === s) sonChoisi = s; });
-		var c = parseInt(lireMemoire('couleur'), 10);
-		if (!isNaN(c) && c >= 0 && c < PALETTE.length) indexCouleur = c;
-	}
-
-	function changerTaille(pas) {
-		indexTaille = Math.max(0, Math.min(TAILLES.length - 1, indexTaille + pas));
-		ecrireMemoire('taille', String(indexTaille));
-		appliquerTaille();
-	}
-
-	function appliquerTaille() {
-		zoneSalons.style.fontSize = TAILLES[indexTaille] + 'px';
-		boutonMoins.disabled = (indexTaille === 0);
-		boutonPlus.disabled = (indexTaille === TAILLES.length - 1);
-	}
-
-	// Changement de son : on fait entendre un aperçu
-	function changerSon() {
-		sonChoisi = choixSon.value;
-		ecrireMemoire('son', sonChoisi);
-		if (sonChoisi === 'aucun') return;
-		reveillerAudio();
-		dernierSon = 0;
-		// petit délai : le navigateur doit d'abord « réveiller » l'audio
-		setTimeout(jouerSon, 50);
-	}
-
-	function reveillerAudio() {
-		if (sonChoisi === 'aucun') return;
-		if (!contexteAudio) {
-			var Contexte = window.AudioContext || window.webkitAudioContext;
-			if (!Contexte) return;
-			contexteAudio = new Contexte();
-		}
-		if (contexteAudio.state === 'suspended') contexteAudio.resume();
-	}
-
-	// Joue le son choisi, au plus une fois toutes les 1,5 seconde.
-	// Les sons sont fabriqués par le navigateur : aucun fichier à héberger.
-	function jouerSon() {
-		var son = null;
-		SONS.forEach(function (s) { if (s.id === sonChoisi) son = s; });
-		if (!son || sonChoisi === 'aucun') return;
-
-		var maintenant = Date.now();
-		if (maintenant - dernierSon < 1500) return;
-
-		// Son à partir d'un fichier en ligne
-		if (son.fichier) {
-			dernierSon = maintenant;
-			try {
-				var audio = new Audio(son.fichier);
-				audio.volume = typeof son.volume === 'number' ? son.volume : 0.5;
-				var lecture = audio.play();
-				if (lecture && lecture.catch) lecture.catch(function () { /* bloqué par le navigateur */ });
-			} catch (e) { /* rien */ }
-			return;
-		}
-
-		// Son fabriqué par le navigateur
-		if (!contexteAudio || contexteAudio.state !== 'running') return;
-		dernierSon = maintenant;
-		var t = contexteAudio.currentTime;
-		(son.notes || []).forEach(function (n) {
-			note(n[0], n[1], t + n[2], n[3], n[4], n[5] || 'sine');
-		});
-		if (son.souffle) {
-			souffle(t, son.souffle.duree || 0.5, son.souffle.volume || 0.1, son.souffle.frequence || 900);
-		}
-	}
-
-	function note(frequenceDebut, frequenceFin, debutNote, duree, volumeMax, forme) {
-		var oscillateur = contexteAudio.createOscillator();
-		var volume = contexteAudio.createGain();
-		oscillateur.type = forme;
-		oscillateur.frequency.setValueAtTime(frequenceDebut, debutNote);
-		if (frequenceFin !== frequenceDebut) {
-			oscillateur.frequency.exponentialRampToValueAtTime(frequenceFin, debutNote + Math.min(0.25, duree * 0.6));
-		}
-		volume.gain.setValueAtTime(0.0001, debutNote);
-		volume.gain.exponentialRampToValueAtTime(volumeMax, debutNote + 0.01);
-		volume.gain.exponentialRampToValueAtTime(0.0001, debutNote + duree);
-		oscillateur.connect(volume);
-		volume.connect(contexteAudio.destination);
-		oscillateur.start(debutNote);
-		oscillateur.stop(debutNote + duree + 0.05);
-	}
-
-	function souffle(debutSon, duree, volumeMax, frequence) {
-		var taille = Math.floor(contexteAudio.sampleRate * duree);
-		var tampon = contexteAudio.createBuffer(1, taille, contexteAudio.sampleRate);
-		var donnees = tampon.getChannelData(0);
-		for (var i = 0; i < taille; i++) donnees[i] = Math.random() * 2 - 1;
-
-		var source = contexteAudio.createBufferSource();
-		source.buffer = tampon;
-		var filtre = contexteAudio.createBiquadFilter();
-		filtre.type = 'bandpass';
-		filtre.frequency.value = frequence;
-		filtre.Q.value = 1.2;
-		var volume = contexteAudio.createGain();
-		volume.gain.setValueAtTime(0.0001, debutSon);
-		volume.gain.exponentialRampToValueAtTime(volumeMax, debutSon + duree * 0.3);
-		volume.gain.exponentialRampToValueAtTime(0.0001, debutSon + duree);
-
-		source.connect(filtre);
-		filtre.connect(volume);
-		volume.connect(contexteAudio.destination);
-		source.start(debutSon);
-		source.stop(debutSon + duree);
-	}
-
-	function choisirCouleur(i) {
-		indexCouleur = i;
-		ecrireMemoire('couleur', String(i));
-		majBoutonsCouleur();
-		if (maPresence && estConnecte) maPresence.set(donneesPresence());
-	}
-
-	function majBoutonsCouleur() {
-		boutonsCouleur.forEach(function (b, i) {
-			var choisi = (i - 1 === indexCouleur);
-			b.classList.toggle('est-choisie', choisi);
-			b.setAttribute('aria-pressed', choisi ? 'true' : 'false');
-		});
-	}
-
-	/* ================================================================
-	   PRÉSENCE : MEMBRES PRÉSENTS / ABSENTS, ARRIVÉES ET DÉPARTS
-	   Chaque onglet ouvert crée une « connexion » dans /presence,
-	   effacée automatiquement par Firebase à la fermeture de l'onglet.
-	   ================================================================ */
-	function donneesPresence() {
-		var d = {
-			uid: firebase.auth().currentUser.uid,
-			membreId: parseInt(_userdata.user_id, 10),
-			pseudo: monPseudo.slice(0, 40),
-			etat: etatPresence,
-			depuis: firebase.database.ServerValue.TIMESTAMP
-		};
-		if (indexCouleur >= 0) d.couleur = indexCouleur;
-		if (estModerateur) d.modo = true;
-		return d;
-	}
-
-	function demarrerPresence() {
-		etatPresence = 'actif';
-		premierePresence = true;
-		presentsPrecedents = {};
-		maPresence = db.ref('presence').push();
-
-		// À chaque (re)connexion au réseau, on se réinscrit
-		refConnecte = db.ref('.info/connected');
-		refConnecte.on('value', function (snap) {
-			if (snap.val() !== true || !maPresence) return;
-			maPresence.onDisconnect().remove().then(function () {
-				return maPresence.set(donneesPresence());
-			}).catch(function (e) {
-				if (window.console) console.warn('Chatbox 1740, présence :', e);
-			});
-		});
-
-		refPresences = db.ref('presence');
-		refPresences.on('value', function (snap) { majMembres(snap.val() || {}); });
-
-		surveillerAbsence();
-	}
-
-	function arreterPresence() {
-		if (refConnecte) { refConnecte.off(); refConnecte = null; }
-		if (refPresences) { refPresences.off(); refPresences = null; }
-		if (maPresence) {
-			// Si la suppression n'a pas le temps de partir, la coupure
-			// de connexion déclenche de toute façon l'effacement prévu.
-			maPresence.remove();
-			maPresence = null;
-		}
-		clearTimeout(minuterieAbsence);
-		Object.keys(departsEnAttente).forEach(function (id) { clearTimeout(departsEnAttente[id]); });
-		departsEnAttente = {};
-		presentsPrecedents = {};
-		if (zoneMembres) zoneMembres.innerHTML = '';
-	}
-
-	// Onglet caché pendant DELAI_ABSENCE_MIN minutes -> « absent »
-	function surveillerAbsence() {
-		clearTimeout(minuterieAbsence);
-		if (document.hidden) {
-			minuterieAbsence = setTimeout(function () { changerEtat('absent'); }, DELAI_ABSENCE_MIN * 60000);
-		} else {
-			changerEtat('actif');
-		}
-	}
-
-	function changerEtat(etat) {
-		if (etatPresence === etat) return;
-		etatPresence = etat;
-		if (maPresence && estConnecte) {
-			maPresence.update({ etat: etat, depuis: firebase.database.ServerValue.TIMESTAMP });
-		}
-	}
-
-	function majMembres(connexions) {
-		// Regroupe les connexions par membre (un membre peut avoir plusieurs onglets)
-		var membres = {};
-		Object.keys(connexions).forEach(function (cle) {
-			var c = connexions[cle];
-			if (!c || typeof c.membreId !== 'number') return;
-			var m = membres[c.membreId];
-			if (!m) {
-				m = membres[c.membreId] = { id: c.membreId, pseudo: c.pseudo, couleur: c.couleur, modo: c.modo === true, actif: false };
-			}
-			if (c.etat === 'actif') m.actif = true;
-			retenirPseudo(c.pseudo);
-		});
-
-		afficherCompte(Object.keys(membres).length);
-		annoncerArriveesDeparts(membres);
-		afficherMembres(membres);
-	}
-
-	function annoncerArriveesDeparts(membres) {
-		var moi = parseInt(_userdata.user_id, 10);
-		var actuels = {};
-		Object.keys(membres).forEach(function (id) { actuels[id] = membres[id].pseudo; });
-
-		if (!premierePresence) {
-			// Arrivées
-			Object.keys(actuels).forEach(function (id) {
-				if (departsEnAttente[id]) {
-					// Revenu avant la fin du délai : on n'annonce rien
-					clearTimeout(departsEnAttente[id]);
-					delete departsEnAttente[id];
-					return;
-				}
-				if (presentsPrecedents[id]) return;
-				if (Number(id) !== moi) afficherEvenement(actuels[id] + ' a rejoint la chatbox.');
-			});
-
-			// Départs (annoncés seulement après le délai)
-			Object.keys(presentsPrecedents).forEach(function (id) {
-				if (actuels[id] || departsEnAttente[id] || Number(id) === moi) return;
-				var pseudo = presentsPrecedents[id];
-				departsEnAttente[id] = setTimeout(function () {
-					delete departsEnAttente[id];
-					delete presentsPrecedents[id];
-					afficherEvenement(pseudo + ' a quitté la chatbox.');
-				}, DELAI_DEPART_S * 1000);
-			});
-		}
-
-		// Un membre « en attente de départ » reste dans la mémoire pour
-		// pouvoir annuler l'annonce s'il revient
-		Object.keys(departsEnAttente).forEach(function (id) {
-			if (!actuels[id] && presentsPrecedents[id]) actuels[id] = presentsPrecedents[id];
-		});
-
-		presentsPrecedents = actuels;
-		premierePresence = false;
-	}
-
-	function afficherMembres(membres) {
-		var liste = Object.keys(membres).map(function (id) { return membres[id]; });
-		liste.sort(function (a, b) {
-			if (a.modo !== b.modo) return a.modo ? -1 : 1;
-			return normaliser(a.pseudo) < normaliser(b.pseudo) ? -1 : 1;
-		});
-		var presents = liste.filter(function (m) { return m.actif; });
-		var absents = liste.filter(function (m) { return !m.actif; });
-
-		zoneMembres.innerHTML = '';
-		ajouterGroupeMembres('Présents', presents, 'chatbox-membres-presents');
-		if (absents.length) ajouterGroupeMembres('Absents', absents, 'chatbox-membres-absents');
-	}
-
-	function ajouterGroupeMembres(titre, membres, classe) {
-		var groupe = creer('div', 'chatbox-membres-groupe ' + classe);
-		var entete = creer('div', 'chatbox-membres-titre');
-		entete.textContent = titre + ' (' + membres.length + ')';
-		var ul = creer('ul', 'chatbox-membres-liste');
-
-		membres.forEach(function (m) {
-			var li = creer('li', 'chatbox-membre');
-			if (m.modo) li.appendChild(creerBadgeModo());
-			// Cliquer sur un pseudo l'insère comme mention
-			var b = creerBouton('chatbox-membre-nom', m.pseudo, 'Mentionner ' + m.pseudo, function () {
-				inserer('@' + m.pseudo + ' ');
-			});
-			if (typeof m.couleur === 'number' && PALETTE[m.couleur]) b.style.color = PALETTE[m.couleur].couleur;
-			li.appendChild(b);
-			ul.appendChild(li);
-		});
-
-		groupe.appendChild(entete);
-		groupe.appendChild(ul);
-		zoneMembres.appendChild(groupe);
-	}
-
-	// Ligne d'information (arrivée / départ) ajoutée dans tous les salons.
-	// Elle ne compte pas comme message non lu et ne fait pas de son.
-	function afficherEvenement(texte) {
-		var maintenant = new Date();
-		SALONS.forEach(function (s) {
-			var liste = elements[s.id].liste;
-			var etaitEnBas = liste.scrollHeight - liste.scrollTop - liste.clientHeight < 40;
-			var ligne = creer('div', 'chatbox-message chatbox-evenement');
-			ligne.setAttribute('data-date', String(maintenant.getTime()));
-			var heure = creer('time', 'chatbox-heure');
-			heure.dateTime = maintenant.toISOString();
-			heure.textContent = formaterDate(maintenant);
-			var t = creer('span', 'chatbox-texte');
-			t.textContent = texte;
-			ligne.appendChild(heure);
-			ligne.appendChild(t);
-			liste.appendChild(ligne);
-			if (etaitEnBas) liste.scrollTop = liste.scrollHeight;
-		});
-	}
-
-	function creerBadgeModo() {
-		var badge = creer('span', 'chatbox-badge-modo');
-		badge.textContent = TEXTE_MODO;
-		return badge;
-	}
-
-	/* ================================================================
-	   CRÉDIT
-	   Styles appliqués directement sur l'élément avec !important : une
-	   règle CSS de la feuille de style ne peut pas les annuler. S'il est
-	   retiré ou modifié, il est remis en place automatiquement.
-	   ================================================================ */
-	var CREDIT = '\u00A9 Elym';
-	var STYLE_CREDIT = {
-		'display': 'block',
-		'visibility': 'visible',
-		'opacity': '1',
-		'position': 'static',
-		'margin-left': 'auto',
-		'font-size': '11px',
-		'line-height': '1.4',
-		'color': '#8a8f96',
-		'text-align': 'right',
-		'white-space': 'nowrap',
-		'transform': 'none',
-		'clip-path': 'none',
-		'filter': 'none',
-		'text-indent': '0',
-		'width': 'auto',
-		'height': 'auto',
-		'overflow': 'visible',
-		'pointer-events': 'auto'
-	};
-	var STYLE_PIED = {
-		'display': 'flex',
-		'visibility': 'visible',
-		'opacity': '1',
-		'height': 'auto',
-		'overflow': 'visible'
-	};
-
-	function imposer(el, styles) {
-		Object.keys(styles).forEach(function (p) { el.style.setProperty(p, styles[p], 'important'); });
-	}
-
-	function installerCredit() {
-		verifierCredit();
-		new MutationObserver(verifierCredit).observe(pied, {
-			childList: true, subtree: true, characterData: true, attributes: true
-		});
-		setInterval(verifierCredit, 3000);
-	}
-
-	function verifierCredit() {
-		if (!pied) return;
-		if (!corps.contains(pied)) corps.appendChild(pied);
-		imposer(pied, STYLE_PIED);
-
-		var credit = pied.querySelector('.chatbox-credit');
-		if (!credit || credit.textContent !== CREDIT || credit.parentNode !== pied) {
-			if (credit && credit.parentNode) credit.parentNode.removeChild(credit);
-			credit = creer('div', 'chatbox-credit');
-			credit.textContent = CREDIT;
-			pied.appendChild(credit);
-		}
-		credit.hidden = false;
-		imposer(credit, STYLE_CREDIT);
-	}
-
-	/* ================================================================
-	   NOMBRE DE CONNECTÉS SANS SE CONNECTER (API REST de Firebase)
-	   ================================================================ */
-	function afficherCompte(n) {
-		if (compteEl) compteEl.textContent = texteCompte(n);
-	}
-
-	function compterSansConnexion() {
-		obtenirJetonRest().then(function (t) {
-			return fetch(CONFIG_FIREBASE.databaseURL + '/presence.json?auth=' + encodeURIComponent(t));
-		}).then(function (r) {
-			if (r.status === 401) {
-				jetonRest = null;
-				effacerMemoire('rest-jeton');
-			}
-			if (!r.ok) throw new Error('Lecture refusée (' + r.status + ')');
-			return r.json();
-		}).then(function (connexions) {
-			if (estConnecte) return; // la liste en direct a pris le relais
-			var membres = {};
-			Object.keys(connexions || {}).forEach(function (cle) {
-				var c = connexions[cle];
-				if (c && typeof c.membreId === 'number') membres[c.membreId] = true;
-			});
-			afficherCompte(Object.keys(membres).length);
-		}).catch(function (e) {
-			if (window.console) console.warn('Chatbox 1740, nombre de connectés :', e);
-		});
-	}
-
-	// Connexion anonyme légère, conservée d'une page à l'autre
-	function obtenirJetonRest() {
-		if (jetonRest && jetonRest.expire > Date.now() + 60000) return Promise.resolve(jetonRest.id);
-		try {
-			var memoire = JSON.parse(lireMemoire('rest-jeton'));
-			if (memoire && memoire.expire > Date.now() + 60000) {
-				jetonRest = memoire;
-				return Promise.resolve(jetonRest.id);
-			}
-		} catch (e) { /* rien */ }
-
-		var cle = CONFIG_FIREBASE.apiKey;
-		var rafraichir = lireMemoire('rest-rafraichir');
-		var demande = rafraichir ?
-			fetch('https://securetoken.googleapis.com/v1/token?key=' + cle, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-				body: 'grant_type=refresh_token&refresh_token=' + encodeURIComponent(rafraichir)
-			}).then(function (r) { return r.json(); }).then(function (d) {
-				if (!d.id_token) throw new Error('Session expirée');
-				return { id: d.id_token, rafraichir: d.refresh_token, duree: d.expires_in };
-			}) :
-			Promise.reject(new Error('Aucune session'));
-
-		return demande.catch(function () {
-			return fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + cle, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ returnSecureToken: true })
-			}).then(function (r) { return r.json(); }).then(function (d) {
-				if (!d.idToken) throw new Error('Connexion à Firebase impossible');
-				return { id: d.idToken, rafraichir: d.refreshToken, duree: d.expiresIn };
-			});
-		}).then(function (r) {
-			jetonRest = { id: r.id, expire: Date.now() + parseInt(r.duree, 10) * 1000 };
-			ecrireMemoire('rest-jeton', JSON.stringify(jetonRest));
-			ecrireMemoire('rest-rafraichir', r.rafraichir);
-			return jetonRest.id;
-		});
-	}
-
-	/* ================================================================
-	   PETITS OUTILS
-	   ================================================================ */
-	function majPastille(id) {
-		var e = elements[id];
-		e.pastille.hidden = (e.nonLus === 0);
-		e.pastille.textContent = e.nonLus > 99 ? '99+' : String(e.nonLus);
-		majTitre();
-	}
-
-	// Compteur dans l'onglet du navigateur : « (3) Titre du forum »
-	function majTitre() {
-		var total = 0;
-		SALONS.forEach(function (s) { if (elements[s.id]) total += elements[s.id].nonLus; });
-		document.title = total > 0 ? '(' + (total > 99 ? '99+' : total) + ') ' + titreOriginal : titreOriginal;
-	}
-
-	function formaterDate(d) {
-		var heure = d.getHours() + ' h ' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
-		if (d.toDateString() === new Date().toDateString()) return heure;
-		return d.toLocaleDateString('fr-CA', { day: 'numeric', month: 'short' }) + ', ' + heure;
-	}
-
-
-	function versEmoji(codes) {
-		return String.fromCodePoint.apply(null, codes.split(' ').map(function (h) { return parseInt(h, 16); }));
-	}
-
-	function normaliser(s) {
-		return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-	}
-
-	function afficherEtat(message) {
-		if (zoneEtat) zoneEtat.textContent = message;
-	}
-
-	function creer(balise, classe) {
-		var el = document.createElement(balise);
-		if (classe) el.className = classe;
-		return el;
-	}
-
-	function creerBouton(classe, texte, libelle, action) {
-		var b = creer('button', classe);
-		b.type = 'button';
-		if (texte) b.textContent = texte;
-		if (libelle) b.setAttribute('aria-label', libelle);
-		if (libelle && !b.title) b.title = libelle;
-		if (action) b.addEventListener('click', action);
-		return b;
-	}
-
-	function lireMemoire(cle) {
-		try { return localStorage.getItem('chatbox1740-' + cle); } catch (e) { return null; }
-	}
-
-	function ecrireMemoire(cle, valeur) {
-		try { localStorage.setItem('chatbox1740-' + cle, valeur); } catch (e) { /* rien */ }
-	}
-
-	function effacerMemoire(cle) {
-		try { localStorage.removeItem('chatbox1740-' + cle); } catch (e) { /* rien */ }
-	}
-})();
+}
