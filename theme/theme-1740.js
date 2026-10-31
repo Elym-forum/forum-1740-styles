@@ -34,6 +34,10 @@
 			CONFIG.chapitres = chapitres.map(function (c) {
 				var r = { gabarit: c.getAttribute('data-gabarit') || 'terres', surtitre: c.getAttribute('data-surtitre') || '' };
 				if (c.hasAttribute('data-bandeau')) { r.bandeau = c.getAttribute('data-bandeau'); }
+				var tuiles = Array.prototype.slice.call(c.querySelectorAll('[data-tuile]'));
+				if (tuiles.length) {
+					r.tuiles = tuiles.map(function (t) { return { titre: t.textContent.trim(), lien: t.getAttribute('href') || '#' }; });
+				}
 				if (c.hasAttribute('data-panneau-titre') || c.hasAttribute('data-panneau-sous') || c.hasAttribute('data-panneau-lien')) {
 					r.panneau = {
 						titre: c.getAttribute('data-panneau-titre') || '',
@@ -268,10 +272,21 @@
 			}
 		}
 
-		// Sous-forums : on garde seulement les liens (Forumactif ajoute des virgules)
+		// Sous-forums : on garde seulement les liens (Forumactif ajoute des virgules).
+		// Selon la version, Forumactif les place dans SUBFORUMS ou dans LINKS : on cherche aux deux endroits.
 		var sous = $('.forum-sous', li);
+		var moderateurs = $('.forum-moderateurs', li);
 		if (sous) {
 			var liens = $$('a', sous);
+			if (moderateurs) {
+				$$('a', moderateurs).forEach(function (a) {
+					if (/\/f\d+/.test(a.getAttribute('href') || '')) { liens.push(a); }
+				});
+				// S'il ne reste que des étiquettes (« Sous-forums : », virgules), on vide la zone
+				if (!$$('a', moderateurs).filter(function (a) { return !/\/f\d+/.test(a.getAttribute('href') || ''); }).length) {
+					moderateurs.innerHTML = '';
+				}
+			}
 			sous.innerHTML = '';
 			var romains = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 			liens.forEach(function (a, i) {
@@ -301,7 +316,9 @@
 
 			if (!auteur) {
 				li.classList.add('sans-message');
-				$('.forum-dernier', li).innerHTML = '<span class="dernier-vide">Aucun écrit pour l’instant</span>';
+				var ligneVide = $('.dernier-ligne', li);
+				if (ligneVide) { ligneVide.innerHTML = '<span class="dernier-vide">Aucun écrit pour l’instant</span>'; }
+				placerEtat(li);
 				return;
 			}
 
@@ -325,6 +342,49 @@
 				avatar: avatarImg ? avatarImg.src : ''
 			});
 		}
+		placerEtat(li);
+	}
+
+	// Accord des statistiques : « 1 sujet », « 0 sujet », « 2 sujets »
+	function accorderStats(li) {
+		$$('.forum-stats .nb', li).forEach(function (nb) {
+			var mot = nb.nextElementSibling;
+			var n = parseInt(nb.textContent.replace(/\D/g, ''), 10) || 0;
+			if (mot && mot.classList.contains('mot') && n <= 1) { mot.textContent = mot.getAttribute('data-un'); }
+		});
+	}
+
+	// Dans le Grimoire et le coin du feu, l'icône d'état va à côté de l'avatar du dernier posteur
+	function placerEtat(li) {
+		var ch = li.closest('.chapitre-1740');
+		var g = ch ? ch.getAttribute('data-gabarit') : '';
+		var premier = ch && $('.forum-1740', ch) === li;
+		if (!((g === 'fondements' && premier) || g === 'feu')) { return; }
+		var etat = $(':scope > .etat-1740', li);
+		var ligne = $('.dernier-ligne', li);
+		if (etat && ligne) { ligne.insertBefore(etat, ligne.firstChild); etat.style.display = 'block'; }
+	}
+
+	// Tuiles du Grimoire : liens directs vers des sujets
+	function creerTuiles(li, tuiles) {
+		var romains = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+		var zone = document.createElement('div');
+		zone.className = 'tuiles-1740';
+		tuiles.forEach(function (t, i) {
+			var a = document.createElement('a');
+			a.href = t.lien;
+			var num = document.createElement('span');
+			num.className = 'numero';
+			num.textContent = romains[i] || String(i + 1);
+			var nom = document.createElement('span');
+			nom.textContent = t.titre;
+			a.appendChild(num); a.appendChild(nom);
+			zone.appendChild(a);
+		});
+		var infos = $('.forum-infos', li);
+		var sous = $('.forum-sous', li);
+		if (sous) { sous.style.display = 'none'; }
+		if (infos) { infos.appendChild(zone); }
 	}
 
 	/* ------------------------------------------------------------------
@@ -366,6 +426,8 @@
 
 			if (gabarit === 'fondements') {
 				corps.appendChild(creerPanneau(r.panneau));
+				var premier = $('.forum-1740', liste);
+				if (premier && r.tuiles && r.tuiles.length) { creerTuiles(premier, r.tuiles); }
 			} else if (gabarit === 'terres') {
 				if (r.bandeau !== false) {
 					var bandeau = document.createElement('div');
@@ -400,7 +462,7 @@
 		var source = $('#presences-source-1740');
 		if (presencesOrphelines && source) { source.style.display = 'block'; source.classList.add('boite-1740'); }
 
-		$$('.forum-1740').forEach(preparerForum);
+		$$('.forum-1740').forEach(function (li) { accorderStats(li); preparerForum(li); });
 	}
 
 	/* ------------------------------------------------------------------
@@ -438,7 +500,7 @@
 	function initStatistiques() {
 		var bloc = $('#presences-1740');
 		if (!bloc) { return; }
-		var texte = (document.body.innerText || document.body.textContent || '');
+		var texte = document.body.textContent || '';
 		var messages = texte.match(/total de\s*([\d\s .]+)\s*messages?/i);
 		var membres = texte.match(/avons\s*([\d\s .]+)\s*membres?/i);
 		if (messages) { $('[data-stat="messages"]', bloc).textContent = messages[1].replace(/\D/g, ''); }
@@ -479,6 +541,25 @@
 	}
 
 	/* ------------------------------------------------------------------
+	   10. Pied de page : on masque le bandeau de statistiques de Forumactif
+	       (déjà affiché dans le coin du feu). Les liens légaux restent visibles.
+	   ------------------------------------------------------------------ */
+	function initPied() {
+		if (!$('#presences-1740')) { return; }
+		var noeuds = $$('body *').filter(function (el) {
+			return el.children.length < 8 && /posté un total de/i.test(el.textContent) && !el.closest('#presences-1740, #reglages-1740');
+		});
+		if (!noeuds.length) { return; }
+		var el = noeuds[noeuds.length - 1];
+		var NOTRE = '#accueil-1740, .chapitre-1740, #presences-1740, #entete-1740, #barre-1740';
+		function sur(p) { return p && p !== document.body && !p.querySelector(NOTRE) && !/signaler|phpbb|forum gratuit/i.test(p.textContent); }
+		// On remonte jusqu'au bloc qui contient les trois statistiques, sans toucher aux liens légaux
+		while (!/plus r[ée]cent/i.test(el.textContent) && sur(el.parentElement)) { el = el.parentElement; }
+		while (sur(el.parentElement) && /plus r[ée]cent/i.test(el.parentElement.textContent)) { el = el.parentElement; }
+		if (!el.querySelector(NOTRE) && !/signaler|phpbb|forum gratuit/i.test(el.textContent)) { el.classList.add('stats-natives-1740'); }
+	}
+
+	/* ------------------------------------------------------------------
 	   Démarrage
 	   ------------------------------------------------------------------ */
 	function demarrer() {
@@ -494,6 +575,7 @@
 			initDerniersEcrits();
 		}
 		initStatistiques();
+		initPied();
 	}
 
 	if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', demarrer); }
