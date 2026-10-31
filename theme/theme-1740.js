@@ -544,6 +544,17 @@
 	   10. Pied de page : on masque le bandeau de statistiques de Forumactif
 	       (déjà affiché dans le coin du feu). Les liens légaux restent visibles.
 	   ------------------------------------------------------------------ */
+	function nettoyerPresents() {
+		var zone = $('#presences-1740 .presents');
+		if (!zone) { return; }
+		var liens = $$('a', zone);
+		zone.innerHTML = '';
+		liens.forEach(function (a, i) {
+			if (i) { zone.appendChild(document.createTextNode(', ')); }
+			zone.appendChild(a);
+		});
+	}
+
 	function initPied() {
 		// Sur l'index, les statistiques sont déjà dans le coin du feu : on masque le bandeau natif
 		if ($('#presences-1740')) { document.documentElement.classList.add('index-1740'); }
@@ -565,6 +576,7 @@
 			initDerniersEcrits();
 		}
 		initStatistiques();
+		nettoyerPresents();
 		initPied();
 	}
 

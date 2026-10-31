@@ -185,6 +185,17 @@ html.est-connecte .seulement-invite { display: none !important; }
 #barre-1740 .outil:focus-visible { color: var(--texte-clair); border-color: var(--ligne-forte); background: rgba(var(--accent-rgb), 0.14); text-decoration: none; }
 #barre-1740 .outil svg { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
 
+#barre-1740 [data-outil="journal"] { margin-top: 17px; }
+#barre-1740 [data-outil="journal"]::before {
+	content: "";
+	position: absolute;
+	top: -10px;
+	left: 11px;
+	width: 22px;
+	height: 1px;
+	background: var(--ligne-forte);
+}
+
 #barre-1740 .etiquette {
 	position: absolute;
 	left: calc(100% + 12px);
@@ -236,7 +247,8 @@ html.est-connecte .seulement-invite { display: none !important; }
 /* Petits écrans : la barre passe en bas */
 @media (max-width: 1100px) {
 	#barre-1740 { top: auto; bottom: 0; right: 0; width: auto; flex-direction: row; justify-content: center; flex-wrap: wrap; padding: 4px; border-right: none; border-top: 3px double var(--ligne-forte); }
-	#barre-1740 .barre-esp, #barre-1740 .barre-rosette { display: none; }
+	#barre-1740 .barre-esp, #barre-1740 .barre-rosette, #barre-1740 [data-outil="journal"]::before { display: none; }
+	#barre-1740 [data-outil="journal"] { margin-top: 0; }
 	#barre-1740 .etiquette { left: 50%; top: auto; bottom: calc(100% + 8px); transform: translateX(-50%); }
 	body#modernbb { padding-bottom: 60px; }
 }

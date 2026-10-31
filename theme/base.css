@@ -23,7 +23,7 @@ body#modernbb {
 }
 
 body#modernbb a { color: var(--accent-lien); text-decoration: none; }
-body#modernbb a:hover { color: var(--texte-clair); text-decoration: underline; text-underline-offset: 3px; }
+body#modernbb a:hover { color: var(--texte-clair); text-decoration: none; }
 
 /* Corps du forum : 940 px maximum, centré */
 body#modernbb #wrap {
@@ -109,6 +109,16 @@ body#modernbb #legende-1740 { font-family: 'Alegreya', Georgia, serif; }
 /* L'en-tête d'origine de ModernBB n'est plus utilisé (voir entete.css) */
 body#modernbb #page-header .headerbar { display: none; }
 body#modernbb #page-header { background: none; padding: 0; margin: 0; height: auto; min-height: 0; box-shadow: none; }
+
+/* Bloc de réglages : jamais affiché (Forumactif retire parfois l'attribut hidden) */
+#reglages-1740, #reglages-1740 * { display: none !important; }
+
+/* ModernBB impose une petite taille aux <p> : nos paragraphes reprennent la taille de leur bloc */
+body#modernbb #accueil-1740 p:not([class]),
+body#modernbb .chapitre-1740 p:not([class]),
+body#modernbb #presences-1740 p:not([class]),
+body#modernbb #accueil-1740 .nouveautes p,
+body#modernbb #accueil-1740 .resume p { font-size: inherit !important; line-height: 1.55 !important; color: inherit; }
 
 /* ---------- Typographie ---------- */
 .titre-1740 { font-family: 'Grenze Gotisch', serif; font-weight: 400; }
@@ -292,8 +302,16 @@ body#modernbb .statistics-item span,
 body#modernbb .statistics-item a { font-family: inherit !important; color: var(--texte) !important; }
 
 /* Barre du bas et copyright */
-body#modernbb #page-footer { padding: 8px 0 0 !important; }
-body#modernbb #page-footer .wrap { border-top: 1px solid var(--ligne) !important; padding-top: 10px !important; }
+/* Un seul filet au-dessus du pied de page ; aucun autre trait */
+body#modernbb #page-footer,
+body#modernbb #page-footer *,
+body#modernbb .copyright,
+body#modernbb .copyright *,
+body#modernbb .footerbar-user { border: none !important; }
+body#modernbb #page-footer { padding: 0 !important; margin-top: 10px !important; }
+body#modernbb #page-footer .wrap { border-top: 1px solid var(--ligne) !important; padding: 12px 0 4px !important; }
+body#modernbb #page-footer ul { margin: 0 !important; padding: 0 !important; }
+body#modernbb .copyright { padding: 4px 0 28px !important; margin: 0 auto !important; }
 body#modernbb #page-footer ul,
 body#modernbb .copyright ul { background: transparent !important; border: none !important; }
 body#modernbb #page-footer li,
