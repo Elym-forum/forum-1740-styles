@@ -424,19 +424,21 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 }
 #accueil-1740 .veillee .chatbox-barre { justify-content: flex-start !important; flex-wrap: wrap; }
 #accueil-1740 .veillee .chatbox-bouton-connexion { margin-left: auto; }
+/* Le titre contient aussi le compteur de présents (span .chatbox-compte) */
 #accueil-1740 .veillee .chatbox-titre {
-	font-size: 0 !important;
+	display: flex;
+	align-items: baseline;
+	flex-wrap: wrap;
+	gap: 2px 12px;
+	font-family: 'Grenze Gotisch', serif !important;
+	font-size: 24px !important;
 	font-weight: 400 !important;
-}
-#accueil-1740 .veillee .chatbox-titre::before {
-	content: "La Veillée";
-	font-family: 'Grenze Gotisch', serif;
-	font-size: 24px;
 	line-height: 1;
 	color: var(--texte-clair);
 }
 #accueil-1740 .veillee .chatbox-compte {
 	margin-left: 0 !important;
+	font-family: 'Alegreya', Georgia, serif;
 	font-size: 16px !important;
 	font-style: italic;
 	opacity: 1 !important;
