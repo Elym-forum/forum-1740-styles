@@ -289,22 +289,29 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 .chapitre-1740[data-gabarit="fondements"] .forum-1740:first-child .forum-stats { display: none; }
 .chapitre-1740[data-gabarit="fondements"] .chapitre-panneau { border-left: 1px solid var(--ligne); background-image: var(--img-panneau-1); }
 
-/* ---------- Gabarit II : Greffe (deux colonnes, sans vignette) ---------- */
-.chapitre-1740[data-gabarit="greffe"] .chapitre-forums { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
-.chapitre-1740[data-gabarit="greffe"] .forum-1740 { grid-template-columns: 24px minmax(0, 1fr); align-items: start; gap: 10px 12px; padding: 14px 16px; border-right: 1px solid var(--ligne); border-bottom: 1px solid var(--ligne); }
+/* ---------- Gabarit II : Greffe (cartes en deux colonnes) ----------
+   Haut : titre, description, sous-forums, statistiques.
+   Bas, collé au fond de la carte : état + dernier message. Les bas s'alignent. */
+.chapitre-1740[data-gabarit="greffe"] .chapitre-forums { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+.chapitre-1740[data-gabarit="greffe"] .forum-1740 {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 12px;
+	padding: 16px 18px 14px;
+	border-right: 1px solid var(--ligne);
+	border-bottom: 1px solid var(--ligne);
+}
+.chapitre-1740[data-gabarit="greffe"] .forum-1740 > .etat-1740 { display: none; }
 .chapitre-1740[data-gabarit="greffe"] .forum-vignette { display: none; }
-.chapitre-1740[data-gabarit="greffe"] .forum-titre { font-size: 24px; }
-.chapitre-1740[data-gabarit="greffe"] .forum-desc { font-size: 16px; }
-/* Dernier message sous le forum, sur toute la largeur de la carte */
-.chapitre-1740[data-gabarit="greffe"] .forum-1740 > .etat-1740 { margin-top: 4px; }
+.chapitre-1740[data-gabarit="greffe"] .forum-desc { font-size: 17px; }
+.chapitre-1740[data-gabarit="greffe"] .forum-infos .forum-stats { margin-top: 2px; }
 .chapitre-1740[data-gabarit="greffe"] .forum-dernier {
-	grid-column: 2;
+	margin-top: auto;
 	border-left: none;
 	border-top: 1px dotted var(--ligne);
-	padding: 10px 0 0;
+	padding: 12px 0 0;
 }
-.chapitre-1740[data-gabarit="greffe"] .dernier-avatar img { width: 42px; height: 42px; }
-.chapitre-1740[data-gabarit="greffe"] .dernier-sujet { font-size: 16px; }
 
 /* ---------- Gabarit III : Terres (bandeau + vignettes) ---------- */
 .chapitre-1740[data-gabarit="terres"] .chapitre-forums { flex-basis: 100%; }

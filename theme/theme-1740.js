@@ -359,7 +359,13 @@
 		var ch = li.closest('.chapitre-1740');
 		var g = ch ? ch.getAttribute('data-gabarit') : '';
 		var premier = ch && $('.forum-1740', ch) === li;
-		if (!((g === 'fondements' && premier) || g === 'feu')) { return; }
+		if (!((g === 'fondements' && premier) || g === 'feu' || g === 'greffe')) { return; }
+		// Greffe : les statistiques remontent sous le titre, le bas de carte ne garde que le dernier message
+		if (g === 'greffe') {
+			var stats = $('.forum-dernier .forum-stats', li);
+			var infos = $('.forum-infos', li);
+			if (stats && infos) { infos.appendChild(stats); }
+		}
 		var etat = $(':scope > .etat-1740', li);
 		var ligne = $('.dernier-ligne', li);
 		if (etat && ligne) { ligne.insertBefore(etat, ligne.firstChild); etat.style.display = 'block'; }
