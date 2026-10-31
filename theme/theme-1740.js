@@ -545,18 +545,8 @@
 	       (déjà affiché dans le coin du feu). Les liens légaux restent visibles.
 	   ------------------------------------------------------------------ */
 	function initPied() {
-		if (!$('#presences-1740')) { return; }
-		var noeuds = $$('body *').filter(function (el) {
-			return el.children.length < 8 && /posté un total de/i.test(el.textContent) && !el.closest('#presences-1740, #reglages-1740');
-		});
-		if (!noeuds.length) { return; }
-		var el = noeuds[noeuds.length - 1];
-		var NOTRE = '#accueil-1740, .chapitre-1740, #presences-1740, #entete-1740, #barre-1740';
-		function sur(p) { return p && p !== document.body && !p.querySelector(NOTRE) && !/signaler|phpbb|forum gratuit/i.test(p.textContent); }
-		// On remonte jusqu'au bloc qui contient les trois statistiques, sans toucher aux liens légaux
-		while (!/plus r[ée]cent/i.test(el.textContent) && sur(el.parentElement)) { el = el.parentElement; }
-		while (sur(el.parentElement) && /plus r[ée]cent/i.test(el.parentElement.textContent)) { el = el.parentElement; }
-		if (!el.querySelector(NOTRE) && !/signaler|phpbb|forum gratuit/i.test(el.textContent)) { el.classList.add('stats-natives-1740'); }
+		// Sur l'index, les statistiques sont déjà dans le coin du feu : on masque le bandeau natif
+		if ($('#presences-1740')) { document.documentElement.classList.add('index-1740'); }
 	}
 
 	/* ------------------------------------------------------------------

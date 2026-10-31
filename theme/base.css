@@ -243,36 +243,66 @@ img.avatar-rond-1740 {
 }
 
 /* ==========================================================================
-   PIED DE PAGE
-   Le bandeau de statistiques natif est masqué par le script (il fait doublon
-   avec le coin du feu). Les liens légaux de Forumactif restent visibles.
+   PIED DE PAGE (overall_footer_begin + overall_footer_end)
+   - .statistics : bandeau de statistiques. Masqué sur l'index (doublon avec
+     le coin du feu), harmonisé sur les autres pages.
+   - #page-footer et .copyright : liens légaux de Forumactif, toujours visibles.
    ========================================================================== */
-body#modernbb .stats-natives-1740 { display: none !important; }
+html.index-1740 body#modernbb .statistics { display: none !important; }
 
-body#modernbb #page-footer,
-body#modernbb .footer,
-body#modernbb footer,
-body#modernbb .footerbar,
-body#modernbb .footerbar-user,
-body#modernbb .copyright,
-body#modernbb .copyright .wrap,
-body#modernbb .copyright-body {
-	background: transparent !important;
-	border-color: var(--ligne) !important;
-	box-shadow: none !important;
-	color: var(--texte-doux) !important;
-}
+body#modernbb .statistics,
 body#modernbb #page-footer,
 body#modernbb .copyright {
-	max-width: 940px;
-	width: calc(100% - 24px);
-	margin-left: auto !important;
-	margin-right: auto !important;
-	font-family: 'Alegreya', Georgia, serif;
-	font-size: 15px;
-	text-align: center;
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	color: var(--texte-doux) !important;
+	font-family: 'Alegreya', Georgia, serif !important;
 }
+body#modernbb .statistics .wrap,
+body#modernbb #page-footer .wrap,
+body#modernbb .copyright .wrap {
+	max-width: 940px !important;
+	width: calc(100% - 24px) !important;
+	margin: 0 auto !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	background: transparent !important;
+}
+
+/* Statistiques (pages autres que l'index) : une boîte du thème, trois cases */
+body#modernbb .statistics { padding: 0 0 26px !important; }
+body#modernbb .statistics .wrap {
+	display: grid !important;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	background: var(--surface) var(--img-grain) !important;
+	border: 1px solid var(--ligne) !important;
+}
+body#modernbb .statistics-item {
+	padding: 14px 16px !important;
+	text-align: center;
+	font-size: 16px !important;
+	color: var(--texte-doux) !important;
+	float: none !important;
+	width: auto !important;
+}
+body#modernbb .statistics-item + .statistics-item { border-left: 1px solid var(--ligne) !important; }
+body#modernbb .statistics-item strong,
+body#modernbb .statistics-item span,
+body#modernbb .statistics-item a { font-family: inherit !important; color: var(--texte) !important; }
+
+/* Barre du bas et copyright */
+body#modernbb #page-footer { padding: 8px 0 0 !important; }
+body#modernbb #page-footer .wrap { border-top: 1px solid var(--ligne) !important; padding-top: 10px !important; }
+body#modernbb #page-footer ul,
+body#modernbb .copyright ul { background: transparent !important; border: none !important; }
+body#modernbb #page-footer li,
+body#modernbb .copyright,
+body#modernbb .copyright-body { font-size: 15px !important; color: var(--texte-doux) !important; }
 body#modernbb #page-footer a,
-body#modernbb .copyright a { color: var(--texte-doux) !important; font-weight: 400 !important; }
+body#modernbb .copyright a,
+body#modernbb .footerbar-user a { color: var(--texte-doux) !important; font-weight: 400 !important; text-decoration: none !important; }
 body#modernbb #page-footer a:hover,
-body#modernbb .copyright a:hover { color: var(--texte-clair) !important; }
+body#modernbb .copyright a:hover,
+body#modernbb .footerbar-user a:hover { color: var(--texte-clair) !important; }
+body#modernbb .copyright { padding: 8px 0 28px !important; text-align: center; }
