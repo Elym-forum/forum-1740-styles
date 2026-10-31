@@ -497,6 +497,30 @@
 	/* ------------------------------------------------------------------
 	   9. Présences : statistiques et dernière venue (lues dans le pied de page)
 	   ------------------------------------------------------------------ */
+	// Sur une page de profil, trouve l'image qui est vraiment l'avatar :
+	// on écarte les icônes (genre, rang, boutons, émoticônes) et on favorise
+	// les images marquées « avatar » ou portant le pseudo du membre.
+	function choisirAvatar(doc, pseudo) {
+		var meilleure = null, meilleurScore = 0;
+		var nom = pseudo.toLowerCase();
+		Array.prototype.forEach.call(doc.querySelectorAll('img'), function (img) {
+			var src = (img.getAttribute('src') || '').toLowerCase();
+			var alt = (img.getAttribute('alt') || '').toLowerCase();
+			var classes = ((img.className || '') + ' ' + (img.parentElement ? img.parentElement.className : '')).toLowerCase();
+			if (!src || /gender|genre|sexe|male|female|rank|rang|icon|ion-|smilies|smiley|emoji|button|bouton|logo|pixel|spacer|blank/.test(src + ' ' + classes)) { return; }
+			var w = parseInt(img.getAttribute('width'), 10) || 0;
+			var h = parseInt(img.getAttribute('height'), 10) || 0;
+			if ((w && w < 40) || (h && h < 40)) { return; }
+			var score = 1;
+			if (/avatar/.test(src + ' ' + classes + ' ' + alt)) { score += 5; }
+			if (nom && alt.indexOf(nom) > -1) { score += 4; }
+			if (img.closest('#profile-advanced-right, .profile-avatar, .mod-login-avatar, .module')) { score += 2; }
+			if (/\.gif(\?|$)/.test(src)) { score -= 1; }
+			if (score > meilleurScore) { meilleurScore = score; meilleure = img; }
+		});
+		return meilleurScore >= 3 ? meilleure : null;
+	}
+
 	function initStatistiques() {
 		var bloc = $('#presences-1740');
 		if (!bloc) { return; }
@@ -525,14 +549,14 @@
 		$('.venue-bienvenue', venue).href = cible.href;
 
 		// Avatar : lu sur la page de profil (gardé en mémoire pour la session)
-		var cle = 'avatar1740_' + cible.getAttribute('href');
+		var cle = 'avatar1740b_' + cible.getAttribute('href');
 		var enCache = null;
 		try { enCache = window.sessionStorage.getItem(cle); } catch (e) { enCache = null; }
 		var img = $('.venue-ligne img', venue);
 		if (enCache) { img.src = enCache; return; }
 		fetch(cible.href, { credentials: 'same-origin' }).then(function (r) { return r.text(); }).then(function (html) {
 			var doc = new DOMParser().parseFromString(html, 'text/html');
-			var trouve = doc.querySelector('#profile-advanced-right img, .profile-avatar img, .module .inner img, td.avatar img, img[alt*="' + cible.textContent.trim().replace(/"/g, '') + '"]');
+			var trouve = choisirAvatar(doc, cible.textContent.trim());
 			if (trouve && trouve.getAttribute('src')) {
 				img.src = trouve.getAttribute('src');
 				try { window.sessionStorage.setItem(cle, img.src); } catch (e) { /* rien */ }
