@@ -59,6 +59,29 @@ body#modernbb .periode-nom,
 body#modernbb .chiffre,
 body#modernbb .chapitre-panneau .titre { font-family: 'Grenze Gotisch', serif !important; font-weight: 400 !important; }
 body#modernbb .chapitre-titre { color: var(--texte) !important; font-size: 40px !important; text-transform: none; letter-spacing: 0; }
+/* Forumactif met le nom de la catégorie dans un lien : il doit hériter de la police du titre */
+body#modernbb .chapitre-titre a,
+body#modernbb .chapitre-titre a:hover {
+	font-family: inherit !important;
+	font-size: inherit !important;
+	font-weight: inherit !important;
+	color: inherit !important;
+	text-decoration: none !important;
+}
+
+/* Espace vide entre l'en-tête et l'accueil : marges de ModernBB annulées */
+body#modernbb .conteneur_minwidth_IE,
+body#modernbb .conteneur_layout_IE,
+body#modernbb .conteneur_container_IE,
+body#modernbb #wrap,
+body#modernbb #page-body,
+body#modernbb #content-container,
+body#modernbb #outer-wrapper,
+body#modernbb #wrapper,
+body#modernbb #container,
+body#modernbb #content-main,
+body#modernbb #main,
+body#modernbb #main-content { margin-top: 0 !important; padding-top: 0 !important; }
 body#modernbb .forum-titre { font-size: 26px !important; }
 body#modernbb .chapitre-1740[data-gabarit="greffe"] .forum-titre,
 body#modernbb .chapitre-1740[data-gabarit="feu"] .forum-titre { font-size: 24px !important; }
