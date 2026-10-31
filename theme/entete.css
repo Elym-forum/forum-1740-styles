@@ -1,252 +1,583 @@
 /* ==========================================================================
-   FORUM 1740 — EN-TÊTE ET BARRE D'OUTILS (© Elym)
+   FORUM 1740 — SCRIPT DU THÈME (© Elym)
+   Thèmes, musique, barre d'outils, accueil et mise en forme de l'index.
+   Les réglages modifiables sont dans window.CONFIG_1740 (overall_header).
    ========================================================================== */
+(function () {
+	'use strict';
 
-/* ---------- En-tête : gravure + titre + navigation ---------- */
-#entete-1740 {
-	display: block !important;
-	position: relative;
-	height: auto !important;
-	max-width: 940px;
-	width: calc(100% - 24px);
-	margin: 40px auto 26px !important;
-	color: var(--texte);
-	font-family: 'Alegreya', Georgia, serif;
-	z-index: 1;
-}
-#entete-1740 .entete-interieur { display: flex !important; flex-wrap: wrap; }
-body#modernbb #entete-1740 .entete-titre { font-family: 'Grenze Gotisch', serif !important; font-weight: 400 !important; font-size: 62px !important; line-height: 0.95; color: var(--texte-clair) !important; }
+	var CONFIG = window.CONFIG_1740 || {};
+	var THEMES = ['mousse', 'rouille', 'ocre'];
+	var CLE_THEME = 'theme1740';
 
-#entete-1740 .entete-gravure {
-	flex: 1 1 230px;
-	min-height: 300px;
-	position: relative;
-	overflow: hidden;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background: var(--fond) var(--img-entete) center / cover;
-	border: 1px solid var(--ligne);
-	outline: 1px solid var(--ligne);
-	outline-offset: -6px;
-}
+	function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+	function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+	/* ------------------------------------------------------------------
+	   0. Réglages lus dans <div id="reglages-1740"> (overall_header).
+	      Forumactif abîme les objets JavaScript dans les templates :
+	      les réglages sont donc écrits en attributs HTML.
+	   ------------------------------------------------------------------ */
+	function lireReglages() {
+		var el = document.getElementById('reglages-1740');
+		if (!el) { return; }
+		function attr(nom) { var v = el.getAttribute(nom); return v === null ? undefined : v; }
+		if (attr('data-theme-defaut')) { CONFIG.themeParDefaut = attr('data-theme-defaut'); }
+		if (attr('data-musique') !== undefined) { CONFIG.musique = attr('data-musique'); }
+		if (attr('data-volume')) { CONFIG.volumeMusique = parseFloat(attr('data-volume')); }
+		if (attr('data-duree-rumeur')) { CONFIG.dureeRumeur = parseFloat(attr('data-duree-rumeur')); }
+		if (attr('data-nb-ecrits')) { CONFIG.nbDerniersEcrits = parseInt(attr('data-nb-ecrits'), 10); }
+		if (attr('data-vignette-defaut')) { CONFIG.vignetteParDefaut = attr('data-vignette-defaut'); }
 
-/* Brume qui dérive sur la gravure */
-#entete-1740 .brume {
-	position: absolute;
-	inset: -10% -70%;
-	pointer-events: none;
-	background:
-		radial-gradient(ellipse 34% 20% at 28% 70%, rgba(206, 210, 186, 0.42), transparent 72%),
-		radial-gradient(ellipse 28% 14% at 62% 52%, rgba(206, 210, 186, 0.30), transparent 70%),
-		radial-gradient(ellipse 22% 10% at 80% 82%, rgba(206, 210, 186, 0.34), transparent 70%);
-	filter: blur(6px);
-	animation: derive-1740 22s ease-in-out infinite alternate;
-}
-#entete-1740 .brume.b2 { animation-duration: 31s; animation-direction: alternate-reverse; opacity: 0.85; }
-#entete-1740 .brume.b3 {
-	inset: 30% -70% -20% -70%;
-	animation-duration: 17s;
-	opacity: 0.7;
-	background: radial-gradient(ellipse 40% 26% at 50% 70%, rgba(206, 210, 186, 0.38), transparent 72%);
-}
+		var chapitres = Array.prototype.slice.call(el.querySelectorAll('[data-chapitre]'));
+		if (chapitres.length) {
+			chapitres.sort(function (a, b) { return (parseInt(a.getAttribute('data-chapitre'), 10) || 0) - (parseInt(b.getAttribute('data-chapitre'), 10) || 0); });
+			CONFIG.chapitres = chapitres.map(function (c) {
+				var r = { gabarit: c.getAttribute('data-gabarit') || 'terres', surtitre: c.getAttribute('data-surtitre') || '' };
+				if (c.hasAttribute('data-bandeau')) { r.bandeau = c.getAttribute('data-bandeau'); }
+				var tuiles = Array.prototype.slice.call(c.querySelectorAll('[data-tuile]'));
+				if (tuiles.length) {
+					r.tuiles = tuiles.map(function (t) { return { titre: t.textContent.trim(), lien: t.getAttribute('href') || '#' }; });
+				}
+				if (c.hasAttribute('data-panneau-titre') || c.hasAttribute('data-panneau-sous') || c.hasAttribute('data-panneau-lien')) {
+					r.panneau = {
+						titre: c.getAttribute('data-panneau-titre') || '',
+						sous: c.getAttribute('data-panneau-sous') || '',
+						lien: c.getAttribute('data-panneau-lien') || '',
+						image: c.getAttribute('data-panneau-image') || ''
+					};
+				}
+				return r;
+			});
+		}
 
-/* Rosette tracée au compas */
-#entete-1740 .rosette-entete { position: relative; filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.9)); }
-#entete-1740 .rosette-entete .fond-disque { fill: rgba(14, 13, 10, 0.6); }
-#entete-1740 .rosette-entete .anneau { fill: none; stroke: var(--accent); stroke-width: 0.9; stroke-dasharray: 340; animation: trace-l-1740 2.2s ease-out both; }
-#entete-1740 .rosette-entete .trait { fill: none; stroke: var(--accent-vif); stroke-width: 1.1; stroke-dasharray: 240; animation: trace-1740 1.8s ease-out both; }
+		CONFIG.vignettes = CONFIG.vignettes || {};
+		Array.prototype.forEach.call(el.querySelectorAll('[data-forum][data-image]'), function (v) {
+			CONFIG.vignettes[v.getAttribute('data-forum')] = v.getAttribute('data-image');
+		});
+	}
 
-/* Colonne de droite */
-#entete-1740 .entete-texte {
-	flex: 999 1 420px;
-	min-width: 0;
-	padding: 18px 26px 16px;
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-}
-#entete-1740 .entete-surtitre { font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.3em; color: var(--accent-clair); }
-#entete-1740 .entete-titre { margin: 0; font-family: 'Grenze Gotisch', serif; font-weight: 400; font-size: 62px; line-height: 0.95; color: var(--texte-clair); }
-#entete-1740 .entete-titre a { color: inherit; text-decoration: none; }
-#entete-1740 .entete-motscles { margin: 0; font-size: 15px; color: var(--texte-doux); font-style: italic; }
-#entete-1740 .entete-motscles .sep { color: var(--accent); font-style: normal; }
-#entete-1740 .entete-accroche { margin: 0; font-size: 16px; }
+	function lireStockage(cle) { try { return window.localStorage.getItem(cle); } catch (e) { return null; } }
+	function ecrireStockage(cle, val) { try { window.localStorage.setItem(cle, val); } catch (e) { /* stockage indisponible */ } }
 
-#entete-1740 .entete-nav {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 6px;
-	margin-top: 4px;
-}
-#entete-1740 .entete-nav a {
-	padding: 6px 8px;
-	border: 1px solid var(--ligne-forte);
-	background: rgba(var(--accent-rgb), 0.10);
-	text-align: center;
-	font-family: 'Alegreya SC', serif;
-	font-size: 15px;
-	letter-spacing: 0.06em;
-	color: var(--texte);
-}
-#entete-1740 .entete-nav a:hover { background: rgba(var(--accent-rgb), 0.22); color: var(--texte-clair); text-decoration: none; }
+	/* ------------------------------------------------------------------
+	   1. Thèmes
+	   ------------------------------------------------------------------ */
+	function appliquerTheme(nom) {
+		if (THEMES.indexOf(nom) === -1) { nom = CONFIG.themeParDefaut || 'mousse'; }
+		document.documentElement.setAttribute('data-theme', nom);
+		$$('[data-choix-theme]').forEach(function (b) {
+			b.setAttribute('aria-pressed', b.getAttribute('data-choix-theme') === nom ? 'true' : 'false');
+		});
+	}
 
-/* Barre membre : salutation + thèmes + musique */
-#entete-1740 .entete-membre {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: space-between;
-	gap: 8px;
-	font-size: 14px;
-	color: var(--texte-doux);
-	border-top: 1px solid var(--ligne);
-	padding-top: 8px;
-}
-#entete-1740 .entete-salut { font-style: italic; }
-#entete-1740 .entete-reglages { display: flex; gap: 6px; align-items: center; }
+	function initThemes() {
+		appliquerTheme(lireStockage(CLE_THEME));
+		$$('[data-choix-theme]').forEach(function (b) {
+			b.addEventListener('click', function () {
+				var nom = b.getAttribute('data-choix-theme');
+				ecrireStockage(CLE_THEME, nom);
+				appliquerTheme(nom);
+			});
+		});
+	}
 
-.pastille-1740 { width: 14px; height: 14px; padding: 0; border: 1px solid var(--ligne); cursor: pointer; }
-.pastille-1740[data-choix-theme="mousse"] { background: #7C8466; }
-.pastille-1740[data-choix-theme="rouille"] { background: #8E4A3A; }
-.pastille-1740[data-choix-theme="ocre"] { background: #A88B5A; }
-.pastille-1740[aria-pressed="true"] { border-color: var(--texte); }
+	/* ------------------------------------------------------------------
+	   2. Membre connecté ou invité
+	   ------------------------------------------------------------------ */
+	function initMembre() {
+		var u = window._userdata || {};
+		var connecte = String(u.session_logged_in) === '1';
+		var html = document.documentElement;
+		html.classList.add(connecte ? 'est-connecte' : 'est-invite');
 
-/* Bouton clair/foncé : caché tant que le mode clair n'existe pas */
-.mode-1740 { display: none; margin-left: 4px; padding: 0 6px; height: 22px; border: 1px solid var(--ligne); background: transparent; color: var(--texte-doux); font-family: 'Alegreya SC', serif; font-size: 13px; cursor: pointer; }
+		if (connecte) {
+			$$('.nom-membre-1740').forEach(function (el) { el.textContent = u.username || ''; });
+			$$('.lien-profil-membre-1740').forEach(function (el) { if (u.user_id) { el.href = '/u' + u.user_id; } });
 
-.musique-1740 {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 26px;
-	height: 22px;
-	margin-left: 4px;
-	padding: 0;
-	border: 1px solid var(--ligne);
-	background: transparent;
-	color: var(--texte-doux);
-	cursor: pointer;
-}
-.musique-1740[hidden] { display: none; }
-.musique-1740:hover, .musique-1740:focus-visible { color: var(--texte-clair); border-color: var(--accent); }
-.musique-1740[aria-pressed="true"] { border-color: var(--accent); background: rgba(var(--accent-rgb), 0.16); }
-.musique-1740 .onde { display: none; align-items: flex-end; gap: 2px; height: 11px; }
-.musique-1740 .onde i { display: block; width: 2px; height: 4px; background: var(--accent-clair); animation: onde-1740 1.1s ease-in-out infinite; }
-.musique-1740 .onde i:nth-child(2) { animation-delay: 0.25s; }
-.musique-1740 .onde i:nth-child(3) { animation-delay: 0.5s; }
-.musique-1740[aria-pressed="true"] .onde { display: inline-flex; }
-.musique-1740[aria-pressed="true"] .note { display: none; }
+			// Avatar dans la barre d'outils
+			var zone = $('#barre-1740 .barre-avatar');
+			if (zone && u.avatar) {
+				var tmp = document.createElement('div');
+				tmp.innerHTML = u.avatar;
+				var img = tmp.querySelector('img');
+				if (img) { zone.innerHTML = ''; img.alt = ''; zone.appendChild(img); }
+			}
 
-/* Invités / membres : le script pose html.est-connecte ou html.est-invite */
-html.est-invite .seulement-membre,
-html.est-connecte .seulement-invite { display: none !important; }
+			// Nombre de messages privés non lus
+			var nbMp = parseInt(u.user_nb_privmsg, 10) || 0;
+			var sceauMp = $('#barre-1740 [data-compteur="lettres"]');
+			if (sceauMp) {
+				if (nbMp > 0) { sceauMp.textContent = nbMp; sceauMp.removeAttribute('data-vide'); }
+				else { sceauMp.setAttribute('data-vide', ''); }
+			}
+		}
 
-/* ---------- Barre d'outils fixe à gauche ---------- */
-#barre-1740 {
-	position: fixed;
-	z-index: 900;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	width: 64px;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 2px;
-	padding: 14px 0;
-	background: rgba(14, 13, 10, 0.97) var(--img-grain);
-	border-right: 3px double var(--ligne-forte);
-}
-#barre-1740 .barre-rosette { margin-bottom: 4px; }
-#barre-1740 .barre-rosette circle { fill: none; stroke: var(--accent); }
-#barre-1740 .barre-rosette g circle { stroke-width: 0.8; }
-#barre-1740 .barre-esp {
-	flex: 1;
-	width: 1px;
-	min-height: 12px;
-	margin: 8px 0;
-	background: linear-gradient(transparent, var(--ligne-forte) 20%, var(--ligne-forte) 80%, transparent);
-}
+		// Lien de déconnexion : repris de la navigation native (il contient un jeton de sécurité)
+		var deconnexion = $('#modernbb-nav-menu a[href*="logout"]');
+		$$('.lien-deconnexion-1740').forEach(function (el) {
+			if (deconnexion) { el.href = deconnexion.href; } else { el.style.display = 'none'; }
+		});
 
-#barre-1740 .outil {
-	position: relative;
-	width: 44px;
-	height: 44px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: var(--accent-lien);
-	border: 1px solid transparent;
-	box-sizing: border-box;
-}
-#barre-1740 .outil:hover,
-#barre-1740 .outil:focus-visible { color: var(--texte-clair); border-color: var(--ligne-forte); background: rgba(var(--accent-rgb), 0.14); text-decoration: none; }
-#barre-1740 .outil svg { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+		// Bouton « Avis » : ouvre les notifications de la barre Forumactif si elle existe
+		var avis = $('#barre-1740 [data-outil="avis"]');
+		if (avis) {
+			avis.addEventListener('click', function (e) {
+				var natif = $('#fa_notifications, #notif_list, .fa_notifications');
+				if (natif) { e.preventDefault(); natif.click(); }
+			});
+		}
+	}
 
-#barre-1740 .etiquette {
-	position: absolute;
-	left: calc(100% + 12px);
-	top: 50%;
-	transform: translateY(-50%);
-	white-space: nowrap;
-	padding: 4px 10px;
-	background: var(--fond-nuit);
-	border: 1px solid var(--ligne-forte);
-	font-family: 'Alegreya SC', serif;
-	font-size: 14px;
-	letter-spacing: 0.06em;
-	color: var(--texte-clair);
-	opacity: 0;
-	pointer-events: none;
-	transition: opacity 0.15s;
-}
-#barre-1740 .outil:hover .etiquette,
-#barre-1740 .outil:focus-visible .etiquette { opacity: 1; }
+	/* ------------------------------------------------------------------
+	   3. Musique (un clic pour lancer ou couper)
+	   ------------------------------------------------------------------ */
+	function initMusique() {
+		var bouton = $('.musique-1740');
+		if (!bouton) { return; }
+		if (!CONFIG.musique) { bouton.hidden = true; return; }
 
-/* Compteurs en sceau de cire */
-#barre-1740 .sceau {
-	position: absolute;
-	right: 2px;
-	top: 2px;
-	min-width: 16px;
-	height: 16px;
-	padding: 0 3px;
-	box-sizing: border-box;
-	border-radius: 50%;
-	background: #7E3F31;
-	border: 1px solid #A85B47;
-	color: #F0E4D8;
-	font-family: 'Alegreya SC', serif;
-	font-size: 11px;
-	line-height: 14px;
-	text-align: center;
-	animation: sceau-1740 2.6s ease-in-out infinite;
-}
-#barre-1740 .sceau:empty,
-#barre-1740 .sceau[data-vide] { display: none; }
+		var audio = new Audio(CONFIG.musique);
+		audio.loop = true;
+		audio.preload = 'none';
+		audio.volume = 0;
+		var cible = typeof CONFIG.volumeMusique === 'number' ? CONFIG.volumeMusique : 0.5;
+		var minuterie = null;
 
-#barre-1740 .secoue { transform-origin: 25% 75%; animation: secoue-1740 20s ease-in-out 1.5s infinite; }
-#barre-1740 .oeil-ouvert { opacity: 0; animation: oeil-1740 9s ease-in-out infinite; }
-#barre-1740 .oeil-ferme { animation: oeil-f-1740 9s ease-in-out infinite; }
-#barre-1740 .oeil-ouvert circle { fill: currentColor; stroke: none; }
-#barre-1740 .barre-avatar img { width: 36px; height: 36px; object-fit: cover; border-radius: 50%; padding: 2px; border: 1px solid var(--accent); box-sizing: border-box; }
+		function fondu(vers, fin) {
+			clearInterval(minuterie);
+			minuterie = setInterval(function () {
+				var v = audio.volume + (vers > audio.volume ? 0.04 : -0.04);
+				if ((vers > audio.volume && v >= vers) || (vers <= audio.volume && v <= vers)) {
+					audio.volume = Math.max(0, Math.min(1, vers));
+					clearInterval(minuterie);
+					if (fin) { fin(); }
+				} else {
+					audio.volume = Math.max(0, Math.min(1, v));
+				}
+			}, 60);
+		}
 
-/* Petits écrans : la barre passe en bas */
-@media (max-width: 1100px) {
-	#barre-1740 { top: auto; bottom: 0; right: 0; width: auto; flex-direction: row; justify-content: center; flex-wrap: wrap; padding: 4px; border-right: none; border-top: 3px double var(--ligne-forte); }
-	#barre-1740 .barre-esp, #barre-1740 .barre-rosette { display: none; }
-	#barre-1740 .etiquette { left: 50%; top: auto; bottom: calc(100% + 8px); transform: translateX(-50%); }
-	body#modernbb { padding-bottom: 60px; }
-}
+		bouton.addEventListener('click', function () {
+			var joue = bouton.getAttribute('aria-pressed') === 'true';
+			if (joue) {
+				bouton.setAttribute('aria-pressed', 'false');
+				bouton.setAttribute('aria-label', 'Jouer l’air de veillée');
+				bouton.title = 'Jouer l’air de veillée';
+				fondu(0, function () { audio.pause(); });
+			} else {
+				bouton.setAttribute('aria-pressed', 'true');
+				bouton.setAttribute('aria-label', 'Couper l’air de veillée');
+				bouton.title = 'Couper l’air de veillée';
+				var p = audio.play();
+				if (p && p.catch) { p.catch(function () { bouton.setAttribute('aria-pressed', 'false'); }); }
+				fondu(cible);
+			}
+		});
+	}
 
-@media (max-width: 640px) {
-	body#modernbb #entete-1740 .entete-titre { font-size: 46px !important; }
-	#entete-1740 .entete-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
+	/* ------------------------------------------------------------------
+	   4. Accueil : courroux et rumeurs
+	   ------------------------------------------------------------------ */
+	function initCourroux() {
+		var jauge = $('#accueil-1740 .jauge');
+		if (!jauge) { return; }
+		var niveau = Math.max(0, Math.min(10, parseInt(jauge.getAttribute('data-niveau'), 10) || 0));
+		jauge.setAttribute('aria-label', 'Courroux des créatures : ' + niveau + ' sur 10');
+		var cases = $$('span', jauge);
+		cases.forEach(function (c, i) {
+			c.classList.toggle('rempli', i < niveau);
+			c.classList.toggle('braise', i === niveau - 1);
+		});
+		if (niveau >= 5) { jauge.classList.add('fremit'); }
+	}
 
-@media (prefers-reduced-motion: reduce) {
-	#entete-1740 .brume { display: none; }
-	#barre-1740 .oeil-ouvert { opacity: 0 !important; }
-}
+	function initRumeurs() {
+		var rumeurs = $$('#accueil-1740 .rumeur');
+		if (!rumeurs.length) { return; }
+		var reduit = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (reduit || rumeurs.length === 1) {
+			rumeurs.forEach(function (r) { r.classList.add('visible'); });
+			return;
+		}
+		var i = 0;
+		var duree = (CONFIG.dureeRumeur || 6) * 1000;
+		function suivante() {
+			rumeurs.forEach(function (r, j) { r.classList.toggle('visible', j === i); });
+			i = (i + 1) % rumeurs.length;
+		}
+		suivante();
+		setInterval(suivante, duree);
+	}
+
+	/* ------------------------------------------------------------------
+	   5. Dates Forumactif → horodatage (pour trier les derniers écrits)
+	   ------------------------------------------------------------------ */
+	var MOIS = { jan: 0, 'fév': 1, fev: 1, mar: 2, avr: 3, mai: 4, juin: 5, juil: 6, 'aoû': 7, aou: 7, sep: 8, oct: 9, nov: 10, 'déc': 11, dec: 11 };
+
+	function lireDate(texte) {
+		if (!texte) { return 0; }
+		var t = texte.toLowerCase();
+		var heure = t.match(/(\d{1,2}):(\d{2})/);
+		var h = heure ? parseInt(heure[1], 10) : 0;
+		var m = heure ? parseInt(heure[2], 10) : 0;
+		var d = new Date();
+		if (t.indexOf('aujourd') > -1) { d.setHours(h, m, 0, 0); return d.getTime(); }
+		if (t.indexOf('hier') > -1) { d.setDate(d.getDate() - 1); d.setHours(h, m, 0, 0); return d.getTime(); }
+		var j = t.match(/(\d{1,2})\s+([a-zéû]+)\.?\s*(\d{4})?/);
+		if (j) {
+			var cleMois = j[2].slice(0, 4);
+			var mois = MOIS[cleMois];
+			if (mois === undefined) { mois = MOIS[j[2].slice(0, 3)]; }
+			if (mois !== undefined) {
+				var an = j[3] ? parseInt(j[3], 10) : d.getFullYear();
+				return new Date(an, mois, parseInt(j[1], 10), h, m).getTime();
+			}
+		}
+		return 0;
+	}
+
+	/* ------------------------------------------------------------------
+	   6. Rangées de forums
+	   ------------------------------------------------------------------ */
+	var ICONES = window.FA_ICONES_1740 || {};
+	var ecrits = [];
+
+	function memeImage(a, b) {
+		if (!a || !b) { return false; }
+		var fa = a.split('/').pop().split('?')[0];
+		var fb = b.split('/').pop().split('?')[0];
+		return a === b || (fa && fa === fb);
+	}
+
+	function preparerForum(li) {
+		// État : nouveau, lu ou scellé (comparaison avec les icônes de la légende)
+		var icone = li.getAttribute('data-icone') || '';
+		var etat = 'lu';
+		if (memeImage(icone, ICONES.nouveau)) { etat = 'nouveau'; }
+		else if (memeImage(icone, ICONES.scelle)) { etat = 'scelle'; }
+		li.classList.add('est-' + etat);
+
+		// Identifiant du forum et vignette
+		var lien = $('.forum-titre a', li);
+		var id = lien ? (lien.getAttribute('href').match(/\/f(\d+)-/) || [])[1] : null;
+		if (id) { li.setAttribute('data-forum', id); }
+		var vignette = $('.forum-vignette', li);
+		var vignettes = CONFIG.vignettes || {};
+		if (vignette) {
+			var src = (id && vignettes[id]) || CONFIG.vignetteParDefaut;
+			if (src) {
+				var img = document.createElement('img');
+				img.src = src; img.alt = ''; img.loading = 'lazy';
+				vignette.appendChild(img);
+			}
+		}
+
+		// Sous-forums : on garde seulement les liens (Forumactif ajoute des virgules).
+		// Selon la version, Forumactif les place dans SUBFORUMS ou dans LINKS : on cherche aux deux endroits.
+		var sous = $('.forum-sous', li);
+		var moderateurs = $('.forum-moderateurs', li);
+		if (sous) {
+			var liens = $$('a', sous);
+			if (moderateurs) {
+				$$('a', moderateurs).forEach(function (a) {
+					if (/\/f\d+/.test(a.getAttribute('href') || '')) { liens.push(a); }
+				});
+				// S'il ne reste que des étiquettes (« Sous-forums : », virgules), on vide la zone
+				if (!$$('a', moderateurs).filter(function (a) { return !/\/f\d+/.test(a.getAttribute('href') || ''); }).length) {
+					moderateurs.innerHTML = '';
+				}
+			}
+			sous.innerHTML = '';
+			var romains = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+			liens.forEach(function (a, i) {
+				a.className = '';
+				a.setAttribute('data-numero', romains[i] || String(i + 1));
+				sous.appendChild(a);
+			});
+		}
+
+		// Dernier message : avatar, sujet, auteur · date, flèche
+		var par = $('.dernier-par', li);
+		var fleche = $('.dernier-fleche', li);
+		var sujet = $('.dernier-sujet', li);
+		var avatarImg = $('.dernier-avatar img', li);
+		if (par) {
+			var liensPar = $$('a', par);
+			var auteur = null, message = null;
+			liensPar.forEach(function (a) {
+				var href = a.getAttribute('href') || '';
+				if (/\/u\d+/.test(href)) { auteur = a; }
+				else if (/\/t\d+/.test(href) || href.indexOf('#') > -1 || /\/viewtopic/.test(href)) { message = a; }
+			});
+			// Date = tout le texte, moins les liens (le pseudo peut être emballé dans un <span> ou <strong>)
+			var copie = par.cloneNode(true);
+			Array.prototype.forEach.call(copie.querySelectorAll('a, img'), function (n) { n.parentNode.removeChild(n); });
+			var dateTexte = copie.textContent.replace(/\s+/g, ' ').replace(/\b(par|by)\s*$/i, '').replace(/^(par|by)\s+/i, '').trim();
+
+			if (!auteur) {
+				li.classList.add('sans-message');
+				var ligneVide = $('.dernier-ligne', li);
+				if (ligneVide) { ligneVide.innerHTML = '<span class="dernier-vide">Aucun écrit pour l’instant</span>'; }
+				placerEtat(li);
+				return;
+			}
+
+			par.innerHTML = '';
+			auteur.className = '';
+			par.appendChild(auteur);
+			if (dateTexte) { par.appendChild(document.createTextNode(' · ' + dateTexte)); }
+			if (fleche) {
+				if (message) { fleche.href = message.href; }
+				else if (sujet) { fleche.href = sujet.href; }
+			}
+
+			ecrits.push({
+				titre: sujet ? sujet.textContent : '',
+				titreComplet: sujet ? (sujet.getAttribute('title') || sujet.textContent) : '',
+				lien: fleche ? fleche.href : (sujet ? sujet.href : '#'),
+				auteur: auteur.textContent,
+				lienAuteur: auteur.href,
+				date: dateTexte,
+				quand: lireDate(dateTexte),
+				avatar: avatarImg ? avatarImg.src : ''
+			});
+		}
+		placerEtat(li);
+	}
+
+	// Accord des statistiques : « 1 sujet », « 0 sujet », « 2 sujets »
+	function accorderStats(li) {
+		$$('.forum-stats .nb', li).forEach(function (nb) {
+			var mot = nb.nextElementSibling;
+			var n = parseInt(nb.textContent.replace(/\D/g, ''), 10) || 0;
+			if (mot && mot.classList.contains('mot') && n <= 1) { mot.textContent = mot.getAttribute('data-un'); }
+		});
+	}
+
+	// Dans le Grimoire et le coin du feu, l'icône d'état va à côté de l'avatar du dernier posteur
+	function placerEtat(li) {
+		var ch = li.closest('.chapitre-1740');
+		var g = ch ? ch.getAttribute('data-gabarit') : '';
+		var premier = ch && $('.forum-1740', ch) === li;
+		if (!((g === 'fondements' && premier) || g === 'feu')) { return; }
+		var etat = $(':scope > .etat-1740', li);
+		var ligne = $('.dernier-ligne', li);
+		if (etat && ligne) { ligne.insertBefore(etat, ligne.firstChild); etat.style.display = 'block'; }
+	}
+
+	// Tuiles du Grimoire : liens directs vers des sujets
+	function creerTuiles(li, tuiles) {
+		var romains = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+		var zone = document.createElement('div');
+		zone.className = 'tuiles-1740';
+		tuiles.forEach(function (t, i) {
+			var a = document.createElement('a');
+			a.href = t.lien;
+			var num = document.createElement('span');
+			num.className = 'numero';
+			num.textContent = romains[i] || String(i + 1);
+			var nom = document.createElement('span');
+			nom.textContent = t.titre;
+			a.appendChild(num); a.appendChild(nom);
+			zone.appendChild(a);
+		});
+		var infos = $('.forum-infos', li);
+		var sous = $('.forum-sous', li);
+		if (sous) { sous.style.display = 'none'; }
+		if (infos) { infos.appendChild(zone); }
+	}
+
+	/* ------------------------------------------------------------------
+	   7. Chapitres : gabarits, panneaux, bandeau
+	   ------------------------------------------------------------------ */
+	function creerPanneau(reglage, classeImage) {
+		var a = document.createElement('a');
+		a.className = 'chapitre-panneau';
+		a.href = (reglage && reglage.lien) || '#';
+		if (classeImage) { a.style.backgroundImage = classeImage; }
+		var sous = document.createElement('span');
+		sous.className = 'sous';
+		sous.textContent = (reglage && reglage.sous) || '';
+		a.appendChild(sous);
+		if (reglage && reglage.titre) {
+			var titre = document.createElement('span');
+			titre.className = 'titre';
+			titre.textContent = reglage.titre;
+			a.appendChild(titre);
+		}
+		if (!reglage || !reglage.lien) { a.setAttribute('tabindex', '-1'); a.setAttribute('aria-hidden', 'true'); a.removeAttribute('href'); }
+		if (reglage && reglage.image) { a.style.backgroundImage = 'url("' + reglage.image + '")'; }
+		return a;
+	}
+
+	function initChapitres() {
+		var chapitres = $$('.chapitre-1740');
+		var reglages = CONFIG.chapitres || [];
+		chapitres.forEach(function (ch, i) {
+			var r = reglages[i] || {};
+			var gabarit = r.gabarit || 'terres';
+			ch.setAttribute('data-gabarit', gabarit);
+			var surtitre = $('.chapitre-surtitre', ch);
+			if (surtitre && r.surtitre) { surtitre.textContent = r.surtitre; }
+
+			var corps = $('.chapitre-corps', ch);
+			var liste = $('.chapitre-forums', ch);
+			if (!corps || !liste) { return; }
+
+			if (gabarit === 'fondements') {
+				corps.appendChild(creerPanneau(r.panneau));
+				var premier = $('.forum-1740', liste);
+				if (premier && r.tuiles && r.tuiles.length) { creerTuiles(premier, r.tuiles); }
+			} else if (gabarit === 'terres') {
+				if (r.bandeau !== false) {
+					var bandeau = document.createElement('div');
+					bandeau.className = 'chapitre-bandeau';
+					var p = document.createElement('p');
+					p.textContent = r.bandeau || '';
+					bandeau.appendChild(p);
+					corps.insertBefore(bandeau, liste);
+				}
+			} else if (gabarit === 'feu') {
+				corps.insertBefore(creerPanneau(r.panneau), liste);
+				var droite = document.createElement('div');
+				droite.className = 'feu-droite';
+				corps.insertBefore(droite, liste);
+				droite.appendChild(liste);
+				var presences = $('#presences-1740');
+				var legende = $('#legende-1740');
+				if (presences) { droite.appendChild(presences); }
+				if (legende) {
+					// On rapatrie les liens « sujets actifs / top des posteurs » de l'index
+					var zoneLiens = $('.liens', legende);
+					$$('ul.linklist.bottom li:not(.rightside) a').forEach(function (a) {
+						if (zoneLiens) { zoneLiens.appendChild(a); }
+					});
+					droite.appendChild(legende);
+				}
+			}
+		});
+
+		// Si aucun chapitre « feu » n'existe, on affiche les présences sous l'index
+		var presencesOrphelines = $('#presences-source-1740 #presences-1740');
+		var source = $('#presences-source-1740');
+		if (presencesOrphelines && source) { source.style.display = 'block'; source.classList.add('boite-1740'); }
+
+		$$('.forum-1740').forEach(function (li) { accorderStats(li); preparerForum(li); });
+	}
+
+	/* ------------------------------------------------------------------
+	   8. Derniers écrits (construits à partir des derniers messages de chaque forum)
+	   ------------------------------------------------------------------ */
+	function echapper(s) {
+		return String(s).replace(/[&<>"']/g, function (c) {
+			return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+		});
+	}
+
+	function initDerniersEcrits() {
+		var zone = $('#accueil-1740 .derniers');
+		if (!zone) { return; }
+		ecrits.sort(function (a, b) { return b.quand - a.quand; });
+		var liste = ecrits.slice(0, CONFIG.nbDerniersEcrits || 6);
+		if (!liste.length) {
+			zone.innerHTML = '<p class="derniers-vide">Rien n’a encore été écrit.</p>';
+			return;
+		}
+		zone.innerHTML = liste.map(function (e) {
+			var avatar = e.avatar
+				? '<img class="avatar-rond-1740" src="' + echapper(e.avatar) + '" alt="" loading="lazy">'
+				: '<span class="avatar-rond-1740" aria-hidden="true"></span>';
+			return '<div class="ecrit">' + avatar +
+				'<div class="ecrit-infos"><a class="ecrit-titre" href="' + echapper(e.lien) + '" title="' + echapper(e.titreComplet) + '">' + echapper(e.titre) + '</a>' +
+				'<span class="ecrit-meta">' + echapper(e.auteur) + ' · ' + echapper(e.date) + '</span></div>' +
+				'<a class="ecrit-fleche" href="' + echapper(e.lien) + '" aria-label="Aller au dernier message">→</a></div>';
+		}).join('');
+	}
+
+	/* ------------------------------------------------------------------
+	   9. Présences : statistiques et dernière venue (lues dans le pied de page)
+	   ------------------------------------------------------------------ */
+	function initStatistiques() {
+		var bloc = $('#presences-1740');
+		if (!bloc) { return; }
+		var texte = document.body.textContent || '';
+		var messages = texte.match(/total de\s*([\d\s .]+)\s*messages?/i);
+		var membres = texte.match(/avons\s*([\d\s .]+)\s*membres?/i);
+		if (messages) { $('[data-stat="messages"]', bloc).textContent = messages[1].replace(/\D/g, ''); }
+		if (membres) { $('[data-stat="membres"]', bloc).textContent = membres[1].replace(/\D/g, ''); }
+
+		// Dernière inscription : on cherche le lien qui suit « plus récent »
+		var cible = null;
+		$$('a[href*="/u"]').forEach(function (a) {
+			if (cible || a.closest('#presences-1740') || a.closest('.chapitre-1740') || a.closest('#accueil-1740')) { return; }
+			var parent = a.parentElement;
+			for (var n = 0; n < 3 && parent; n++) {
+				if (/plus r[ée]cent/i.test(parent.textContent)) { cible = a; break; }
+				parent = parent.parentElement;
+			}
+		});
+		var venue = $('.venue', bloc);
+		if (!cible || !venue) { if (venue) { venue.style.display = 'none'; } return; }
+
+		var lienNom = $('.venue-nom a', venue);
+		lienNom.textContent = cible.textContent.trim();
+		lienNom.href = cible.href;
+		$('.venue-bienvenue', venue).href = cible.href;
+
+		// Avatar : lu sur la page de profil (gardé en mémoire pour la session)
+		var cle = 'avatar1740_' + cible.getAttribute('href');
+		var enCache = null;
+		try { enCache = window.sessionStorage.getItem(cle); } catch (e) { enCache = null; }
+		var img = $('.venue-ligne img', venue);
+		if (enCache) { img.src = enCache; return; }
+		fetch(cible.href, { credentials: 'same-origin' }).then(function (r) { return r.text(); }).then(function (html) {
+			var doc = new DOMParser().parseFromString(html, 'text/html');
+			var trouve = doc.querySelector('#profile-advanced-right img, .profile-avatar img, .module .inner img, td.avatar img, img[alt*="' + cible.textContent.trim().replace(/"/g, '') + '"]');
+			if (trouve && trouve.getAttribute('src')) {
+				img.src = trouve.getAttribute('src');
+				try { window.sessionStorage.setItem(cle, img.src); } catch (e) { /* rien */ }
+			}
+		}).catch(function () { /* l'image de remplacement reste */ });
+	}
+
+	/* ------------------------------------------------------------------
+	   10. Pied de page : on masque le bandeau de statistiques de Forumactif
+	       (déjà affiché dans le coin du feu). Les liens légaux restent visibles.
+	   ------------------------------------------------------------------ */
+	function initPied() {
+		if (!$('#presences-1740')) { return; }
+		var noeuds = $$('body *').filter(function (el) {
+			return el.children.length < 8 && /posté un total de/i.test(el.textContent) && !el.closest('#presences-1740, #reglages-1740');
+		});
+		if (!noeuds.length) { return; }
+		var el = noeuds[noeuds.length - 1];
+		var NOTRE = '#accueil-1740, .chapitre-1740, #presences-1740, #entete-1740, #barre-1740';
+		function sur(p) { return p && p !== document.body && !p.querySelector(NOTRE) && !/signaler|phpbb|forum gratuit/i.test(p.textContent); }
+		// On remonte jusqu'au bloc qui contient les trois statistiques, sans toucher aux liens légaux
+		while (!/plus r[ée]cent/i.test(el.textContent) && sur(el.parentElement)) { el = el.parentElement; }
+		while (sur(el.parentElement) && /plus r[ée]cent/i.test(el.parentElement.textContent)) { el = el.parentElement; }
+		if (!el.querySelector(NOTRE) && !/signaler|phpbb|forum gratuit/i.test(el.textContent)) { el.classList.add('stats-natives-1740'); }
+	}
+
+	/* ------------------------------------------------------------------
+	   Démarrage
+	   ------------------------------------------------------------------ */
+	function demarrer() {
+		document.documentElement.classList.add('theme-1740');
+		lireReglages();
+		initThemes();
+		initMembre();
+		initMusique();
+		initCourroux();
+		initRumeurs();
+		if ($('.chapitre-1740')) {
+			initChapitres();
+			initDerniersEcrits();
+		}
+		initStatistiques();
+		initPied();
+	}
+
+	if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', demarrer); }
+	else { demarrer(); }
+})();
