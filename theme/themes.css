@@ -1,0 +1,86 @@
+/* ==========================================================================
+   FORUM 1740 — THÈMES (© Elym)
+   Seules les variables changent d'un thème à l'autre.
+   Le thème actif est posé sur <html data-theme="mousse|rouille|ocre">
+   par le petit script en tête de page (overall_header).
+   ========================================================================== */
+
+:root,
+html[data-theme="mousse"] {
+	/* --- Base commune aux trois thèmes (mode foncé) --- */
+	--fond: #16140F;
+	--fond-nuit: #0E0D0A;
+	--surface: rgba(31, 28, 22, 0.96);
+	--surface-pleine: #1F1C16;
+	--ligne: #3A352B;
+	--ligne-forte: #4A4536;
+	--ligne-douce: #5A5444;
+	--texte: #DDD6C6;
+	--texte-clair: #E8E2D4;
+	--texte-doux: #A9A190;
+	--texte-murmure: #CFC8B8;
+	--ocre-doux: #C9A982;
+
+	/* --- Jauge de courroux (identique dans les trois thèmes) --- */
+	--courroux-1: #5E6650;
+	--courroux-2: #66704F;
+	--courroux-3: #737A55;
+	--courroux-4: #82764E;
+	--courroux-5: #8C6A45;
+	--courroux-6: #8E4A3A;
+	--courroux-7: #8A4234;
+	--courroux-8: #823A2E;
+	--courroux-9: #7A3328;
+	--courroux-10: #722C22;
+
+	/* --- Accent : Mousse --- */
+	--accent: #7C8466;
+	--accent-clair: #A9B08F;
+	--accent-lien: #B3BA98;
+	--accent-vif: #C9CDB4;
+	--accent-rgb: 124, 132, 102;
+	--accent-vif-rgb: 201, 205, 180;
+
+	/* --- Images du thème --- */
+	--img-fond: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/fond.jpg");
+	--img-cadre: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/cadre.png");
+	--img-grain: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/grain.png");
+	--img-entete: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/gravure-entete.jpg");
+	--img-panneau-1: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/gravure-panneau-1.jpg");
+	--img-panneau-2: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/gravure-panneau-2.jpg");
+	--img-bandeau: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/gravure-bandeau.jpg");
+}
+
+html[data-theme="rouille"] {
+	--accent: #8E4A3A;
+	--accent-clair: #C48C78;
+	--accent-lien: #CC9C8A;
+	--accent-vif: #E0BCAC;
+	--accent-rgb: 142, 74, 58;
+	--accent-vif-rgb: 224, 188, 172;
+
+	--img-fond: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/fond.jpg");
+	--img-cadre: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/cadre.png");
+	--img-grain: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/grain.png");
+	--img-entete: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/gravure-entete.jpg");
+	--img-panneau-1: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/gravure-panneau-1.jpg");
+	--img-panneau-2: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/gravure-panneau-2.jpg");
+	--img-bandeau: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/gravure-bandeau.jpg");
+}
+
+html[data-theme="ocre"] {
+	--accent: #A88B5A;
+	--accent-clair: #CDB384;
+	--accent-lien: #D2BC92;
+	--accent-vif: #E6D6B2;
+	--accent-rgb: 168, 139, 90;
+	--accent-vif-rgb: 230, 214, 178;
+
+	--img-fond: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/fond.jpg");
+	--img-cadre: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/cadre.png");
+	--img-grain: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/grain.png");
+	--img-entete: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/gravure-entete.jpg");
+	--img-panneau-1: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/gravure-panneau-1.jpg");
+	--img-panneau-2: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/gravure-panneau-2.jpg");
+	--img-bandeau: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/gravure-bandeau.jpg");
+}
