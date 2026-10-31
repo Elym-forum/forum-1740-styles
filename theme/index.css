@@ -215,7 +215,7 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 .dernier-avatar img { width: 44px; height: 44px; object-fit: cover; border-radius: 50%; padding: 3px; border: 1px solid var(--accent); box-sizing: border-box; }
 .dernier-infos { min-width: 0; flex: 1; line-height: 1.25; }
 .dernier-sujet { display: block; font-size: 17px; color: var(--texte-clair) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dernier-par { font-size: 15px; color: var(--texte-doux); }
+.dernier-par { display: block; font-size: 15px; color: var(--texte-doux); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dernier-par br { display: none; }
 .dernier-fleche { font-size: 18px; }
 .dernier-vide { font-size: 15px; font-style: italic; color: var(--texte-doux); }
@@ -291,11 +291,18 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 
 /* ---------- Gabarit II : Greffe (deux colonnes, sans vignette) ---------- */
 .chapitre-1740[data-gabarit="greffe"] .chapitre-forums { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
-.chapitre-1740[data-gabarit="greffe"] .forum-1740 { grid-template-columns: 24px minmax(0, 1fr) 200px; gap: 12px; padding: 14px 16px; border-right: 1px solid var(--ligne); border-bottom: 1px solid var(--ligne); }
+.chapitre-1740[data-gabarit="greffe"] .forum-1740 { grid-template-columns: 24px minmax(0, 1fr); align-items: start; gap: 10px 12px; padding: 14px 16px; border-right: 1px solid var(--ligne); border-bottom: 1px solid var(--ligne); }
 .chapitre-1740[data-gabarit="greffe"] .forum-vignette { display: none; }
 .chapitre-1740[data-gabarit="greffe"] .forum-titre { font-size: 24px; }
 .chapitre-1740[data-gabarit="greffe"] .forum-desc { font-size: 16px; }
-.chapitre-1740[data-gabarit="greffe"] .forum-dernier { padding-left: 12px; }
+/* Dernier message sous le forum, sur toute la largeur de la carte */
+.chapitre-1740[data-gabarit="greffe"] .forum-1740 > .etat-1740 { margin-top: 4px; }
+.chapitre-1740[data-gabarit="greffe"] .forum-dernier {
+	grid-column: 2;
+	border-left: none;
+	border-top: 1px dotted var(--ligne);
+	padding: 10px 0 0;
+}
 .chapitre-1740[data-gabarit="greffe"] .dernier-avatar img { width: 42px; height: 42px; }
 .chapitre-1740[data-gabarit="greffe"] .dernier-sujet { font-size: 16px; }
 
