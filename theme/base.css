@@ -18,7 +18,7 @@ body#modernbb {
 	min-height: 100%;
 	color: var(--texte);
 	font-family: 'Alegreya', Georgia, serif;
-	font-size: 17px;
+	font-size: 18px;
 	line-height: 1.5;
 }
 
@@ -58,16 +58,30 @@ body#modernbb .lettrine,
 body#modernbb .periode-nom,
 body#modernbb .chiffre,
 body#modernbb .chapitre-panneau .titre { font-family: 'Grenze Gotisch', serif !important; font-weight: 400 !important; }
-body#modernbb .chapitre-titre { color: var(--texte) !important; font-size: 40px !important; text-transform: none; letter-spacing: 0; }
-/* Forumactif met le nom de la catégorie dans un lien : il doit hériter de la police du titre */
+body#modernbb .chapitre-titre { color: var(--texte) !important; font-size: 40px !important; line-height: 1.05; text-transform: none; letter-spacing: 0; }
+/* Forumactif enveloppe le nom de la catégorie dans son propre <h2> (et parfois un lien) :
+   tout ce qui est dedans hérite de notre titre */
+body#modernbb .chapitre-titre h1,
+body#modernbb .chapitre-titre h2,
+body#modernbb .chapitre-titre h3,
 body#modernbb .chapitre-titre a,
-body#modernbb .chapitre-titre a:hover {
+body#modernbb .chapitre-titre a:hover,
+body#modernbb .forum-titre a.forumtitle,
+body#modernbb .forum-titre a.forumtitle:hover {
 	font-family: inherit !important;
 	font-size: inherit !important;
 	font-weight: inherit !important;
 	color: inherit !important;
 	text-decoration: none !important;
+	line-height: inherit !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	background-color: transparent !important;
+	text-transform: none !important;
+	letter-spacing: inherit !important;
 }
+body#modernbb .forum-titre a.forumtitle { color: var(--texte-clair) !important; }
 
 /* Espace vide entre l'en-tête et l'accueil : marges de ModernBB annulées */
 body#modernbb .conteneur_minwidth_IE,
@@ -102,7 +116,7 @@ body#modernbb #page-header { background: none; padding: 0; margin: 0; height: au
 
 .etiquette-1740 {
 	font-family: 'Alegreya SC', serif;
-	font-size: 14px;
+	font-size: 16px;
 	letter-spacing: 0.16em;
 	color: var(--accent-clair);
 }
@@ -132,7 +146,7 @@ body#modernbb #page-header { background: none; padding: 0; margin: 0; height: au
 	outline-offset: 3px;
 	background: rgba(var(--accent-rgb), 0.18);
 	font-family: 'Alegreya SC', serif;
-	font-size: 15px;
+	font-size: 17px;
 	letter-spacing: 0.12em;
 	color: var(--texte-clair) !important;
 }
@@ -227,3 +241,38 @@ img.avatar-rond-1740 {
 @media (prefers-reduced-motion: reduce) {
 	.theme-1740 *, .theme-1740 *::before, .theme-1740 *::after { animation: none !important; transition: none !important; }
 }
+
+/* ==========================================================================
+   PIED DE PAGE
+   Le bandeau de statistiques natif est masqué par le script (il fait doublon
+   avec le coin du feu). Les liens légaux de Forumactif restent visibles.
+   ========================================================================== */
+body#modernbb .stats-natives-1740 { display: none !important; }
+
+body#modernbb #page-footer,
+body#modernbb .footer,
+body#modernbb footer,
+body#modernbb .footerbar,
+body#modernbb .footerbar-user,
+body#modernbb .copyright,
+body#modernbb .copyright .wrap,
+body#modernbb .copyright-body {
+	background: transparent !important;
+	border-color: var(--ligne) !important;
+	box-shadow: none !important;
+	color: var(--texte-doux) !important;
+}
+body#modernbb #page-footer,
+body#modernbb .copyright {
+	max-width: 940px;
+	width: calc(100% - 24px);
+	margin-left: auto !important;
+	margin-right: auto !important;
+	font-family: 'Alegreya', Georgia, serif;
+	font-size: 15px;
+	text-align: center;
+}
+body#modernbb #page-footer a,
+body#modernbb .copyright a { color: var(--texte-doux) !important; font-weight: 400 !important; }
+body#modernbb #page-footer a:hover,
+body#modernbb .copyright a:hover { color: var(--texte-clair) !important; }
