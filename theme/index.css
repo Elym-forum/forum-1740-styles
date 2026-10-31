@@ -503,3 +503,20 @@ body#modernbb #accueil-1740 ul.linklist.top a { color: var(--texte-doux) !import
 body#modernbb #accueil-1740 ul.linklist.top a:hover { color: var(--texte-clair) !important; }
 /* Tant que le script ne l'a pas déplacée, la liste reste discrète */
 body#modernbb #main-content > ul.linklist.top { padding: 0 4px; font-size: 15px; }
+
+/* ---------- La Veillée : tailles de texte agrandies (Alegreya paraît petite) ---------- */
+#accueil-1740 .veillee #chatbox-1740 { font-size: 17px; }
+#accueil-1740 .veillee .chatbox-onglet { font-size: 17px; }
+#accueil-1740 .veillee .chatbox-avis { font-size: 15px !important; padding: 8px 14px !important; line-height: 1.4; }
+#accueil-1740 .veillee .chatbox-heure { font-size: 14px !important; }
+#accueil-1740 .veillee .chatbox-badge-modo { font-size: 14px !important; }
+#accueil-1740 .veillee .chatbox-evenement { font-size: 0.95em !important; font-style: italic; }
+#accueil-1740 .veillee .chatbox-membres { font-size: 17px !important; }
+#accueil-1740 .veillee .chatbox-membres-titre { font-size: 14px !important; font-family: 'Alegreya SC', serif; letter-spacing: 0.1em; }
+#accueil-1740 .veillee .chatbox-saisie { font-size: 17px !important; }
+#accueil-1740 .veillee .chatbox-outils { font-size: 16px !important; }
+#accueil-1740 .veillee .chatbox-choix-son,
+#accueil-1740 .veillee .chatbox-bouton-outil { font-size: 15px !important; }
+#accueil-1740 .veillee .chatbox-id-moderation,
+#accueil-1740 .veillee .chatbox-etat { font-size: 14px !important; }
+#accueil-1740 .veillee .chatbox-suggestion { font-size: 16px; }
