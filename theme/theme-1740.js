@@ -555,6 +555,13 @@
 		});
 	}
 
+	// Les liens de recherche (nouveaux messages, sans réponse…) rejoignent le bas de l'accueil
+	function deplacerRaccourcis() {
+		var liste = $('ul.linklist.top');
+		var accueil = $('#accueil-1740');
+		if (liste && accueil) { accueil.appendChild(liste); }
+	}
+
 	function initPied() {
 		// Sur l'index, les statistiques sont déjà dans le coin du feu : on masque le bandeau natif
 		if ($('#presences-1740')) { document.documentElement.classList.add('index-1740'); }
@@ -577,6 +584,7 @@
 		}
 		initStatistiques();
 		nettoyerPresents();
+		deplacerRaccourcis();
 		initPied();
 	}
 

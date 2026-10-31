@@ -384,3 +384,120 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 	#accueil-1740 .rumeurs-liste { display: flex; flex-direction: column; gap: 6px; padding: 12px 20px; flex: 1; }
 	#accueil-1740 .rumeur { position: static; transform: none; opacity: 1; filter: none; }
 }
+
+/* ==========================================================================
+   LA VEILLÉE — habillage de la chatbox 1740 (son code et son tag v7 ne changent pas)
+   ========================================================================== */
+#accueil-1740 .veillee #chatbox-1740 {
+	--cb-fond: transparent;
+	--cb-fond-messages: rgba(14, 13, 10, 0.55);
+	--cb-texte: var(--texte);
+	--cb-discret: var(--texte-doux);
+	--cb-accent: var(--accent);
+	--cb-accent-texte: var(--texte-clair);
+	--cb-lien: var(--accent-lien);
+	--cb-bordure: var(--ligne);
+	--cb-mention: rgba(var(--accent-rgb), 0.14);
+	margin: 0 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya', Georgia, serif;
+	font-size: 16px;
+}
+
+/* Bande du haut : flamme + « La Veillée » + présents, bouton à droite */
+#accueil-1740 .veillee .chatbox-barre {
+	background: transparent !important;
+	color: var(--texte) !important;
+	padding: 8px 18px !important;
+	gap: 12px;
+}
+#accueil-1740 .veillee .chatbox-barre::before {
+	content: "";
+	flex: none;
+	width: 15px;
+	height: 21px;
+	order: -1;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 22'%3E%3Cpath d='M8 1C9 6 14 8 14 14a6 6 0 0 1-12 0c0-3 2-5 3-7 0 3 1 4 2 4C7 8 6 5 8 1z' fill='%23C9A982' opacity='.85'/%3E%3Cpath d='M8 10c1 2 3 3 3 5a3 3 0 0 1-6 0c0-1.5 1-2.5 2-3.5 0 1 .5 1.5 1 1.5z' fill='%23EAD7AE'/%3E%3C/svg%3E") center / contain no-repeat;
+	transform-origin: 50% 100%;
+	animation: flamme-1740 1.9s ease-in-out infinite;
+}
+#accueil-1740 .veillee .chatbox-barre { justify-content: flex-start !important; flex-wrap: wrap; }
+#accueil-1740 .veillee .chatbox-bouton-connexion { margin-left: auto; }
+#accueil-1740 .veillee .chatbox-titre {
+	font-size: 0 !important;
+	font-weight: 400 !important;
+}
+#accueil-1740 .veillee .chatbox-titre::before {
+	content: "La Veillée";
+	font-family: 'Grenze Gotisch', serif;
+	font-size: 24px;
+	line-height: 1;
+	color: var(--texte-clair);
+}
+#accueil-1740 .veillee .chatbox-compte {
+	margin-left: 0 !important;
+	font-size: 16px !important;
+	font-style: italic;
+	opacity: 1 !important;
+	color: var(--texte-doux);
+}
+#accueil-1740 .veillee .chatbox-bouton-connexion {
+	padding: 3px 14px !important;
+	border: 1px solid var(--accent) !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	color: var(--texte-clair) !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 15px !important;
+	letter-spacing: 0.1em;
+}
+#accueil-1740 .veillee .chatbox-bouton-connexion:hover { background: rgba(var(--accent-rgb), 0.2) !important; }
+
+/* Intérieur, une fois ouverte */
+#accueil-1740 .veillee .chatbox-onglets { padding: 0 12px; border-top: 1px solid var(--ligne); }
+#accueil-1740 .veillee .chatbox-onglet { font-family: 'Alegreya SC', serif; font-size: 16px; letter-spacing: 0.06em; }
+#accueil-1740 .veillee .chatbox-pastille,
+#accueil-1740 .veillee .chatbox-pastille-couleur { border-radius: 50%; }
+#accueil-1740 .veillee .chatbox-messages { height: 260px; scrollbar-width: thin; scrollbar-color: var(--ligne-forte) transparent; }
+#accueil-1740 .veillee .chatbox-message { border-radius: 0; }
+#accueil-1740 .veillee .chatbox-saisie,
+#accueil-1740 .veillee .chatbox-envoyer,
+#accueil-1740 .veillee .chatbox-format,
+#accueil-1740 .veillee .chatbox-bouton-outil,
+#accueil-1740 .veillee .chatbox-panneau-emojis,
+#accueil-1740 .veillee .chatbox-suggestions { border-radius: 0 !important; }
+#accueil-1740 .veillee .chatbox-envoyer { font-family: 'Alegreya SC', serif; letter-spacing: 0.08em; background: rgba(var(--accent-rgb), 0.35) !important; border: 1px solid var(--accent) !important; }
+#accueil-1740 .veillee .chatbox-panneau-emojis,
+#accueil-1740 .veillee .chatbox-suggestions { background: var(--fond-nuit) !important; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5) !important; }
+
+/* ==========================================================================
+   RACCOURCIS — les liens de recherche, en une ligne au bas de l'accueil
+   (le script déplace la liste native dans #accueil-1740)
+   ========================================================================== */
+body#modernbb #accueil-1740 ul.linklist.top {
+	display: flex !important;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 2px 0;
+	margin: 0 !important;
+	padding: 7px 18px !important;
+	border-top: 1px solid var(--ligne) !important;
+	background: rgba(14, 13, 10, 0.35) !important;
+	font-family: 'Alegreya SC', serif;
+	font-size: 15px;
+	letter-spacing: 0.06em;
+}
+body#modernbb #accueil-1740 ul.linklist.top li { display: flex; align-items: center; white-space: nowrap; }
+body#modernbb #accueil-1740 ul.linklist.top li + li:not(.rightside)::before {
+	content: "◆";
+	margin: 0 12px;
+	font-size: 9px;
+	color: var(--accent);
+}
+body#modernbb #accueil-1740 ul.linklist.top li.rightside { margin-left: auto; }
+body#modernbb #accueil-1740 ul.linklist.top i { display: none; }
+body#modernbb #accueil-1740 ul.linklist.top a { color: var(--texte-doux) !important; }
+body#modernbb #accueil-1740 ul.linklist.top a:hover { color: var(--texte-clair) !important; }
+/* Tant que le script ne l'a pas déplacée, la liste reste discrète */
+body#modernbb #main-content > ul.linklist.top { padding: 0 4px; font-size: 15px; }
