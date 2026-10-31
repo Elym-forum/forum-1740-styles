@@ -42,13 +42,13 @@ html[data-theme="mousse"] {
 	--accent-vif-rgb: 201, 205, 180;
 
 	/* --- Images du thème --- */
-	--img-fond: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/fond.jpg");
-	--img-cadre: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/cadre.png");
-	--img-grain: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/grain.png");
-	--img-entete: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/gravure-entete.jpg");
-	--img-panneau-1: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/gravure-panneau-1.jpg");
-	--img-panneau-2: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/gravure-panneau-2.jpg");
-	--img-bandeau: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/mousse/gravure-bandeau.jpg");
+	--img-fond: url("img/mousse/fond.jpg");
+	--img-cadre: url("img/mousse/cadre.png");
+	--img-grain: url("img/mousse/grain.png");
+	--img-entete: url("img/mousse/gravure-entete.jpg");
+	--img-panneau-1: url("img/mousse/gravure-panneau-1.jpg");
+	--img-panneau-2: url("img/mousse/gravure-panneau-2.jpg");
+	--img-bandeau: url("img/mousse/gravure-bandeau.jpg");
 }
 
 html[data-theme="rouille"] {
@@ -59,13 +59,13 @@ html[data-theme="rouille"] {
 	--accent-rgb: 142, 74, 58;
 	--accent-vif-rgb: 224, 188, 172;
 
-	--img-fond: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/fond.jpg");
-	--img-cadre: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/cadre.png");
-	--img-grain: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/grain.png");
-	--img-entete: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/gravure-entete.jpg");
-	--img-panneau-1: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/gravure-panneau-1.jpg");
-	--img-panneau-2: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/gravure-panneau-2.jpg");
-	--img-bandeau: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/rouille/gravure-bandeau.jpg");
+	--img-fond: url("img/rouille/fond.jpg");
+	--img-cadre: url("img/rouille/cadre.png");
+	--img-grain: url("img/rouille/grain.png");
+	--img-entete: url("img/rouille/gravure-entete.jpg");
+	--img-panneau-1: url("img/rouille/gravure-panneau-1.jpg");
+	--img-panneau-2: url("img/rouille/gravure-panneau-2.jpg");
+	--img-bandeau: url("img/rouille/gravure-bandeau.jpg");
 }
 
 html[data-theme="ocre"] {
@@ -76,11 +76,11 @@ html[data-theme="ocre"] {
 	--accent-rgb: 168, 139, 90;
 	--accent-vif-rgb: 230, 214, 178;
 
-	--img-fond: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/fond.jpg");
-	--img-cadre: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/cadre.png");
-	--img-grain: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/grain.png");
-	--img-entete: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/gravure-entete.jpg");
-	--img-panneau-1: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/gravure-panneau-1.jpg");
-	--img-panneau-2: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/gravure-panneau-2.jpg");
-	--img-bandeau: url("https://cdn.jsdelivr.net/gh/Elym-forum/forum-1740-styles@theme-v1/theme/img/ocre/gravure-bandeau.jpg");
+	--img-fond: url("img/ocre/fond.jpg");
+	--img-cadre: url("img/ocre/cadre.png");
+	--img-grain: url("img/ocre/grain.png");
+	--img-entete: url("img/ocre/gravure-entete.jpg");
+	--img-panneau-1: url("img/ocre/gravure-panneau-1.jpg");
+	--img-panneau-2: url("img/ocre/gravure-panneau-2.jpg");
+	--img-bandeau: url("img/ocre/gravure-bandeau.jpg");
 }
