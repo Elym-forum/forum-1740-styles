@@ -324,8 +324,16 @@
 
 			par.innerHTML = '';
 			auteur.className = '';
-			par.appendChild(auteur);
-			if (dateTexte) { par.appendChild(document.createTextNode(' · ' + dateTexte)); }
+			var zoneAuteur = document.createElement('span');
+			zoneAuteur.className = 'dernier-auteur';
+			zoneAuteur.appendChild(auteur);
+			par.appendChild(zoneAuteur);
+			if (dateTexte) {
+				var zoneDate = document.createElement('span');
+				zoneDate.className = 'dernier-date';
+				zoneDate.textContent = dateTexte;
+				par.appendChild(zoneDate);
+			}
 			if (fleche) {
 				if (message) { fleche.href = message.href; }
 				else if (sujet) { fleche.href = sujet.href; }
@@ -359,13 +367,14 @@
 		var ch = li.closest('.chapitre-1740');
 		var g = ch ? ch.getAttribute('data-gabarit') : '';
 		var premier = ch && $('.forum-1740', ch) === li;
-		if (!((g === 'fondements' && premier) || g === 'feu' || g === 'greffe')) { return; }
-		// Greffe : les statistiques remontent sous le titre, le bas de carte ne garde que le dernier message
+		// Greffe : les statistiques passent sous les sous-forums ; l'icône reste à gauche
 		if (g === 'greffe') {
 			var stats = $('.forum-dernier .forum-stats', li);
 			var infos = $('.forum-infos', li);
 			if (stats && infos) { infos.appendChild(stats); }
+			return;
 		}
+		if (!((g === 'fondements' && premier) || g === 'feu')) { return; }
 		var etat = $(':scope > .etat-1740', li);
 		var ligne = $('.dernier-ligne', li);
 		if (etat && ligne) { ligne.insertBefore(etat, ligne.firstChild); etat.style.display = 'block'; }

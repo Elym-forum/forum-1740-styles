@@ -201,7 +201,8 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 .forum-titre a { color: var(--texte-clair) !important; transition: color 0.4s ease; }
 .forum-1740:hover .forum-titre a { color: var(--accent-vif) !important; text-decoration: none !important; }
 .forum-desc { font-size: 17px; color: var(--texte-doux); font-style: italic; }
-.forum-sous { display: flex; flex-wrap: wrap; gap: 0 12px; font-family: 'Alegreya SC', serif; font-size: 16px; }
+.forum-sous { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 0; font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.04em; }
+.forum-sous a + a::before { content: "·"; display: inline-block; margin: 0 9px; color: var(--accent); }
 .forum-sous:empty { display: none; }
 .forum-stats { font-size: 15px; color: var(--texte-doux); }
 .forum-dernier .forum-stats { padding-left: 2px; }
@@ -216,6 +217,19 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 .dernier-infos { min-width: 0; flex: 1; line-height: 1.25; }
 .dernier-sujet { display: block; font-size: 17px; color: var(--texte-clair) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dernier-par { display: block; font-size: 15px; color: var(--texte-doux); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dernier-date::before { content: " · "; }
+
+/* Colonne étroite (Greffe, Terres) : titre + flèche, puis pseudo, puis date, chacun sur sa ligne */
+.chapitre-1740[data-gabarit="greffe"] .dernier-ligne,
+.chapitre-1740[data-gabarit="terres"] .dernier-ligne { align-items: flex-start; }
+.chapitre-1740[data-gabarit="greffe"] .dernier-par,
+.chapitre-1740[data-gabarit="terres"] .dernier-par { white-space: normal; line-height: 1.35; }
+.chapitre-1740[data-gabarit="greffe"] .dernier-par > span,
+.chapitre-1740[data-gabarit="terres"] .dernier-par > span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chapitre-1740[data-gabarit="greffe"] .dernier-date::before,
+.chapitre-1740[data-gabarit="terres"] .dernier-date::before { content: none; }
+.chapitre-1740[data-gabarit="greffe"] .dernier-fleche,
+.chapitre-1740[data-gabarit="terres"] .dernier-fleche { line-height: 1.2; }
 .dernier-par br { display: none; }
 .dernier-fleche { font-size: 18px; }
 .dernier-vide { font-size: 15px; font-style: italic; color: var(--texte-doux); }
@@ -265,10 +279,14 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 .chapitre-1740[data-gabarit="fondements"] .forum-1740:first-child .forum-desc { font-size: 17px; }
 
 /* Tuiles : des liens directs vers les sujets (définis dans #reglages-1740) */
-.tuiles-1740 { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
+.tuiles-1740 { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); grid-auto-rows: 1fr; gap: 8px; flex: 1 1 auto; min-height: 96px; }
+.chapitre-1740[data-gabarit="fondements"] .chapitre-forums { display: flex; flex-direction: column; }
+.chapitre-1740[data-gabarit="fondements"] .forum-1740:first-child { flex: 1 1 auto; }
+.chapitre-1740[data-gabarit="fondements"] .forum-1740:first-child .forum-infos { flex: 1 1 auto; }
 .tuiles-1740 a {
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 	gap: 2px;
 	padding: 12px 14px;
 	border: 1px solid var(--ligne-forte);
@@ -289,29 +307,29 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 .chapitre-1740[data-gabarit="fondements"] .forum-1740:first-child .forum-stats { display: none; }
 .chapitre-1740[data-gabarit="fondements"] .chapitre-panneau { border-left: 1px solid var(--ligne); background-image: var(--img-panneau-1); }
 
-/* ---------- Gabarit II : Greffe (cartes en deux colonnes) ----------
-   Haut : titre, description, sous-forums, statistiques.
-   Bas, collé au fond de la carte : état + dernier message. Les bas s'alignent. */
-.chapitre-1740[data-gabarit="greffe"] .chapitre-forums { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+/* ---------- Gabarit II : Greffe (deux colonnes) ----------
+   Gauche : titre, description, sous-forums, statistiques.
+   Droite : dernier message sur trois lignes (titre + flèche, pseudo, date). */
+.chapitre-1740[data-gabarit="greffe"] .chapitre-forums { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
 .chapitre-1740[data-gabarit="greffe"] .forum-1740 {
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
+	grid-template-columns: 22px minmax(0, 1fr) 180px;
 	gap: 12px;
-	padding: 16px 18px 14px;
+	align-items: start;
+	padding: 16px 16px;
 	border-right: 1px solid var(--ligne);
 	border-bottom: 1px solid var(--ligne);
 }
-.chapitre-1740[data-gabarit="greffe"] .forum-1740 > .etat-1740 { display: none; }
+.chapitre-1740[data-gabarit="greffe"] .forum-1740 > .etat-1740 { margin-top: 4px; }
 .chapitre-1740[data-gabarit="greffe"] .forum-vignette { display: none; }
-.chapitre-1740[data-gabarit="greffe"] .forum-desc { font-size: 17px; }
-.chapitre-1740[data-gabarit="greffe"] .forum-infos .forum-stats { margin-top: 2px; }
+.chapitre-1740[data-gabarit="greffe"] .forum-desc { font-size: 16px; }
+.chapitre-1740[data-gabarit="greffe"] .forum-infos .forum-stats { margin-top: 4px; }
 .chapitre-1740[data-gabarit="greffe"] .forum-dernier {
-	margin-top: auto;
-	border-left: none;
-	border-top: 1px dotted var(--ligne);
-	padding: 12px 0 0;
+	align-self: stretch;
+	border-left: 1px solid var(--ligne);
+	padding: 0 0 0 12px;
 }
+.chapitre-1740[data-gabarit="greffe"] .dernier-avatar img { width: 40px; height: 40px; }
+.chapitre-1740[data-gabarit="greffe"] .dernier-sujet { font-size: 15px; }
 
 /* ---------- Gabarit III : Terres (bandeau + vignettes) ---------- */
 .chapitre-1740[data-gabarit="terres"] .chapitre-forums { flex-basis: 100%; }

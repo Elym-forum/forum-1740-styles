@@ -120,6 +120,22 @@ body#modernbb #presences-1740 p:not([class]),
 body#modernbb #accueil-1740 .nouveautes p,
 body#modernbb #accueil-1740 .resume p { font-size: inherit !important; line-height: 1.55 !important; color: inherit; }
 
+/* Pseudos colorés par Forumactif : couleur pleine, pas de faux gras ni d'effet */
+body#modernbb #accueil-1740 a[href*="/u"],
+body#modernbb #accueil-1740 a[href*="/u"] *,
+body#modernbb .chapitre-1740 a[href*="/u"],
+body#modernbb .chapitre-1740 a[href*="/u"] *,
+body#modernbb #presences-1740 a,
+body#modernbb #presences-1740 a *,
+body#modernbb #legende-1740 a,
+body#modernbb #legende-1740 a * {
+	font-weight: 500 !important;
+	text-shadow: none !important;
+	background-image: none !important;
+	-webkit-text-fill-color: currentColor !important;
+	filter: none !important;
+}
+
 /* ---------- Typographie ---------- */
 .titre-1740 { font-family: 'Grenze Gotisch', serif; font-weight: 400; }
 .sc-1740 { font-family: 'Alegreya SC', serif; }
