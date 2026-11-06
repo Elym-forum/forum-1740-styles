@@ -177,14 +177,13 @@
 		fermeturesPanneaux.forEach(function (f) { if (f !== sauf) { f(); } });
 	}
 
+	var ECART_PANNEAU = 20; // distance entre le bouton et la boîte (px)
 	function placerPanneau(panneau, bouton) {
 		panneau.style.left = '';
 		panneau.style.top = '';
 		if (window.innerWidth <= 1100) { return; } // petits écrans : position gérée par le CSS
-		var barre = document.getElementById('barre-1740');
-		var droite = barre ? barre.getBoundingClientRect().right : bouton.getBoundingClientRect().right;
 		var r = bouton.getBoundingClientRect();
-		panneau.style.left = (droite + 18) + 'px';
+		panneau.style.left = (r.right + ECART_PANNEAU) + 'px'; // même écart que les étiquettes
 		var haut = Math.max(12, Math.min(r.top - 10, window.innerHeight - panneau.offsetHeight - 12));
 		panneau.style.top = haut + 'px';
 	}
