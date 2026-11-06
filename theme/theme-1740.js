@@ -111,7 +111,7 @@
 			if (deconnexion) { el.href = deconnexion.href; } else { el.style.display = 'none'; }
 		});
 
-		if (connecte) { initCompteurs(); initPanneauAvis(); }
+		if (connecte) { initCompteurs(); initPanneauAvis(); initPanneauComptes(); }
 	}
 
 	/* ------------------------------------------------------------------
@@ -158,12 +158,35 @@
 			// Les changements du thème lui-même (barre, panneau) ne comptent pas
 			var utiles = changements.some(function (c) {
 				var el = c.target.nodeType === 1 ? c.target : c.target.parentElement;
-				return el && !el.closest('#barre-1740, #panneau-avis-1740');
+				return el && !el.closest('#barre-1740, .panneau-1740');
 			});
 			if (!utiles) { return; }
 			prevu = true;
 			window.setTimeout(function () { prevu = false; compter(); }, 400);
 		}).observe(document.body, { childList: true, subtree: true, characterData: true });
+	}
+
+	/* ------------------------------------------------------------------
+	   Panneaux de la barre d'outils : outils communs
+	   - un seul panneau ouvert à la fois
+	   - placés à droite de la barre (ou au-dessus d'elle sur petit écran)
+	   ------------------------------------------------------------------ */
+	var fermeturesPanneaux = [];
+
+	function fermerAutresPanneaux(sauf) {
+		fermeturesPanneaux.forEach(function (f) { if (f !== sauf) { f(); } });
+	}
+
+	function placerPanneau(panneau, bouton) {
+		panneau.style.left = '';
+		panneau.style.top = '';
+		if (window.innerWidth <= 1100) { return; } // petits écrans : position gérée par le CSS
+		var barre = document.getElementById('barre-1740');
+		var droite = barre ? barre.getBoundingClientRect().right : bouton.getBoundingClientRect().right;
+		var r = bouton.getBoundingClientRect();
+		panneau.style.left = (droite + 18) + 'px';
+		var haut = Math.max(12, Math.min(r.top - 10, window.innerHeight - panneau.offsetHeight - 12));
+		panneau.style.top = haut + 'px';
 	}
 
 	/* ------------------------------------------------------------------
@@ -178,6 +201,7 @@
 
 		var panneau = document.createElement('div');
 		panneau.id = 'panneau-avis-1740';
+		panneau.className = 'panneau-1740';
 		panneau.setAttribute('role', 'dialog');
 		panneau.setAttribute('aria-label', 'Avis');
 		panneau.hidden = true;
@@ -238,15 +262,7 @@
 			});
 		}
 
-		function placer() {
-			panneau.style.left = '';
-			panneau.style.top = '';
-			if (window.innerWidth <= 1100) { return; } // petits écrans : position gérée par le CSS
-			var r = bouton.getBoundingClientRect();
-			panneau.style.left = (r.right + 14) + 'px';
-			var haut = Math.max(12, Math.min(r.top - 10, window.innerHeight - panneau.offsetHeight - 12));
-			panneau.style.top = haut + 'px';
-		}
+		function placer() { placerPanneau(panneau, bouton); }
 
 		// Ouvre la liste Forumactif (invisible) : c'est ce qui marque les avis comme lus
 		function marquerLus() {
@@ -258,6 +274,7 @@
 		}
 
 		function ouvrir() {
+			fermerAutresPanneaux(fermer);
 			nonLus = {};
 			$$('#notif_list > li.unread').forEach(function (li) { nonLus[li.id] = true; });
 			rendre();
@@ -274,6 +291,7 @@
 			bouton.setAttribute('aria-expanded', 'false');
 		}
 
+		fermeturesPanneaux.push(fermer);
 		bouton.setAttribute('aria-haspopup', 'dialog');
 		bouton.setAttribute('aria-expanded', 'false');
 		bouton.addEventListener('click', function (e) {
@@ -296,12 +314,267 @@
 			// On ignore les changements faits dans le panneau lui-même
 			var ailleurs = changements.some(function (c) {
 				var el = c.target.nodeType === 1 ? c.target : c.target.parentElement;
-				return el && !el.closest('#barre-1740, #panneau-avis-1740');
+				return el && !el.closest('#barre-1740, .panneau-1740');
 			});
 			if (!ailleurs) { return; }
 			prevu = true;
 			window.setTimeout(function () { prevu = false; if (!panneau.hidden) { rendre(); placer(); } }, 400);
 		}).observe(document.body, { childList: true, subtree: true });
+	}
+
+	/* ------------------------------------------------------------------
+	   2 quater. Changer de personnage (multicomptes)
+	   Forumactif n'a pas de vraie fonction multicomptes : pour changer de
+	   compte, on se déconnecte puis on se reconnecte avec le mot de passe du
+	   personnage choisi. Les comptes sont gardés dans ce navigateur
+	   (localStorage « comptes1740 »), mots de passe en clair, à la demande
+	   de l'administration ; une mise en garde l'indique dans le panneau.
+	   ------------------------------------------------------------------ */
+	var CLE_COMPTES = 'comptes1740';
+
+	function lireComptes() {
+		try {
+			var liste = JSON.parse(lireStockage(CLE_COMPTES) || '[]');
+			return Array.isArray(liste) ? liste.filter(function (c) { return c && c.nom; }) : [];
+		} catch (e) { return []; }
+	}
+	function ecrireComptes(liste) { ecrireStockage(CLE_COMPTES, JSON.stringify(liste)); }
+	function memeNom(a, b) { return String(a || '').trim().toLowerCase() === String(b || '').trim().toLowerCase(); }
+
+	// Lit, dans le code d'une page Forumactif, le pseudo du membre connecté
+	function pseudoDansPage(html) {
+		var connecte = /session_logged_in["'\]]*\s*[:=]\s*["']?1/.test(html);
+		if (!connecte) { return ''; }
+		var m = html.match(/["']?username["'\]]*\s*[:=]\s*["']([^"']*)["']/);
+		return m ? m[1] : '';
+	}
+
+	function deconnecterCompte() {
+		var liens = $$('a[href*="logout"]');
+		var lien = liens.filter(function (a) { return /tid=/.test(a.href); })[0] || liens[0];
+		var url = lien ? lien.href : '/login?logout=1';
+		return fetch(url, { credentials: 'same-origin' }).catch(function () { /* on continue */ });
+	}
+
+	function connecterCompte(compte) {
+		var corps = new URLSearchParams();
+		corps.set('username', compte.nom);
+		corps.set('password', compte.mdp || '');
+		corps.set('autologin', 'on');
+		corps.set('redirect', '');
+		corps.set('login', 'Connexion');
+		return fetch('/login', {
+			method: 'POST',
+			credentials: 'same-origin',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: corps.toString()
+		}).then(function () {
+			// Vérification : qui est connecté maintenant ?
+			return fetch('/', { credentials: 'same-origin', cache: 'no-store' });
+		}).then(function (r) { return r.text(); }).then(function (html) {
+			return memeNom(pseudoDansPage(html), compte.nom);
+		}).catch(function () { return false; });
+	}
+
+	function initPanneauComptes() {
+		var bouton = $('#barre-1740 [data-outil="personnage"]');
+		if (!bouton) { return; }
+		var u = window._userdata || {};
+
+		// Le compte actuel, s'il est enregistré, met à jour son avatar et son numéro
+		var comptes = lireComptes();
+		comptes.forEach(function (c) {
+			if (memeNom(c.nom, u.username)) {
+				c.nom = u.username;
+				if (u.avatar_link) { c.avatar = u.avatar_link; }
+				if (u.user_id) { c.id = u.user_id; }
+			}
+		});
+		ecrireComptes(comptes);
+
+		var panneau = document.createElement('div');
+		panneau.id = 'panneau-comptes-1740';
+		panneau.className = 'panneau-1740';
+		panneau.setAttribute('role', 'dialog');
+		panneau.setAttribute('aria-label', 'Changer de personnage');
+		panneau.hidden = true;
+		panneau.innerHTML =
+			'<div class="pa-tete">' +
+				'<span class="pa-titre">Personnages</span>' +
+				'<button type="button" class="pa-fermer" aria-label="Fermer">\u00D7</button>' +
+			'</div>' +
+			'<ul class="pa-liste pc-liste"></ul>' +
+			'<details class="pc-ajout">' +
+				'<summary>Ajouter un personnage</summary>' +
+				'<form class="pc-formulaire" autocomplete="off">' +
+					'<label>Pseudo<input type="text" name="pseudo" required></label>' +
+					'<label>Mot de passe<input type="password" name="mdp" autocomplete="new-password" required></label>' +
+					'<button type="submit" class="pc-bouton">Ajouter</button>' +
+				'</form>' +
+				'<p class="pc-avertissement">Les mots de passe sont gard\u00E9s dans ce navigateur, sans chiffrement. N\u2019utilise pas ce widget sur un ordinateur partag\u00E9.</p>' +
+			'</details>' +
+			'<p class="pc-etat" aria-live="polite"></p>';
+		document.body.appendChild(panneau);
+
+		var liste = $('.pc-liste', panneau);
+		var formulaire = $('.pc-formulaire', panneau);
+		var zoneEtat = $('.pc-etat', panneau);
+		var occupe = false;
+
+		function etat(texte) { zoneEtat.textContent = texte || ''; }
+
+		function avatarDe(c) {
+			var span = document.createElement('span');
+			span.className = 'pc-avatar';
+			if (c.avatar) {
+				var img = document.createElement('img');
+				img.src = c.avatar; img.alt = ''; img.loading = 'lazy';
+				span.appendChild(img);
+			} else {
+				span.textContent = (c.nom || '?').trim().charAt(0).toUpperCase();
+			}
+			return span;
+		}
+
+		function rendre() {
+			comptes = lireComptes();
+			liste.innerHTML = '';
+			if (!comptes.length) {
+				var vide = document.createElement('li');
+				vide.className = 'pa-vide';
+				vide.textContent = 'Aucun personnage enregistr\u00E9. Ajoute tes comptes ci-dessous.';
+				liste.appendChild(vide);
+			}
+			comptes.forEach(function (c, i) {
+				var actuel = memeNom(c.nom, u.username);
+				var li = document.createElement('li');
+				li.className = 'pa-avis pc-compte' + (actuel ? ' est-actuel' : '');
+				var choisir = document.createElement('button');
+				choisir.type = 'button';
+				choisir.className = 'pc-choisir';
+				choisir.disabled = actuel || occupe;
+				choisir.setAttribute('aria-label', actuel ? c.nom + ' (personnage actuel)' : 'Passer \u00E0 ' + c.nom);
+				choisir.appendChild(avatarDe(c));
+				var nom = document.createElement('span');
+				nom.className = 'pc-nom';
+				nom.textContent = c.nom;
+				choisir.appendChild(nom);
+				if (actuel) {
+					var marque = document.createElement('span');
+					marque.className = 'pc-marque';
+					marque.textContent = 'actuel';
+					choisir.appendChild(marque);
+				}
+				choisir.addEventListener('click', function () { changerVers(c); });
+				li.appendChild(choisir);
+
+				var retirer = document.createElement('button');
+				retirer.type = 'button';
+				retirer.className = 'pa-suppr';
+				retirer.setAttribute('aria-label', 'Retirer ' + c.nom + ' de la liste');
+				retirer.textContent = '\u00D7';
+				retirer.addEventListener('click', function (e) {
+					e.stopPropagation();
+					var l = lireComptes();
+					l.splice(i, 1);
+					ecrireComptes(l);
+					etat(c.nom + ' a \u00E9t\u00E9 retir\u00E9 de la liste.');
+					rendre();
+				});
+				li.appendChild(retirer);
+				liste.appendChild(li);
+			});
+
+			// Suggestion : le compte actuel, s'il n'est pas encore dans la liste
+			var champPseudo = formulaire.elements.pseudo;
+			if (!champPseudo.value && !comptes.some(function (c) { return memeNom(c.nom, u.username); })) {
+				champPseudo.value = u.username || '';
+			}
+		}
+
+		function changerVers(compte) {
+			if (occupe) { return; }
+			occupe = true;
+			rendre();
+			var precedent = lireComptes().filter(function (c) { return memeNom(c.nom, u.username); })[0];
+			etat('Passage \u00E0 ' + compte.nom + '\u2026');
+			deconnecterCompte().then(function () {
+				return connecterCompte(compte);
+			}).then(function (ok) {
+				if (ok) { window.location.reload(); return null; }
+				etat('Connexion refus\u00E9e pour ' + compte.nom + ' : v\u00E9rifie son mot de passe.');
+				// On tente de revenir au compte de départ
+				return precedent ? connecterCompte(precedent).then(function (retour) {
+					if (retour) {
+						etat('Connexion refus\u00E9e pour ' + compte.nom + ' : v\u00E9rifie son mot de passe. Retour sur le compte ' + precedent.nom + '.');
+					} else {
+						etat('Connexion refus\u00E9e, et le retour au compte pr\u00E9c\u00E9dent a \u00E9chou\u00E9. La session est ferm\u00E9e : reconnecte-toi.');
+					}
+					occupe = false;
+					rendre();
+				}) : (function () {
+					etat('Connexion refus\u00E9e pour ' + compte.nom + '. La session est ferm\u00E9e : reconnecte-toi.');
+					occupe = false;
+					rendre();
+				})();
+			});
+		}
+
+		formulaire.addEventListener('submit', function (e) {
+			e.preventDefault();
+			var nom = formulaire.elements.pseudo.value.trim();
+			var mdp = formulaire.elements.mdp.value;
+			if (!nom || !mdp) { return; }
+			var l = lireComptes();
+			var existant = l.filter(function (c) { return memeNom(c.nom, nom); })[0];
+			if (existant) {
+				existant.mdp = mdp;
+				etat('Mot de passe de ' + existant.nom + ' mis \u00E0 jour.');
+			} else {
+				var nouveau = { nom: nom, mdp: mdp };
+				if (memeNom(nom, u.username)) {
+					nouveau.nom = u.username;
+					if (u.avatar_link) { nouveau.avatar = u.avatar_link; }
+					if (u.user_id) { nouveau.id = u.user_id; }
+				}
+				l.push(nouveau);
+				etat(nouveau.nom + ' a \u00E9t\u00E9 ajout\u00E9.');
+			}
+			ecrireComptes(l);
+			formulaire.reset();
+			rendre();
+		});
+
+		function ouvrir() {
+			fermerAutresPanneaux(fermer);
+			etat('');
+			rendre();
+			panneau.hidden = false;
+			bouton.setAttribute('aria-expanded', 'true');
+			placerPanneau(panneau, bouton);
+		}
+		function fermer() {
+			panneau.hidden = true;
+			bouton.setAttribute('aria-expanded', 'false');
+		}
+
+		fermeturesPanneaux.push(fermer);
+		bouton.setAttribute('aria-haspopup', 'dialog');
+		bouton.setAttribute('aria-expanded', 'false');
+		bouton.addEventListener('click', function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			if (panneau.hidden) { ouvrir(); } else { fermer(); }
+		});
+		$('.pa-fermer', panneau).addEventListener('click', fermer);
+		panneau.addEventListener('click', function (e) { e.stopPropagation(); });
+		document.addEventListener('click', function () { if (!panneau.hidden) { fermer(); } });
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape' && !panneau.hidden) { fermer(); bouton.focus(); }
+		});
+		window.addEventListener('resize', function () { if (!panneau.hidden) { placerPanneau(panneau, bouton); } });
+		// Le panneau change de hauteur quand on déplie « Ajouter » : on le replace
+		$('.pc-ajout', panneau).addEventListener('toggle', function () { placerPanneau(panneau, bouton); });
 	}
 
 	/* ------------------------------------------------------------------
