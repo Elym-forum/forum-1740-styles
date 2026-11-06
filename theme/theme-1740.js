@@ -103,13 +103,6 @@
 				if (img) { zone.innerHTML = ''; img.alt = ''; zone.appendChild(img); }
 			}
 
-			// Nombre de messages privés non lus
-			var nbMp = parseInt(u.user_nb_privmsg, 10) || 0;
-			var sceauMp = $('#barre-1740 [data-compteur="lettres"]');
-			if (sceauMp) {
-				if (nbMp > 0) { sceauMp.textContent = nbMp; sceauMp.removeAttribute('data-vide'); }
-				else { sceauMp.setAttribute('data-vide', ''); }
-			}
 		}
 
 		// Lien de déconnexion : repris de la navigation native (il contient un jeton de sécurité)
@@ -118,14 +111,64 @@
 			if (deconnexion) { el.href = deconnexion.href; } else { el.style.display = 'none'; }
 		});
 
-		// Bouton « Avis » : ouvre les notifications de la barre Forumactif si elle existe
+		// Bouton « Avis » : ouvre la liste de notifications de la barre Forumactif
 		var avis = $('#barre-1740 [data-outil="avis"]');
 		if (avis) {
 			avis.addEventListener('click', function (e) {
-				var natif = $('#fa_notifications, #notif_list, .fa_notifications');
-				if (natif) { e.preventDefault(); natif.click(); }
+				var natif = document.getElementById('fa_notifications');
+				if (natif) {
+					e.preventDefault();
+					e.stopPropagation(); // sinon Forumactif referme aussitôt sa liste
+					natif.click();
+				}
 			});
 		}
+
+		if (connecte) { initCompteurs(); }
+	}
+
+	/* ------------------------------------------------------------------
+	   2 bis. Compteurs des sceaux (lettres et avis)
+	   Forumactif affiche ces nombres dans son propre code :
+	   - messages privés non lus : <span class="toread-message">1 message non lu</span>
+	     (ou l'image #i_icon_mini_new_message, dont le texte alternatif est identique)
+	   - notifications non lues : <span id="notif_unread">(2)</span> dans sa barre d'outils
+	   On les lit, puis on les surveille : la barre se met à jour seule.
+	   ------------------------------------------------------------------ */
+	function lireNombre(texte) {
+		var m = String(texte || '').match(/\d+/);
+		return m ? parseInt(m[0], 10) : 0;
+	}
+
+	function majSceau(nom, n) {
+		var sceau = $('#barre-1740 [data-compteur="' + nom + '"]');
+		if (!sceau) { return; }
+		if (n > 0) {
+			sceau.textContent = n > 99 ? '99+' : String(n);
+			sceau.removeAttribute('data-vide');
+		} else {
+			sceau.textContent = '';
+			sceau.setAttribute('data-vide', '');
+		}
+	}
+
+	function initCompteurs() {
+		function compter() {
+			var lettres = $('.toread-message');
+			var icone = document.getElementById('i_icon_mini_new_message');
+			majSceau('lettres', lireNombre(lettres ? lettres.textContent : (icone ? icone.getAttribute('alt') : '')));
+			var avis = document.getElementById('notif_unread');
+			majSceau('avis', lireNombre(avis ? avis.textContent : ''));
+		}
+		compter();
+
+		// La barre Forumactif peut arriver après la page, et ses nombres changent en direct
+		var prevu = false;
+		new MutationObserver(function () {
+			if (prevu) { return; }
+			prevu = true;
+			window.setTimeout(function () { prevu = false; compter(); }, 400);
+		}).observe(document.body, { childList: true, subtree: true, characterData: true });
 	}
 
 	/* ------------------------------------------------------------------
