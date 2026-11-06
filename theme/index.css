@@ -545,3 +545,92 @@ body#modernbb #main-content > ul.linklist.top { padding: 0 4px; font-size: 15px;
 #accueil-1740 .veillee .chatbox-id-moderation,
 #accueil-1740 .veillee .chatbox-etat { font-size: 14px !important; }
 #accueil-1740 .veillee .chatbox-suggestion { font-size: 16px; }
+
+/* ==========================================================================
+   AJUSTEMENTS (atelier du 6 novembre, intégrés)
+   ========================================================================== */
+
+/* Résumé : remplit sa colonne sans jamais l'agrandir, et défile si le texte dépasse */
+#accueil-1740 .resume { contain: size; flex: 1 1 auto; min-height: 220px; overflow-y: auto; }
+
+/* Tailles du texte courant de l'accueil */
+#accueil-1740 .resume     { font-size: 16px; }
+#accueil-1740 .nouveautes { font-size: 15px; }
+#presences-1740 .presents,
+#presences-1740 .presents a { font-size: 16px; }
+
+/* Courroux : titre et humeur sur une seule ligne */
+#accueil-1740 .courroux-tete { flex-wrap: nowrap; gap: 8px; }
+#accueil-1740 .courroux-titre { white-space: nowrap; font-size: 14px; letter-spacing: 0.05em; }
+#accueil-1740 .courroux-humeur { white-space: nowrap; font-size: 15px; }
+
+/* Période de jeu : textes sur la même ligne de base, icône centrée */
+#accueil-1740 .periode-ligne { align-items: baseline; }
+#accueil-1740 .periode-ligne svg { align-self: center; }
+
+/* ---------- Espacements uniformes : modifier ces deux valeurs pour tout ajuster ---------- */
+:root {
+	--esp: 16px;        /* marge intérieure des boîtes et espace entre blocs */
+	--esp-ligne: 6px;   /* espace entre les lignes d'un même groupe */
+}
+
+body#modernbb .forum-titre { line-height: 1.1 !important; }
+body#modernbb .forum-desc,
+body#modernbb .forum-sous,
+body#modernbb .forum-stats,
+body#modernbb .dernier-sujet,
+body#modernbb .dernier-par { line-height: 1.35 !important; }
+
+/* Accueil */
+body#modernbb #accueil-1740 .cellule { padding: var(--esp); gap: var(--esp); }
+body#modernbb #accueil-1740 .cellule.sans-marge { padding: 0; gap: 0; }
+body#modernbb #accueil-1740 .resume-actions { padding-top: var(--esp); }
+body#modernbb #accueil-1740 .gardiens { padding: var(--esp); gap: var(--esp); }
+body#modernbb #accueil-1740 .gardien { gap: var(--esp-ligne); }
+body#modernbb #accueil-1740 .periode,
+body#modernbb #accueil-1740 .courroux { padding: var(--esp); gap: var(--esp-ligne); }
+body#modernbb #accueil-1740 .derniers { contain: size; flex: 1 1 auto; height: auto; min-height: 120px; }
+body#modernbb #accueil-1740 .ecrit:last-child { border-bottom: none; }
+body#modernbb #accueil-1740 .rumeurs-liste .rumeur { left: calc(96px + var(--esp)); right: calc(96px + var(--esp)); }
+
+/* Toutes les rangées de forums */
+body#modernbb .chapitre-1740 .forum-1740 { padding: var(--esp); column-gap: var(--esp); }
+body#modernbb .chapitre-1740 .forum-infos { gap: var(--esp-ligne); }
+body#modernbb .chapitre-1740 .forum-dernier { gap: var(--esp-ligne); }
+body#modernbb .chapitre-1740 .dernier-ligne { gap: 10px; }
+
+/* Pas de date dans les catégories (elle reste dans « Derniers écrits ») */
+body#modernbb .chapitre-1740 .dernier-par > .dernier-date { display: none !important; }
+
+/* Grimoire */
+body#modernbb .chapitre-1740[data-gabarit="fondements"] .forum-1740:first-child { padding: var(--esp); gap: var(--esp); }
+body#modernbb .chapitre-1740[data-gabarit="fondements"] .forum-1740:first-child .forum-infos { gap: var(--esp); }
+body#modernbb .chapitre-1740[data-gabarit="fondements"] .forum-1740:first-child .forum-dernier { padding-top: var(--esp); }
+
+/* Greffe et Terres : icône et boîte de droite centrées verticalement, statistiques centrées */
+body#modernbb .chapitre-1740[data-gabarit="greffe"] .forum-1740,
+body#modernbb .chapitre-1740[data-gabarit="terres"] .forum-1740 { align-items: center; }
+body#modernbb .chapitre-1740[data-gabarit="greffe"] .forum-1740 > .etat-1740,
+body#modernbb .chapitre-1740[data-gabarit="terres"] .forum-1740 > .etat-1740 { align-self: center; margin-top: 0; }
+body#modernbb .chapitre-1740[data-gabarit="greffe"] .forum-dernier,
+body#modernbb .chapitre-1740[data-gabarit="terres"] .forum-dernier {
+	align-self: stretch;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 0 0 0 var(--esp);
+}
+body#modernbb .chapitre-1740[data-gabarit="greffe"] .dernier-ligne,
+body#modernbb .chapitre-1740[data-gabarit="terres"] .dernier-ligne { align-items: center; }
+body#modernbb .chapitre-1740[data-gabarit="greffe"] .dernier-fleche,
+body#modernbb .chapitre-1740[data-gabarit="terres"] .dernier-fleche { align-self: flex-start; }
+body#modernbb .chapitre-1740 .forum-dernier .forum-stats { text-align: center; }
+
+/* Coin du feu */
+body#modernbb .chapitre-1740[data-gabarit="feu"] .forum-1740 { gap: var(--esp-ligne); }
+body#modernbb .chapitre-1740[data-gabarit="feu"] .forum-dernier { margin-top: auto; padding-top: var(--esp); }
+body#modernbb #presences-1740 .case { padding: var(--esp); gap: var(--esp-ligne); }
+body#modernbb #presences-1740 .stats { padding: 0; }
+body#modernbb #presences-1740 .stats > div { padding: var(--esp); gap: 2px; }
+body#modernbb #presences-1740 .venue { gap: var(--esp); }
+body#modernbb #legende-1740 { padding: var(--esp-ligne) var(--esp); }

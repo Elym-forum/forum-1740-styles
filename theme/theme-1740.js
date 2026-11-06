@@ -367,13 +367,8 @@
 		var ch = li.closest('.chapitre-1740');
 		var g = ch ? ch.getAttribute('data-gabarit') : '';
 		var premier = ch && $('.forum-1740', ch) === li;
-		// Greffe : les statistiques passent sous les sous-forums ; l'icône reste à gauche
-		if (g === 'greffe') {
-			var stats = $('.forum-dernier .forum-stats', li);
-			var infos = $('.forum-infos', li);
-			if (stats && infos) { infos.appendChild(stats); }
-			return;
-		}
+		// Greffe : l'icône reste à gauche et les statistiques restent dans la colonne de droite
+		if (g === 'greffe') { return; }
 		if (!((g === 'fondements' && premier) || g === 'feu')) { return; }
 		var etat = $(':scope > .etat-1740', li);
 		var ligne = $('.dernier-ligne', li);

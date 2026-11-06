@@ -340,3 +340,18 @@ body#modernbb #page-footer a:hover,
 body#modernbb .copyright a:hover,
 body#modernbb .footerbar-user a:hover { color: var(--texte-clair) !important; }
 body#modernbb .copyright { padding: 8px 0 28px !important; text-align: center; }
+
+/* Publicités : leur emplacement prend leur vraie taille au lieu de déborder
+   sur l'accueil. Rien n'est masqué ni réduit. */
+body#modernbb div:has(.adform-adbox):not(:has(#entete-1740, #accueil-1740, .chapitre-1740, #main-content)) {
+	height: auto !important;
+	max-height: none !important;
+	min-height: 0 !important;
+	overflow: visible !important;
+}
+body#modernbb .adform-adbox {
+	position: relative !important;
+	left: auto !important;
+	top: auto !important;
+	margin: 0 auto 26px !important;
+}
