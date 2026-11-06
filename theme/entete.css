@@ -198,7 +198,7 @@ html.est-connecte .seulement-invite { display: none !important; }
 
 #barre-1740 .etiquette {
 	position: absolute;
-	left: calc(100% + 20px); /* 20 px du bouton, comme les panneaux */
+	left: calc(100% + 30px); /* 20 px du bord de la barre (le bouton est à 10 px du bord), comme les panneaux */
 	top: 50%;
 	transform: translateY(-50%);
 	white-space: nowrap;
