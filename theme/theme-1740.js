@@ -111,20 +111,7 @@
 			if (deconnexion) { el.href = deconnexion.href; } else { el.style.display = 'none'; }
 		});
 
-		// Bouton « Avis » : ouvre la liste de notifications de la barre Forumactif
-		var avis = $('#barre-1740 [data-outil="avis"]');
-		if (avis) {
-			avis.addEventListener('click', function (e) {
-				var natif = document.getElementById('fa_notifications');
-				if (natif) {
-					e.preventDefault();
-					e.stopPropagation(); // sinon Forumactif referme aussitôt sa liste
-					natif.click();
-				}
-			});
-		}
-
-		if (connecte) { initCompteurs(); }
+		if (connecte) { initCompteurs(); initPanneauAvis(); }
 	}
 
 	/* ------------------------------------------------------------------
@@ -143,6 +130,8 @@
 	function majSceau(nom, n) {
 		var sceau = $('#barre-1740 [data-compteur="' + nom + '"]');
 		if (!sceau) { return; }
+		var texte = n > 0 ? (n > 99 ? '99+' : String(n)) : '';
+		if (sceau.textContent === texte) { return; } // rien à changer : on ne touche pas à la page
 		if (n > 0) {
 			sceau.textContent = n > 99 ? '99+' : String(n);
 			sceau.removeAttribute('data-vide');
@@ -164,11 +153,155 @@
 
 		// La barre Forumactif peut arriver après la page, et ses nombres changent en direct
 		var prevu = false;
-		new MutationObserver(function () {
+		new MutationObserver(function (changements) {
 			if (prevu) { return; }
+			// Les changements du thème lui-même (barre, panneau) ne comptent pas
+			var utiles = changements.some(function (c) {
+				var el = c.target.nodeType === 1 ? c.target : c.target.parentElement;
+				return el && !el.closest('#barre-1740, #panneau-avis-1740');
+			});
+			if (!utiles) { return; }
 			prevu = true;
 			window.setTimeout(function () { prevu = false; compter(); }, 400);
 		}).observe(document.body, { childList: true, subtree: true, characterData: true });
+	}
+
+	/* ------------------------------------------------------------------
+	   2 ter. Panneau des avis
+	   La barre Forumactif est masquée par le CSS, mais reste dans la page :
+	   c'est elle qui reçoit les notifications (#notif_list) et les marque lues.
+	   Le panneau du thème en affiche une copie à côté de la barre d'outils.
+	   ------------------------------------------------------------------ */
+	function initPanneauAvis() {
+		var bouton = $('#barre-1740 [data-outil="avis"]');
+		if (!bouton) { return; }
+
+		var panneau = document.createElement('div');
+		panneau.id = 'panneau-avis-1740';
+		panneau.setAttribute('role', 'dialog');
+		panneau.setAttribute('aria-label', 'Avis');
+		panneau.hidden = true;
+		panneau.innerHTML =
+			'<div class="pa-tete">' +
+				'<span class="pa-titre">Avis</span>' +
+				'<a class="pa-tout" href="/profile?mode=editprofile&amp;page_profil=notifications">tout voir</a>' +
+				'<button type="button" class="pa-fermer" aria-label="Fermer">\u00D7</button>' +
+			'</div>' +
+			'<ul class="pa-liste"></ul>';
+		document.body.appendChild(panneau);
+		var liste = $('.pa-liste', panneau);
+		var nonLus = {};
+
+		function sources() {
+			return $$('#notif_list > li').filter(function (li) { return /^n\d+$/.test(li.id); });
+		}
+
+		function rendre() {
+			var items = sources().reverse(); // les plus récents d'abord
+			liste.innerHTML = '';
+			if (!items.length) {
+				var vide = document.createElement('li');
+				vide.className = 'pa-vide';
+				vide.textContent = 'Aucun avis pour l\u2019instant.';
+				liste.appendChild(vide);
+				return;
+			}
+			items.forEach(function (li) {
+				var texte = $('.contentText', li);
+				var heure = $('.contentTime', li);
+				var suppr = $('a.delete', li);
+				var el = document.createElement('li');
+				el.className = 'pa-avis' + (nonLus[li.id] ? ' est-non-lu' : '');
+				var t = document.createElement('div');
+				t.className = 'pa-texte';
+				if (texte) { Array.prototype.forEach.call(texte.childNodes, function (n) { t.appendChild(n.cloneNode(true)); }); }
+				var h = document.createElement('div');
+				h.className = 'pa-heure';
+				h.textContent = heure ? heure.textContent : '';
+				el.appendChild(t);
+				el.appendChild(h);
+				if (suppr) {
+					var b = document.createElement('button');
+					b.type = 'button';
+					b.className = 'pa-suppr';
+					b.setAttribute('aria-label', 'Supprimer cet avis');
+					b.textContent = '\u00D7';
+					b.addEventListener('click', function (e) {
+						e.preventDefault();
+						e.stopPropagation();
+						suppr.click(); // Forumactif supprime l'avis de son côté
+						if (el.parentNode) { el.parentNode.removeChild(el); }
+					});
+					el.appendChild(b);
+				}
+				liste.appendChild(el);
+			});
+		}
+
+		function placer() {
+			panneau.style.left = '';
+			panneau.style.top = '';
+			if (window.innerWidth <= 1100) { return; } // petits écrans : position gérée par le CSS
+			var r = bouton.getBoundingClientRect();
+			panneau.style.left = (r.right + 14) + 'px';
+			var haut = Math.max(12, Math.min(r.top - 10, window.innerHeight - panneau.offsetHeight - 12));
+			panneau.style.top = haut + 'px';
+		}
+
+		// Ouvre la liste Forumactif (invisible) : c'est ce qui marque les avis comme lus
+		function marquerLus() {
+			var natif = document.getElementById('fa_notifications');
+			var listeNative = document.getElementById('notif_list');
+			if (!natif) { return; }
+			if (listeNative && listeNative.style.display === 'block') { natif.click(); }
+			natif.click();
+		}
+
+		function ouvrir() {
+			nonLus = {};
+			$$('#notif_list > li.unread').forEach(function (li) { nonLus[li.id] = true; });
+			rendre();
+			// Avant d'afficher le panneau : le clic envoyé à Forumactif remonte jusqu'à la page
+			// et fermerait sinon le panneau aussitôt
+			marquerLus();
+			panneau.hidden = false;
+			bouton.setAttribute('aria-expanded', 'true');
+			placer();
+		}
+
+		function fermer() {
+			panneau.hidden = true;
+			bouton.setAttribute('aria-expanded', 'false');
+		}
+
+		bouton.setAttribute('aria-haspopup', 'dialog');
+		bouton.setAttribute('aria-expanded', 'false');
+		bouton.addEventListener('click', function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			if (panneau.hidden) { ouvrir(); } else { fermer(); }
+		});
+		$('.pa-fermer', panneau).addEventListener('click', fermer);
+		panneau.addEventListener('click', function (e) { e.stopPropagation(); });
+		document.addEventListener('click', function () { if (!panneau.hidden) { fermer(); } });
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape' && !panneau.hidden) { fermer(); bouton.focus(); }
+		});
+		window.addEventListener('resize', function () { if (!panneau.hidden) { placer(); } });
+
+		// Nouvel avis pendant que le panneau est ouvert : on le met à jour
+		var prevu = false;
+		new MutationObserver(function (changements) {
+			if (panneau.hidden || prevu) { return; }
+			// On ignore les changements faits dans le panneau lui-même
+			var ailleurs = changements.some(function (c) {
+				var el = c.target.nodeType === 1 ? c.target : c.target.parentElement;
+				return el && !el.closest('#barre-1740, #panneau-avis-1740');
+			});
+			if (!ailleurs) { return; }
+			prevu = true;
+			window.setTimeout(function () { prevu = false; if (!panneau.hidden) { rendre(); placer(); } }, 400);
+		}).observe(document.body, { childList: true, subtree: true });
 	}
 
 	/* ------------------------------------------------------------------
