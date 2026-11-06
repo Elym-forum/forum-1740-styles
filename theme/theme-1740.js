@@ -181,14 +181,21 @@
 	function placerPanneau(panneau, bouton) {
 		panneau.style.left = '';
 		panneau.style.top = '';
+		panneau.style.bottom = '';
 		if (window.innerWidth <= 1100) { return; } // petits écrans : position gérée par le CSS
 		var r = bouton.getBoundingClientRect();
 		var barre = document.getElementById('barre-1740');
 		var droite = barre ? barre.getBoundingClientRect().right : r.right;
 		// + 4 px : le double filet de la boîte (outline) dépasse de 4 px vers l'extérieur
 		panneau.style.left = (droite + ECART_PANNEAU + 4) + 'px';
-		var haut = Math.max(12, Math.min(r.top - 10, window.innerHeight - panneau.offsetHeight - 12));
-		panneau.style.top = haut + 'px';
+		// La boîte s'aligne sur le haut du bouton. Si elle dépasserait en bas de l'écran,
+		// on l'accroche plutôt par le bas du bouton : elle grandit alors vers le haut.
+		if (r.top - 10 + panneau.offsetHeight > window.innerHeight - 12) {
+			panneau.style.top = 'auto';
+			panneau.style.bottom = Math.max(12, window.innerHeight - r.bottom - 10) + 'px';
+		} else {
+			panneau.style.top = Math.max(12, r.top - 10) + 'px';
+		}
 	}
 
 	/* ------------------------------------------------------------------
