@@ -1088,6 +1088,13 @@
 			var liens = $$('.ariane-1740 a.nav');
 			if (liens.length > 1) { surtitre.textContent = liens[liens.length - 1].textContent.trim(); }
 		}
+		// « Surveiller les réponses de ce sujet » / « Arrêter de surveiller ce sujet » : libellés courts
+		$$('.surveiller-1740 a').forEach(function (a) {
+			var t = a.textContent.trim().toLowerCase();
+			if (!t) { return; }
+			a.title = a.textContent.trim();
+			a.textContent = /^arr/.test(t) ? 'Ne plus surveiller' : 'Surveiller';
+		});
 		$$('.post-1740 .topic-date').forEach(function (el) {
 			// Seul le premier nœud texte contient la date (le reste : votes éventuels)
 			var n = el.firstChild;
