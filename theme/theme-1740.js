@@ -608,7 +608,7 @@
 			return { audio: a, cible: Math.min(1, volume * part) };
 		}
 		var couches = [piste(CONFIG.musique, 1)];
-		if (CONFIG.ambiance) { couches.push(piste(CONFIG.ambiance, 0.55)); }
+		if (CONFIG.ambiance) { couches.push(piste(CONFIG.ambiance, 0.7)); }
 		var corbeaux = (CONFIG.corbeaux || []).map(function (url) {
 			var a = new Audio(url);
 			a.preload = 'none';
