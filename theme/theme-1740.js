@@ -1621,6 +1621,52 @@
 	/* ------------------------------------------------------------------
 	   Démarrage
 	   ------------------------------------------------------------------ */
+	/* ---------- Topic'it : retiré des formulaires (connexion, inscription) ---------- */
+	function retirerTopicit() {
+		var zone = $('#main-content') || document.body;
+		var boutons = $$('[class*="topicit" i], [class*="topic-it" i], [id*="topicit" i], [id*="topic-it" i], a[href*="topicit" i], a[href*="topic-it" i], img[src*="topicit" i], iframe[src*="topicit" i]', zone)
+			.concat($$('a, button, div, span', zone).filter(function (el) {
+				return el.children.length <= 2 && /^\s*topic.?it\s*$/i.test(el.textContent);
+			}));
+		boutons.forEach(function (el) {
+			var dl = el.closest('dl');
+			if (dl && !dl.querySelector('input:not([type="hidden"]):not([class*="topicit" i])')) { dl.hidden = true; dl.style.display = 'none'; return; }
+			/* Remonte jusqu'à la colonne entière (bouton + « Ou ») : on s'arrête
+			   quand le parent contient aussi les champs de connexion */
+			var bloc = el;
+			while (bloc.parentElement && bloc.parentElement !== zone
+				&& !bloc.parentElement.querySelector('input:not([type="hidden"]), textarea, select')) { bloc = bloc.parentElement; }
+			bloc.style.display = 'none';
+			/* La colonne de gauche reprend toute la largeur */
+			var parent = bloc.parentElement;
+			if (parent && parent !== zone) {
+				var vus = Array.prototype.filter.call(parent.children, function (c) { return c !== bloc && getComputedStyle(c).display !== 'none'; });
+				if (vus.length === 1) {
+					parent.style.display = 'block';
+					vus[0].style.width = 'auto';
+					vus[0].style.maxWidth = 'none';
+					vus[0].style.flex = '1 1 auto';
+				}
+			}
+			[bloc.previousElementSibling, bloc.nextElementSibling].forEach(function (voisin) {
+				if (voisin && /^\s*ou\s*$/i.test(voisin.textContent)) { voisin.style.display = 'none'; }
+			});
+		});
+		$$('span, div, p, b, strong', zone).forEach(function (el) {
+			if (!el.children.length && /^\s*ou\s*$/i.test(el.textContent) && el.closest('.panel, form')) { el.style.display = 'none'; }
+		});
+	}
+
+	/* ---------- Onglets du profil : on retire ceux qui ne servent pas ---------- */
+	function nettoyerOngletsProfil() {
+		var inutiles = /^(amis et ignorés|membres suivis|favoris)$/i;
+		$$('#main-content a[href*="page_profil"], #main-content a[href*="mode=editprofile"]').forEach(function (a) {
+			if (!inutiles.test(a.textContent.trim())) { return; }
+			var li = a.closest('li') || a;
+			li.style.display = 'none';
+		});
+	}
+
 	function demarrer() {
 		document.documentElement.classList.add('theme-1740');
 		lireReglages();
@@ -1644,6 +1690,8 @@
 		titresEcriture();
 		if ($('.ames-1740')) { initRecensement(); }
 		if ($('#text_editor_textarea')) { initEditeur(); }
+		retirerTopicit();
+		nettoyerOngletsProfil();
 	}
 
 	if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', demarrer); }
