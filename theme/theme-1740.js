@@ -1262,26 +1262,36 @@
 		}
 		$$('.sujet-1740').forEach(function (li) { li.classList.add('est-' + etatDe(li)); });
 
-		// Groupes : on sépare annonces et notes si Forumactif les a mis ensemble
-		$$('.groupe-1740').forEach(function (g) {
-			var rangees = $$('.sujet-1740', g);
-			var annonces = rangees.filter(function (li) { return li.classList.contains('est-annonce'); });
-			var notes = rangees.filter(function (li) { return li.classList.contains('est-epingle'); });
-			var nom = $('.groupe-nom-1740', g);
-			if (annonces.length && notes.length) {
-				var copie = g.cloneNode(true);
-				$$('.sujet-1740', copie).forEach(function (li) { li.remove(); });
-				var nomCopie = $('.groupe-nom-1740', copie);
-				if (nomCopie) { nomCopie.textContent = 'Épinglés'; }
-				var liste = $('.groupe-liste-1740', copie);
-				notes.forEach(function (li) { liste.appendChild(li); });
-				g.parentNode.insertBefore(copie, g.nextSibling);
-				if (nom) { nom.textContent = 'Annonces'; }
-			} else if (notes.length && notes.length === rangees.length && nom) {
-				nom.textContent = 'Épinglés';
-			} else if (annonces.length && annonces.length === rangees.length && nom) {
-				nom.textContent = 'Annonces';
-			}
+		// Groupes : on reconstruit Annonces, Épinglés et Sujets d'après le type de chaque sujet,
+		// quel que soit le regroupement fait par Forumactif
+		$$('.groupes-1740').forEach(function (conteneur) {
+			var groupes = $$('.groupe-1740', conteneur);
+			if (!groupes.length) { return; }
+			var rangees = $$('.sujet-1740', conteneur);
+			if (!rangees.length) { return; }
+			var modele = groupes[0].cloneNode(true);
+			$$('.sujet-1740, .sujet-vide-1740', modele).forEach(function (li) { li.remove(); });
+			var ordre = [
+				{ nom: 'Annonces', classe: 'est-annonce' },
+				{ nom: 'Épinglés', classe: 'est-epingle' },
+				{ nom: 'Sujets', classe: null }
+			];
+			var nouveaux = [];
+			ordre.forEach(function (o) {
+				var lot = rangees.filter(function (li) {
+					var special = li.classList.contains('est-annonce') || li.classList.contains('est-epingle');
+					return o.classe ? li.classList.contains(o.classe) : !special;
+				});
+				if (!lot.length) { return; }
+				var g = modele.cloneNode(true);
+				var nom = $('.groupe-nom-1740', g);
+				if (nom) { nom.textContent = o.nom; }
+				var liste = $('.groupe-liste-1740', g);
+				lot.forEach(function (li) { liste.appendChild(li); });
+				nouveaux.push(g);
+			});
+			groupes.forEach(function (g) { g.remove(); });
+			nouveaux.forEach(function (g) { conteneur.appendChild(g); });
 		});
 
 		// Numéros de pages d'un sujet : seulement les liens, sans « Aller à la page »
