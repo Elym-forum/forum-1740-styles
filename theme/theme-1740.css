@@ -1,7 +1,7 @@
 /* ==========================================================================
    THÈME 1740 (© Elym) — feuille assemblée
    Ne pas modifier directement : elle est générée par outils/assembler.py
-   à partir de themes.css, base.css, entete.css, index.css, sujet.css, liste.css et lettres.css.
+   à partir de themes.css, base.css, entete.css, index.css, sujet.css, liste.css, lettres.css et membres.css.
    ========================================================================== */
 
 /* ---------- themes.css ---------- */
@@ -3503,4 +3503,190 @@ html body#modernbb .revue-zone-1740 .post:not(.revue-msg-1740) :is(h3, .h3, .top
 html body#modernbb .revue-zone-1740 .post:not(.revue-msg-1740) .author { margin: 0 0 6px !important; font-size: 14px !important; font-style: italic; color: var(--texte-doux) !important; }
 html body#modernbb .revue-zone-1740 .post:not(.revue-msg-1740) .author img { display: none; }
 html body#modernbb .revue-zone-1740 .post:not(.revue-msg-1740) .content { font-family: 'Alegreya', Georgia, serif !important; font-size: 15px !important; line-height: 1.5 !important; color: #CFC8B8 !important; }
+
+/* ---------- membres.css ---------- */
+/* ==========================================================================
+   RECENSEMENT 1740 (© Elym) — liste des membres
+   Template : memberlist_body
+   ========================================================================== */
+html body#modernbb .sujet-cadre-1740.recensement-tete-1740 {
+	margin: 0 0 18px;
+	padding: var(--esp) !important;
+	background: rgba(22, 20, 15, 0.96) !important;
+	background-clip: padding-box !important;
+}
+body#modernbb .recensement-tete-1740 h1.page-title { color: var(--texte-clair) !important; }
+
+/* Recherche et tri, sur une ligne */
+.recensement-filtres-1740 {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 10px 18px;
+	margin: 10px 0 0;
+}
+.champ-r-1740 {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.08em;
+	color: var(--texte-doux);
+}
+.champ-r-1740 svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+body#modernbb .champ-r-1740 input[type="text"],
+body#modernbb .champ-r-1740 select {
+	min-height: 34px;
+	padding: 0 8px !important;
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: var(--fond-nuit) !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 15px !important;
+	color: var(--texte) !important;
+}
+body#modernbb .chercher-1740 input[type="text"] { width: 170px; font-style: italic; }
+body#modernbb .recensement-filtres-1740 input.grave-1740 {
+	min-height: 34px;
+	padding: 0 16px !important;
+	border: 1px solid var(--accent) !important;
+	border-radius: 0 !important;
+	background: rgba(var(--accent-rgb), 0.16) var(--img-grain) !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 14px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.1em;
+	color: var(--texte-clair) !important;
+	cursor: pointer;
+}
+
+/* ---------- Les médaillons ---------- */
+body#modernbb .recensement-1740 { margin: 0 0 18px; padding: 8px; }
+.ames-1740 { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
+.ames-vide-1740 { grid-column: 1 / -1; margin: 0; padding: 24px; text-align: center; font-style: italic; color: var(--texte-doux); }
+
+.ame-1740 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	padding: 14px 10px 12px;
+	border: 1px solid var(--ligne);
+	background: var(--surface) var(--img-grain);
+	text-align: center;
+	transition: border-color 0.4s;
+}
+.ame-1740:hover { border-color: var(--ligne-douce); }
+
+.ame-nom-1740 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 2.1em;
+	font-family: 'Grenze Gotisch', serif;
+	font-size: 22px;
+	line-height: 1.05;
+	color: var(--texte-clair);
+}
+.ame-nom-1740 *,
+.ame-nom-1740 strong { font: inherit !important; }
+.ame-nom-1740:hover { text-decoration: none; }
+
+.ame-medaillon-1740 {
+	position: relative;
+	display: block;
+	width: 150px;
+	height: 184px;
+	margin: 8px 0 6px;
+	padding: 5px;
+	box-sizing: border-box;
+	border: 1px solid var(--accent);
+	border-radius: 50%;
+	background: var(--fond-nuit);
+	box-shadow: 0 0 0 4px var(--surface-pleine), 0 0 0 5px var(--ligne-forte), 0 0 0 9px var(--surface-pleine), 0 0 0 10px var(--ligne);
+}
+.ame-medaillon-1740::before,
+.ame-medaillon-1740::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	z-index: 2;
+	width: 9px;
+	height: 9px;
+	background: var(--surface-pleine);
+	border: 1px solid var(--accent);
+	transform: translateX(-50%) rotate(45deg);
+}
+.ame-medaillon-1740::before { top: -15px; }
+.ame-medaillon-1740::after { bottom: -15px; }
+.ame-cadre-1740 { position: relative; display: block; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; }
+body#modernbb .ame-cadre-1740 img {
+	display: block;
+	width: 100% !important;
+	height: 100% !important;
+	max-width: none !important;
+	max-height: none !important;
+	object-fit: cover;
+	border: none !important;
+	border-radius: 0 !important;
+	filter: brightness(0.85) saturate(0.8) sepia(0.1);
+	transition: filter 0.8s, transform 1.2s;
+}
+body#modernbb .ame-1740:hover .ame-cadre-1740 img,
+body#modernbb .ame-1740:focus-within .ame-cadre-1740 img { filter: brightness(0.3) saturate(0.5) sepia(0.25); transform: scale(1.04); }
+
+/* Voile au survol : faceclaim, arrivée, dernière visite */
+.ame-voile-1740 {
+	position: absolute;
+	inset: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 6px;
+	padding: 0 18px;
+	text-align: center;
+	background: radial-gradient(ellipse at center, rgba(14, 13, 10, 0.78), rgba(14, 13, 10, 0.45) 80%);
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+.ame-1740:hover .ame-voile-1740,
+.ame-1740:focus-within .ame-voile-1740 { opacity: 1; }
+.ame-voile-1740 div { display: flex; flex-direction: column; }
+.ame-voile-1740 dt { font-family: 'Alegreya SC', serif; font-size: 11px; letter-spacing: 0.12em; color: var(--accent-clair); }
+.ame-voile-1740 dd { margin: 0; font-size: 14px; line-height: 1.2; color: var(--texte-clair); font-variant-numeric: lining-nums tabular-nums; }
+
+/* Liens : Fiche ◇ Lettre */
+.ame-liens-1740 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 22px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.08em;
+}
+.ame-liens-1740 img { display: none; }
+.ame-liens-1740 > span:empty { display: none; }
+.ame-liens-1740 > span:not(:empty) + span:not(:empty)::before {
+	content: "";
+	display: inline-block;
+	width: 4px;
+	height: 4px;
+	margin: 0 10px 2px 0;
+	border: 1px solid var(--ligne-douce);
+	transform: rotate(45deg);
+}
+
+body#modernbb .recensement-pages-1740 { display: flex !important; justify-content: center; margin: 0 0 18px !important; }
+body#modernbb .recensement-pages-1740:not(:has(a)) { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+	.ame-cadre-1740 img { transition: none; }
+}
 
