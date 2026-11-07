@@ -513,6 +513,10 @@ body#modernbb .adform-adbox {
 	.progression-1740 .p-seg.dernier, .progression-1740 .p-seg::before { animation: none; }
 }
 
+/* Menus déroulants : la liste qui s'ouvre suit le thème sombre */
+body#modernbb select { color-scheme: dark; }
+body#modernbb select option { background-color: var(--fond-nuit); color: var(--texte); }
+
 /* ---------- entete.css ---------- */
 /* ==========================================================================
    FORUM 1740 — EN-TÊTE ET BARRE D'OUTILS (© Elym)

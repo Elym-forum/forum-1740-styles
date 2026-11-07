@@ -417,3 +417,7 @@ body#modernbb .adform-adbox {
 @media (prefers-reduced-motion: reduce) {
 	.progression-1740 .p-seg.dernier, .progression-1740 .p-seg::before { animation: none; }
 }
+
+/* Menus déroulants : la liste qui s'ouvre suit le thème sombre */
+body#modernbb select { color-scheme: dark; }
+body#modernbb select option { background-color: var(--fond-nuit); color: var(--texte); }
