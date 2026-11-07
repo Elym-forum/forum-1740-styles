@@ -1351,7 +1351,10 @@
 			var d = DOSSIERS_1740[cle];
 			var lien = $('a', li);
 			if (d) {
-				if (lien) { lien.textContent = d.onglet; }
+				if (lien) {
+					Array.prototype.slice.call(lien.childNodes).forEach(function (n) { if (n.nodeType === 3) { n.remove(); } });
+					lien.appendChild(document.createTextNode(d.onglet));
+				}
 				else {
 					// Dossier courant affiché sans lien par Forumactif : on garde l'icône, on remplace le texte
 					Array.prototype.slice.call(li.childNodes).forEach(function (n) { if (n.nodeType === 3 && n.nodeValue.trim()) { n.nodeValue = d.onglet; } });
@@ -1359,9 +1362,12 @@
 			}
 			if (cle === dossier) { li.setAttribute('aria-current', 'page'); li.classList.add('actif'); }
 			// Les icônes vont dans le lien pour être cliquables
-			var ico = $('svg', li);
+			var ico = $(':scope > svg', li);
 			if (ico && lien) { lien.insertBefore(ico, lien.firstChild); }
 		});
+
+		// Losange qui glisse sous le dossier actif
+		placerMarqueOnglets();
 
 		// Titre de la boîte
 		var titre = $('.lettres-titre-1740');
@@ -1399,6 +1405,72 @@
 		});
 	}
 
+
+	function placerMarqueOnglets() {
+		var ul = $('.onglets-l-1740');
+		var actif = $('.onglet-l-1740.actif');
+		if (!ul || !actif) { return; }
+		var marque = $('.onglets-marque-1740', ul);
+		if (!marque) {
+			marque = document.createElement('span');
+			marque.className = 'onglets-marque-1740';
+			marque.setAttribute('aria-hidden', 'true');
+			ul.appendChild(marque);
+		}
+		marque.style.left = (actif.offsetLeft + actif.offsetWidth / 2) + 'px';
+	}
+
+	// Changer de dossier sans recharger la page (seulement depuis la boîte aux lettres)
+	function initOngletsLettres() {
+		// Le losange se recale une fois les polices chargées, et au redimensionnement
+		window.addEventListener('load', placerMarqueOnglets);
+		window.addEventListener('resize', placerMarqueOnglets);
+		if (document.fonts && document.fonts.ready) { document.fonts.ready.then(placerMarqueOnglets); }
+		if (!$('form[name="privmsg_list"]') || !window.fetch || !window.DOMParser) { return; }
+		document.addEventListener('click', function (e) {
+			var a = e.target.closest && e.target.closest('.onglet-l-1740 a');
+			if (!a || e.ctrlKey || e.metaKey || e.shiftKey) { return; }
+			e.preventDefault();
+			chargerDossier(a.href, true);
+		});
+		window.addEventListener('popstate', function () { chargerDossier(location.href, false); });
+	}
+
+	function chargerDossier(url, memoriser) {
+		var liste = $('.lettres-1740');
+		if (!liste) { location.href = url; return; }
+		// Le losange part tout de suite vers l'onglet cliqué
+		var cle = (url.match(/[?&]folder=(\w+)/) || [])[1] || 'inbox';
+		$$('.onglet-l-1740').forEach(function (li) {
+			var oui = li.getAttribute('data-dossier') === cle;
+			li.classList.toggle('actif', oui);
+			if (oui) { li.setAttribute('aria-current', 'page'); } else { li.removeAttribute('aria-current'); }
+		});
+		placerMarqueOnglets();
+		liste.classList.add('charge-1740');
+		fetch(url, { credentials: 'same-origin' })
+			.then(function (r) { return r.text(); })
+			.then(function (html) {
+				var doc = new DOMParser().parseFromString(html, 'text/html');
+				var nouvelle = doc.querySelector('.lettres-1740');
+				if (!nouvelle) { location.href = url; return; }
+				liste.parentNode.replaceChild(document.importNode(nouvelle, true), liste);
+				var coffret = doc.querySelector('.coffret-1740');
+				var ici = $('.coffret-1740');
+				if (ici) { ici.innerHTML = coffret ? coffret.innerHTML : ''; }
+				var titre = $('.lettres-titre-1740');
+				if (titre) { titre.textContent = 'Lettres'; }
+				// Onglets : Forumactif écrit le dossier courant sans lien ; on reprend leur nouvelle version
+				$$('.onglet-l-1740').forEach(function (li) {
+					var neuf = doc.querySelector('.onglet-l-1740[data-dossier="' + li.getAttribute('data-dossier') + '"]');
+					if (neuf) { li.innerHTML = neuf.innerHTML; }
+				});
+				if (memoriser) { history.pushState({}, '', url); }
+				initLettres();
+			})
+			.catch(function () { location.href = url; });
+	}
+
 	// Page « Poster » utilisée pour une lettre : titres de la correspondance
 	function titresEcriture() {
 		var h1 = $('.ecriture-tete-1740 h1.page-title');
@@ -1433,7 +1505,7 @@
 		if ($('.post-1740')) { initSujet(); }
 		if ($('.forum-tete-1740')) { initListe(); }
 		initProgression();
-		if ($('.lettres-tete-1740')) { initLettres(); }
+		if ($('.lettres-tete-1740')) { initLettres(); initOngletsLettres(); }
 		titresEcriture();
 		if ($('#text_editor_textarea')) { initEditeur(); }
 	}
