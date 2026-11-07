@@ -1,0 +1,1156 @@
+/* ==========================================================================
+   SUJET ET ÉCRITURE 1740 (© Elym)
+   Templates : viewtopic_body, posting_body, posting_topic_review
+   ========================================================================== */
+
+/* ==========================================================================
+   SUJET 1740 (© Elym) — tête du sujet, actions, messages
+   Template : viewtopic_body
+   ========================================================================== */
+
+/* ---------- Fil d'Ariane ---------- */
+body#modernbb .sujet-tete-1740 {
+	display: flex !important;
+	flex-direction: column;
+	gap: 14px;
+	margin: 0 0 18px !important;
+	padding: 0 !important;
+	background: none !important;
+	border: none !important;
+}
+body#modernbb .ariane-1740 {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px 0;
+	margin: 0;
+	padding: 0;
+	font-size: 0; /* masque les « :: » écrits par Forumactif */
+}
+body#modernbb .ariane-1740 a.nav {
+	display: inline-flex;
+	align-items: center;
+	font-family: 'Alegreya SC', serif;
+	font-size: 15px;
+	letter-spacing: 0.06em;
+	color: var(--texte-doux);
+}
+body#modernbb .ariane-1740 a.nav:hover { color: var(--texte-clair); }
+body#modernbb .ariane-1740 a.nav + a.nav::before {
+	content: "";
+	width: 7px;
+	height: 7px;
+	margin: 0 12px;
+	border: 1px solid var(--accent);
+	transform: rotate(45deg);
+}
+
+/* ---------- Bloc de titre ---------- */
+body#modernbb .sujet-cadre-1740 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	padding: 6px 20px 10px;
+	text-align: center;
+}
+body#modernbb .sujet-surtitre-1740 { font-style: italic; font-size: 17px; color: var(--texte-doux); min-height: 1em; }
+body#modernbb .sujet-cadre-1740 h1.page-title {
+	margin: 0;
+	padding: 0;
+	border: none;
+	font-family: 'Grenze Gotisch', serif !important;
+	font-weight: 400;
+	font-size: 46px;
+	line-height: 1.05;
+	text-transform: none;
+	letter-spacing: 0;
+}
+body#modernbb .sujet-cadre-1740 h1.page-title a { color: var(--texte-clair) !important; font: inherit; }
+body#modernbb .sujet-cadre-1740 h1.page-title a:hover { text-decoration: none; }
+body#modernbb #push-bell { font-size: 20px; color: var(--ocre-doux) !important; vertical-align: middle; }
+body#modernbb .sujet-cadre-1740 .ornement-1740 { max-width: 100%; }
+body#modernbb .sujet-cadre-1740 .ornement-1740 .filet { stroke: var(--ligne-forte); fill: none; stroke-dasharray: 340; animation: trace-l-1740 2.2s ease-out both; }
+body#modernbb .sujet-cadre-1740 .ornement-1740 .losange { stroke: var(--accent); fill: none; }
+body#modernbb .sujet-cadre-1740 .ornement-1740 .point { fill: var(--accent); }
+body#modernbb .poster-list { display: none !important; } /* participants : retirés */
+
+/* ---------- Actions : feuillets et boutons ---------- */
+body#modernbb .sujet-actions-1740 {
+	display: flex !important;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px 14px;
+	margin: 0 0 18px !important;
+	padding: 0 !important;
+	background: none !important;
+	border: none !important;
+}
+body#modernbb .sujet-actions-1740.bottom { margin: 18px 0 !important; }
+
+body#modernbb .feuillets-1740 {
+	display: inline-flex !important;
+	align-items: center;
+	gap: 4px;
+	float: none !important;
+	margin: 0 !important;
+	font-family: 'Alegreya SC', serif;
+	font-size: 16px;
+	letter-spacing: 0.08em;
+	color: var(--texte-doux);
+}
+body#modernbb .feuillets-1740 .feuillets-mot { margin-right: 6px; }
+body#modernbb .feuillets-1740 a,
+body#modernbb .feuillets-1740 strong {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-width: 30px;
+	height: 40px;
+	padding: 0 !important;
+	border: none !important;
+	border-radius: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+	font-weight: 400;
+	font-variant-numeric: oldstyle-nums;
+	color: var(--accent-lien) !important;
+}
+body#modernbb .feuillets-1740 strong { color: var(--texte-clair) !important; }
+body#modernbb .feuillets-1740 strong::after {
+	content: "";
+	width: 5px;
+	height: 5px;
+	margin-top: 3px;
+	background: var(--accent);
+	transform: rotate(45deg);
+}
+body#modernbb .feuillets-1740 img { filter: grayscale(1) brightness(1.6); opacity: 0.6; }
+
+body#modernbb .sujet-boutons-1740 {
+	display: flex !important;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 10px;
+	margin-left: auto;
+	float: none !important;
+}
+body#modernbb .sujet-boutons-1740 #addthis-toolbar { display: none !important; } /* partage sur les réseaux */
+body#modernbb .surveiller-1740 a {
+	padding: 8px 6px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 15px;
+	letter-spacing: 0.1em;
+	color: var(--accent-lien);
+}
+body#modernbb .surveiller-1740 a img { display: none; }
+
+body#modernbb a.grave-1740 {
+	display: inline-flex !important;
+	align-items: center;
+	gap: 8px;
+	min-height: 38px;
+	box-sizing: border-box;
+	margin: 0 !important;
+	padding: 0 14px !important;
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: rgba(14, 13, 10, 0.55) var(--img-grain) !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 15px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.1em;
+	text-transform: none !important;
+	color: var(--texte) !important;
+	transition: border-color 0.4s, color 0.4s;
+}
+body#modernbb a.grave-1740::before { display: none !important; }
+body#modernbb a.grave-1740:hover { border-color: var(--accent) !important; color: var(--texte-clair) !important; text-decoration: none; }
+body#modernbb a.grave-1740.plein { border-color: var(--accent) !important; background: rgba(var(--accent-rgb), 0.16) var(--img-grain) !important; color: var(--texte-clair) !important; }
+body#modernbb a.grave-1740.plein:hover { background: rgba(var(--accent-rgb), 0.28) var(--img-grain) !important; }
+body#modernbb a.grave-1740 svg { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; }
+
+/* Sujet précédent / aller en bas / sujet suivant */
+body#modernbb .nav-sujets-1740 {
+	display: flex !important;
+	justify-content: center;
+	gap: 18px;
+	margin: 0 0 14px !important;
+	padding: 0 !important;
+	background: none !important;
+	border: none !important;
+}
+body#modernbb .nav-sujets-1740 img { filter: grayscale(1) brightness(1.6); opacity: 0.45; transition: opacity 0.3s; }
+body#modernbb .nav-sujets-1740 a:hover img { opacity: 0.9; }
+
+/* ==========================================================================
+   MESSAGE
+   ========================================================================== */
+body#modernbb .post.post-1740 {
+	position: relative;
+	margin: 0 0 26px !important;
+	padding: 0 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	background-color: rgba(22, 20, 15, 0.96) !important;
+	background-image: none !important;
+	color: var(--texte);
+	overflow: visible;
+}
+body#modernbb #first-post-br { display: none; }
+
+.msg-grille-1740 {
+	display: grid;
+	grid-template-columns: 256px minmax(0, 1fr);
+}
+
+/* ---------- Fiche du personnage ---------- */
+body#modernbb .post-1740 .postprofile.fiche-1740 {
+	float: none !important;
+	width: auto !important;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: 18px 24px 22px !important;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 14px;
+	background: rgba(14, 13, 10, 0.6) var(--img-grain) !important;
+	border: none !important;
+	border-right: 3px double var(--ligne) !important;
+	text-align: center;
+	color: var(--texte);
+}
+
+/* Pseudo posé sur la gravure du bandeau */
+.fiche-tete-1740 {
+	position: relative;
+	overflow: hidden;
+	align-self: stretch;
+	margin: -18px -24px 0;
+	padding: 22px 16px 18px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: var(--fond-nuit) var(--img-bandeau) center / cover;
+	border-bottom: 1px solid var(--ligne);
+}
+.fiche-tete-1740::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(rgba(14, 13, 10, 0.35), rgba(14, 13, 10, 0.75));
+}
+.fiche-nom-1740 { position: relative; display: flex; align-items: center; justify-content: center; gap: 10px; min-width: 0; }
+body#modernbb .post-1740 .postprofile-name {
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	font-family: 'Grenze Gotisch', serif !important;
+	font-size: 24px !important;
+	line-height: 1.05 !important;
+	font-weight: 400 !important;
+	overflow-wrap: anywhere;
+}
+body#modernbb .post-1740 .postprofile-name a,
+body#modernbb .post-1740 .postprofile-name span,
+body#modernbb .post-1740 .postprofile-name strong { font: inherit !important; color: inherit; }
+body#modernbb .post-1740 .postprofile-name a { color: var(--texte-clair); }
+body#modernbb .post-1740 .postprofile-name a:hover { text-decoration: none; }
+
+/* Pastille « en ligne » : visible seulement si Forumactif marque le message « online » */
+.post-1740 .pastille-1740 { display: none; width: 9px; height: 9px; flex: none; border-radius: 50%; background: var(--accent-clair); animation: lueur-1740 3.2s ease-in-out infinite; }
+.post-1740.online .pastille-1740 { display: block; }
+@keyframes lueur-1740 {
+	0%, 100% { box-shadow: 0 0 0 2px rgba(var(--accent-vif-rgb), 0.12); }
+	50% { box-shadow: 0 0 0 4px rgba(var(--accent-vif-rgb), 0.28), 0 0 8px rgba(var(--accent-vif-rgb), 0.5); }
+}
+
+/* Brume (gravure du pseudo et portrait) */
+.post-1740 .brume {
+	position: absolute;
+	inset: -10% -70%;
+	pointer-events: none;
+	background:
+		radial-gradient(ellipse 34% 20% at 28% 70%, rgba(206, 210, 186, 0.42), transparent 72%),
+		radial-gradient(ellipse 28% 14% at 62% 52%, rgba(206, 210, 186, 0.30), transparent 70%),
+		radial-gradient(ellipse 22% 10% at 80% 82%, rgba(206, 210, 186, 0.34), transparent 70%);
+	filter: blur(6px);
+	opacity: 0.5;
+	animation: derive-1740 22s ease-in-out infinite alternate;
+}
+.post-1740 .portrait-1740 .brume { inset: 40% -70% -10% -70%; opacity: 0.6; animation-duration: 31s; }
+
+/* Portrait 200 × 320 */
+.fiche-portrait-1740 { display: flex; flex-direction: column; align-items: center; }
+.portrait-cadre-1740 {
+	padding: 5px;
+	border: 1px solid var(--ligne-forte);
+	outline: 1px solid var(--ligne);
+	outline-offset: 3px;
+	background: var(--fond-nuit);
+}
+body#modernbb .post-1740 .postprofile-avatar.portrait-1740 {
+	position: relative;
+	width: 200px;
+	height: 320px;
+	overflow: hidden;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	border-radius: 0 !important;
+	background: var(--fond-nuit);
+}
+body#modernbb .post-1740 .portrait-1740 a { display: block; width: 100%; height: 100%; }
+body#modernbb .post-1740 .portrait-1740 img {
+	display: block;
+	width: 200px !important;
+	height: 320px !important;
+	max-width: none !important;
+	max-height: none !important;
+	object-fit: cover;
+	border: none !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	filter: brightness(0.82) saturate(0.75) sepia(0.12);
+	transition: filter 1.4s;
+}
+.post-1740:hover .portrait-1740 img { filter: brightness(1) saturate(0.95) sepia(0); }
+
+/* Plaque du rang, à pans coupés, posée sur le bas du portrait */
+.cartouche-fond-1740 {
+	position: relative;
+	z-index: 1;
+	margin-top: -17px;
+	padding: 1px;
+	background: var(--accent);
+	clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 10px 100%, 0 50%);
+}
+.cartouche-fond-1740:has(.cartouche-1740:empty) { display: none; }
+body#modernbb .post-1740 .postprofile-rank.cartouche-1740 {
+	margin: 0 !important;
+	padding: 5px 22px !important;
+	border: none !important;
+	background: var(--fond) var(--img-grain);
+	clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 10px 100%, 0 50%);
+	font-family: 'Alegreya SC', serif;
+	font-size: 15px;
+	line-height: 1.3;
+	letter-spacing: 0.14em;
+	color: var(--accent-vif);
+}
+.cartouche-1740 br { display: none; }
+.cartouche-1740 img { display: block; max-width: 160px; margin: 2px auto 0; }
+
+/* Registre : champs du profil avec points de conduite */
+body#modernbb .post-1740 .registre-1740 {
+	width: 100%;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	font-size: 16px;
+	text-align: left;
+}
+.registre-1740:empty { display: none; }
+.champ-1740 { display: flex; align-items: baseline; gap: 6px; }
+.champ-1740 .champ-nom .label { font-size: 0; } /* masque le « : » de Forumactif */
+body#modernbb .champ-1740 .champ-nom .label > span {
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.08em;
+	color: var(--texte-doux) !important;
+	white-space: nowrap;
+}
+.champ-1740 .champ-points { flex: 1; min-width: 12px; border-bottom: 1px dotted var(--ligne-douce); transform: translateY(-4px); }
+.champ-1740 .champ-valeur { color: var(--texte-clair); font-variant-numeric: oldstyle-nums; text-align: right; }
+
+/* Contacts : petits sceaux ronds */
+body#modernbb .post-1740 .contacts-1740 {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	margin: 4px 0 0 !important;
+	padding: 0 !important;
+	border: none !important;
+}
+body#modernbb .contacts-1740 a {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	margin: 0 !important;
+	box-sizing: border-box;
+	border: 1px solid var(--ligne-forte);
+	border-radius: 50%;
+	color: var(--texte-doux);
+	transition: color 0.3s, border-color 0.3s, background 0.3s;
+}
+body#modernbb .contacts-1740 a:hover { color: var(--texte-clair); border-color: var(--accent); background: rgba(var(--accent-rgb), 0.14); }
+body#modernbb .contacts-1740 a img { width: 16px; height: 16px; filter: grayscale(1) brightness(1.6); opacity: 0.7; }
+/* Les quatre liens connus : icône dessinée à la place de l'image Forumactif */
+body#modernbb .contacts-1740 a[href^="/u"] img,
+body#modernbb .contacts-1740 a[href*="privmsg"] img,
+body#modernbb .contacts-1740 a[href*="mode=email"] img,
+body#modernbb .contacts-1740 a[target="_blank"] img { display: none; }
+body#modernbb .contacts-1740 a[href^="/u"]::before,
+body#modernbb .contacts-1740 a[href*="privmsg"]::before,
+body#modernbb .contacts-1740 a[href*="mode=email"]::before,
+body#modernbb .contacts-1740 a[target="_blank"]::before {
+	content: "";
+	width: 17px;
+	height: 17px;
+	background: currentColor;
+	-webkit-mask: var(--icone) center / contain no-repeat;
+	mask: var(--icone) center / contain no-repeat;
+}
+body#modernbb .contacts-1740 a[href^="/u"] { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round'%3E%3Ccircle cx='12' cy='9' r='4'/%3E%3Cpath d='M4 21c1-4 4.5-6 8-6s7 2 8 6'/%3E%3C/svg%3E"); }
+body#modernbb .contacts-1740 a[href*="privmsg"] { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.4' stroke-linejoin='round'%3E%3Crect x='3' y='6' width='18' height='12'/%3E%3Cpath d='M3 6l9 7 9-7'/%3E%3C/svg%3E"); }
+body#modernbb .contacts-1740 a[href*="mode=email"] { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 18l4-12 12 4-7 2z'/%3E%3Cpath d='M13 12l-5 6'/%3E%3C/svg%3E"); }
+body#modernbb .contacts-1740 a[target="_blank"] { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.4'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18'/%3E%3C/svg%3E"); }
+
+/* ---------- Colonne du message ---------- */
+.colonne-msg-1740 { display: flex; flex-direction: column; min-width: 0; padding: 16px 24px 12px; }
+
+body#modernbb .post-1740 .post-head.tete-msg-1740 {
+	display: flex;
+	align-items: flex-start;
+	gap: 14px;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
+}
+.titre-bloc-1740 { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+body#modernbb .post-1740 h2.topic-title {
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 21px !important;
+	font-weight: 400 !important;
+	line-height: 1.3;
+	letter-spacing: 0.05em;
+	text-transform: none;
+}
+body#modernbb .post-1740 h2.topic-title img[src*="empty.gif"] { display: none; }
+body#modernbb .post-1740 h2.topic-title a {
+	color: var(--texte-clair) !important;
+	background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0 1px no-repeat;
+	transition: background-size 0.6s ease;
+}
+body#modernbb .post-1740 h2.topic-title a:hover { background-size: 100% 1px; text-decoration: none; }
+body#modernbb .post-1740 .topic-date {
+	margin: 0 !important;
+	padding: 0 !important;
+	font-size: 15px !important;
+	font-style: italic;
+	font-variant-numeric: oldstyle-nums;
+	color: var(--texte-doux) !important;
+}
+
+/* Petits boutons du message (toujours visibles, sans menu « + ») */
+body#modernbb .post-1740 ul.outils-msg-1740 {
+	position: static !important;
+	display: flex !important;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 6px;
+	margin: 0 !important;
+	padding: 0 !important;
+	list-style: none;
+	background: none !important;
+	border: none !important;
+	box-shadow: none !important;
+	opacity: 1 !important;
+	visibility: visible !important;
+	transform: none !important;
+}
+body#modernbb .post-1740 ul.outils-msg-1740 li { display: block !important; float: none !important; margin: 0 !important; padding: 0 !important; border: none !important; }
+body#modernbb .post-1740 ul.outils-msg-1740 li:empty,
+body#modernbb .post-1740 ul.outils-msg-1740 li:has(> a[href=""]) { display: none !important; }
+body#modernbb .post-1740 ul.outils-msg-1740 a,
+body#modernbb .post-1740 ul.outils-msg-1740 span[id^="post_mq"] {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	box-sizing: border-box;
+	padding: 0;
+	border: 1px solid var(--ligne);
+	border-radius: 0;
+	background: none;
+	color: var(--texte-doux);
+	cursor: pointer;
+	transition: color 0.3s, border-color 0.3s, background 0.3s;
+}
+body#modernbb .post-1740 ul.outils-msg-1740 a:hover,
+body#modernbb .post-1740 ul.outils-msg-1740 span[id^="post_mq"]:hover {
+	color: var(--texte-clair);
+	border-color: var(--accent);
+	background: rgba(var(--accent-rgb), 0.14);
+	text-decoration: none;
+}
+body#modernbb .post-1740 ul.outils-msg-1740 svg { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+body#modernbb .post-1740 ul.outils-msg-1740 img { width: 16px; height: 16px; filter: grayscale(1) brightness(1.6); opacity: 0.7; }
+
+/* Filet sous le titre, et avant la signature */
+.filet-1740 { display: flex; align-items: center; margin-top: 12px; }
+.filet-1740::before,
+.filet-1740::after { content: ""; flex: 1; height: 1px; background: var(--ligne-forte); }
+.filet-1740 svg { flex: none; }
+.filet-1740 svg path { fill: none; stroke: var(--accent); }
+.filet-1740 svg circle { fill: var(--accent); }
+.filet-signature-1740 { width: 220px; max-width: 100%; margin: 26px auto 10px; }
+
+/* Texte du message : fond uni, rien d'imposé (les codes de messages restent libres) */
+body#modernbb .post-1740 .postbody {
+	float: none !important;
+	width: auto !important;
+	margin: 0 !important;
+	padding: 18px 2px 20px !important;
+	flex: 1;
+	background: none !important;
+	border: none !important;
+}
+body#modernbb .post-1740 .postbody .content {
+	padding: 0 !important;
+	font-size: 17px !important;
+	line-height: 1.6 !important;
+	color: var(--texte) !important;
+	overflow-wrap: break-word;
+}
+body#modernbb .post-1740 .postbody .content img { max-width: 100%; }
+body#modernbb .post-1740 .edited-message { font-size: 14px; font-style: italic; color: var(--texte-doux); }
+body#modernbb .post-1740 .edited-message:empty { display: none; }
+body#modernbb .post-1740 .signature_div {
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	font-size: 15px;
+	color: var(--texte-doux);
+	text-align: center;
+}
+
+/* ---------- Pied du message : flamme, larme, haut de page ---------- */
+.pied-msg-1740 { display: flex; align-items: center; gap: 14px; padding-top: 10px; border-top: 1px dotted var(--ligne-forte); }
+body#modernbb .post-1740 .reactions-1740 {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: none !important;
+	border: none !important;
+}
+body#modernbb .post-1740 .reactions-1740 .rep-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 40px;
+	margin: 0 !important;
+	padding: 0 6px !important;
+	border: none !important;
+	border-radius: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+	color: var(--texte-doux) !important;
+	cursor: pointer;
+	transition: color 0.3s;
+}
+body#modernbb .post-1740 .reactions-1740 .rep-button:hover { color: var(--texte-clair) !important; }
+.reactions-1740 .rep-button svg { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.reactions-1740 .lecteur-1740 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+body#modernbb .reactions-1740 .rep-nb {
+	align-items: center;
+	justify-content: center;
+	min-width: 22px;
+	height: 22px;
+	padding: 0 4px;
+	box-sizing: border-box;
+	border-radius: 11px;
+	border: 1px solid var(--accent);
+	font-family: 'Alegreya SC', serif;
+	font-size: 13px;
+	font-variant-numeric: oldstyle-nums;
+	color: var(--accent-vif);
+}
+body#modernbb .reactions-1740 .rep-nb:not([style*="none"]) { display: inline-flex !important; }
+.flamme-r { transform-origin: 50% 90%; }
+.reactions-1740 .rep-button:hover .flamme-r { color: var(--ocre-doux); animation: flamme-1740 1.9s ease-in-out infinite; }
+.larme-r { transform-origin: 50% 0; }
+.reactions-1740 .rep-button:hover .larme-r { color: var(--accent-clair); animation: goutte-1740 1.6s ease-in-out infinite; }
+@keyframes goutte-1740 { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(2px) scaleY(1.06); } }
+body#modernbb .reactions-1740 .fa_like_list { margin: 0; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+.haut-1740 { margin-left: auto; padding: 8px 0; font-family: 'Alegreya SC', serif; font-size: 15px; letter-spacing: 0.08em; }
+
+/* Message masqué (« Voir le message ») */
+body#modernbb .post.post-cache-1740 {
+	margin: 0 0 18px !important;
+	padding: 10px 16px !important;
+	border: 1px dotted var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+	font-style: italic;
+	color: var(--texte-doux);
+}
+
+/* ---------- Petits écrans : la fiche passe au-dessus du message ---------- */
+@media (max-width: 760px) {
+	.msg-grille-1740 { grid-template-columns: minmax(0, 1fr); }
+	body#modernbb .post-1740 .postprofile.fiche-1740 { border-right: none !important; border-bottom: 3px double var(--ligne) !important; }
+	.colonne-msg-1740 { padding: 14px 4px 10px; }
+	body#modernbb .post-1740 .post-head.tete-msg-1740 { flex-direction: column; }
+	body#modernbb .post-1740 ul.outils-msg-1740 { justify-content: flex-start; }
+	body#modernbb .sujet-cadre-1740 h1.page-title { font-size: 36px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.post-1740 .brume, .pastille-1740 { animation: none; }
+	.post-1740 .brume { display: none; }
+}
+
+/* ---------- Corrections (après le premier essai sur le forum) ---------- */
+/* Texte du message dans la police du thème */
+html body#modernbb .post.post-1740 .postbody .content { font-family: 'Alegreya', Georgia, serif !important; }
+/* Point vert « en ligne » de ModernBB : remplacé par la pastille à côté du pseudo */
+html body#modernbb .post.post-1740::before,
+html body#modernbb .post.post-1740::after,
+html body#modernbb .post.post-1740 .post-head::before,
+html body#modernbb .post.post-1740 .post-head::after,
+html body#modernbb .post.post-1740 .online2 { display: none !important; }
+/* Registre : la valeur passe à la ligne si le libellé est long */
+.champ-1740 { flex-wrap: wrap; }
+.champ-1740 .champ-valeur { margin-left: auto; }
+.fiche-tete-1740 { background-image: var(--img-bandeau); }
+.fiche-tete-1740::before { background: linear-gradient(rgba(14, 13, 10, 0.2), rgba(14, 13, 10, 0.65)); }
+/* Pastille « en ligne » plus discrète */
+.post-1740 .pastille-1740 { width: 6px; height: 6px; }
+/* ---------- Boutons du sujet dans le cadre du titre ---------- */
+body#modernbb .sujet-ligne-1740 {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+	align-items: center;
+	gap: 8px 12px;
+	width: 100%;
+}
+body#modernbb .sujet-liens-1740 {
+	justify-self: start;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 14px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.08em;
+}
+body#modernbb .sujet-liens-1740 a { color: var(--accent-lien); }
+body#modernbb .sujet-liens-1740 a:hover { color: var(--texte-clair); text-decoration: none; }
+body#modernbb .sujet-liens-1740 .surveiller-1740 a { padding: 4px 0; font-size: 14px; }
+body#modernbb .sujet-ligne-1740 .sujet-boutons-1740 { justify-self: end; margin-left: 0; gap: 8px; }
+body#modernbb .sujet-ligne-1740 a.grave-1740 { min-height: 34px; padding: 0 12px !important; font-size: 14px !important; }
+/* Rangée du dessous : seulement les feuillets, masquée s'il n'y a qu'une page */
+body#modernbb .sujet-actions-haut-1740:not(:has(.pagination)) { display: none !important; }
+
+/* Petits écrans : surtitre, titre, ornement, puis les liens et les boutons */
+@media (max-width: 760px) {
+	body#modernbb .sujet-ligne-1740 { display: contents; }
+	body#modernbb .sujet-cadre-1740 h1.page-title,
+	body#modernbb .sujet-cadre-1740 .ornement-1740 { order: 1; }
+	body#modernbb .sujet-liens-1740 { order: 2; justify-self: auto; justify-content: center; margin-top: 6px; }
+	body#modernbb .sujet-ligne-1740 .sujet-boutons-1740 { order: 3; justify-content: center; }
+}
+
+/* ---------- Ajustements validés sur le forum ---------- */
+/* Pastille « en ligne » : taille forcée */
+html body#modernbb .post.post-1740 .pastille-1740 {
+	width: 6px !important;
+	height: 6px !important;
+	min-width: 0 !important;
+	min-height: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	box-sizing: content-box !important;
+}
+/* Texte des messages : 16 px, justifié */
+html body#modernbb .post.post-1740 .postbody .content {
+	font-size: 16px !important;
+	text-align: justify;
+	hyphens: auto;
+}
+/* Texture du thème : fiche, cadre du titre, réponse rapide, en-tête de la page Poster */
+body#modernbb .post-1740 .postprofile.fiche-1740,
+body#modernbb .sujet-cadre-1740,
+body#modernbb .plume-1740,
+body#modernbb .ecriture-tete-1740 {
+	background: var(--surface) var(--img-grain) !important;
+	background-clip: padding-box !important;
+}
+
+/* ==========================================================================
+   ÉCRITURE 1740 (© Elym) — réponse rapide, page « Poster », éditeur,
+   bas du sujet (navigation, modération, règlement, permissions)
+   Templates : viewtopic_body, posting_body, posting_topic_review
+   ========================================================================== */
+
+/* ---------- Boutons et champs (zones d'écriture et bas de page) ---------- */
+body#modernbb :is(.plume-1740, .ecriture-1740, .outils-bas-1740) :is(input.button1, input.button2, input[type="submit"], input[type="button"]) {
+	min-height: 38px;
+	margin: 0 4px;
+	padding: 0 16px !important;
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: rgba(14, 13, 10, 0.55) var(--img-grain) !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 15px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.1em;
+	color: var(--texte) !important;
+	cursor: pointer;
+	transition: border-color 0.4s, color 0.4s, background-color 0.4s;
+}
+body#modernbb :is(.plume-1740, .ecriture-1740, .outils-bas-1740) :is(input.button1, input.button2, input[type="submit"], input[type="button"]):hover {
+	border-color: var(--accent) !important;
+	color: var(--texte-clair) !important;
+}
+/* Envoyer : le bouton principal, en couleur d'accent */
+body#modernbb :is(.plume-1740, .ecriture-1740) input[name="post"] {
+	border-color: var(--accent) !important;
+	background: rgba(var(--accent-rgb), 0.18) var(--img-grain) !important;
+	color: var(--texte-clair) !important;
+}
+body#modernbb :is(.plume-1740, .ecriture-1740) input[name="post"]:hover { background: rgba(var(--accent-rgb), 0.3) var(--img-grain) !important; }
+
+body#modernbb :is(.plume-1740, .ecriture-1740, .outils-bas-1740) :is(input.inputbox, input[type="text"], input[type="url"], select, textarea.inputbox) {
+	box-sizing: border-box;
+	min-height: 36px;
+	padding: 6px 10px !important;
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: var(--fond-nuit) !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	color: var(--texte) !important;
+}
+body#modernbb :is(.plume-1740, .ecriture-1740, .outils-bas-1740) :is(input, select, textarea):focus { outline: 1px solid var(--accent); outline-offset: 1px; }
+body#modernbb :is(.plume-1740, .ecriture-1740, .outils-bas-1740) select option { background: var(--fond-nuit); color: var(--texte); }
+body#modernbb .ecriture-1740 input[type="checkbox"],
+body#modernbb .ecriture-1740 input[type="radio"] { accent-color: var(--accent); }
+
+/* ---------- Éditeur (SCEditor) ---------- */
+body#modernbb .sceditor-container {
+	box-sizing: border-box;
+	width: 100% !important;
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: var(--fond-nuit) !important;
+	box-shadow: none !important;
+}
+body#modernbb .sceditor-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 2px 0;
+	padding: 6px 6px 4px !important;
+	border-bottom: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: rgba(22, 20, 15, 0.96) var(--img-grain) !important;
+}
+body#modernbb .sceditor-group {
+	margin: 0 !important;
+	padding: 0 6px !important;
+	border: none !important;
+	border-right: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: none !important;
+}
+body#modernbb .sceditor-group:last-child { border-right: none !important; }
+body#modernbb .sceditor-button {
+	border-radius: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+	transition: background-color 0.3s;
+}
+body#modernbb .sceditor-button:hover,
+body#modernbb .sceditor-button.active,
+body#modernbb .sceditor-button.hover { background: rgba(var(--accent-rgb), 0.2) !important; }
+/* Icônes de Forumactif : passées en gris clair pour le fond sombre */
+body#modernbb .sceditor-button div { filter: grayscale(1) invert(0.86) sepia(0.15); opacity: 0.85; }
+body#modernbb .sceditor-button.disabled div { opacity: 0.35; }
+/* Zone de texte en mode source (BBCode) ; le mode visuel est réglé par le script du thème */
+body#modernbb .sceditor-container textarea {
+	box-sizing: border-box;
+	padding: 12px 14px !important;
+	border: none !important;
+	background: var(--fond-nuit) !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	line-height: 1.6;
+	color: var(--texte) !important;
+	resize: none;
+}
+body#modernbb .sceditor-container iframe { background: var(--fond-nuit) !important; }
+/* Forumactif fixe une largeur en pixels : on la ramène à celle du cadre */
+body#modernbb .sceditor-container textarea,
+body#modernbb .sceditor-container iframe { width: 100% !important; max-width: 100%; }
+body#modernbb .sceditor-grip { filter: invert(0.8); opacity: 0.5; }
+/* Fenêtres de l'éditeur (lien, image, couleur, smileys…) */
+body#modernbb .sceditor-dropdown {
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: var(--surface-pleine) var(--img-grain) !important;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+	color: var(--texte) !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+}
+body#modernbb .sceditor-dropdown label { color: var(--texte-doux) !important; }
+body#modernbb .sceditor-dropdown input:not([type="button"]):not([type="submit"]) {
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: var(--fond-nuit) !important;
+	color: var(--texte) !important;
+}
+body#modernbb .sceditor-dropdown .button,
+body#modernbb .sceditor-dropdown input[type="button"] {
+	border: 1px solid var(--accent) !important;
+	border-radius: 0 !important;
+	background: rgba(var(--accent-rgb), 0.18) !important;
+	color: var(--texte-clair) !important;
+	font-family: 'Alegreya SC', serif !important;
+}
+body#modernbb .sceditor-dropdown a { color: var(--accent-lien) !important; }
+
+/* ==========================================================================
+   RÉPONSE RAPIDE (bas d'un sujet)
+   ========================================================================== */
+body#modernbb .plume-1740 {
+	margin: 26px 0 18px;
+	padding: 6px 20px 18px;
+}
+.plume-tete-1740 { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 14px; }
+.plume-titre-1740 { font-family: 'Grenze Gotisch', serif; font-size: 32px; line-height: 1.1; color: var(--texte-clair); }
+.plume-1740 .ornement-1740 .filet,
+.ecriture-tete-1740 .ornement-1740 .filet { stroke: var(--ligne-forte); fill: none; }
+.plume-1740 .ornement-1740 .losange,
+.ecriture-tete-1740 .ornement-1740 .losange { stroke: var(--accent); fill: none; }
+.plume-1740 .ornement-1740 .point,
+.ecriture-tete-1740 .ornement-1740 .point { fill: var(--accent); }
+body#modernbb .plume-1740 > .h3,
+body#modernbb .plume-1740 > h3 { display: none; } /* « Réponse rapide: » de Forumactif, remplacé par notre titre */
+body#modernbb .plume-1740 #quick_reply { margin: 0; padding: 0; background: none; border: none; }
+body#modernbb .plume-1740 #textarea_content { width: 100% !important; }
+body#modernbb .plume-1740 #quick_reply > div[style*="text-align:center"] { margin-top: 16px !important; }
+
+/* ==========================================================================
+   BAS DU SUJET : sauter vers, modération, icônes d'administration
+   ========================================================================== */
+body#modernbb .outils-bas-1740 {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 10px 22px;
+	margin: 0 0 18px;
+}
+body#modernbb .outils-bas-1740 form { margin: 0; }
+body#modernbb .outils-bas-1740 fieldset {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
+	float: none !important;
+}
+body#modernbb .outils-bas-1740 label {
+	font-family: 'Alegreya SC', serif;
+	font-size: 15px;
+	letter-spacing: 0.08em;
+	color: var(--texte-doux) !important;
+}
+body#modernbb .outils-bas-1740 select { max-width: 240px; }
+.admin-sujet-1740 { display: flex; flex-wrap: wrap; gap: 6px; }
+.admin-sujet-1740 a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	box-sizing: border-box;
+	border: 1px solid var(--ligne);
+	transition: border-color 0.3s, background-color 0.3s;
+}
+.admin-sujet-1740 a:hover { border-color: var(--accent); background: rgba(var(--accent-rgb), 0.14); }
+.admin-sujet-1740 img { width: 18px; height: 18px; filter: grayscale(1) invert(0.86) sepia(0.15); opacity: 0.8; }
+.admin-sujet-1740 br { display: none; }
+
+/* ---------- Encarts : règlement du forum, permissions, liens ---------- */
+body#modernbb .encart-1740 {
+	margin: 0 0 18px !important;
+	padding: 14px 20px 16px !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	color: var(--texte-doux);
+	font-size: 15px;
+}
+.encart-titre-1740 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 8px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 15px;
+	letter-spacing: 0.14em;
+	color: var(--accent-clair);
+}
+.encart-titre-1740::after { content: ""; flex: 1; height: 1px; background: var(--ligne); }
+.permissions-texte-1740 b,
+.permissions-texte-1740 strong { font-weight: 500; color: var(--texte-clair); }
+.regles-1740 { display: flex; gap: 16px; align-items: flex-start; }
+.regles-image-1740 { max-width: 120px; flex: none; }
+body#modernbb .encart-1740 .ptrafic { margin: 0; padding: 0 0 0 18px; }
+
+/* ==========================================================================
+   PAGE « POSTER UNE RÉPONSE / UN NOUVEAU SUJET »
+   ========================================================================== */
+body#modernbb .ecriture-tete-1740 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	margin: 0 0 18px;
+	padding: 6px 20px 10px;
+	text-align: center;
+}
+.ecriture-surtitre-1740 { font-style: italic; font-size: 17px; color: var(--texte-doux); }
+body#modernbb .ecriture-tete-1740 h1.page-title {
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	font-family: 'Grenze Gotisch', serif !important;
+	font-size: 42px !important;
+	font-weight: 400 !important;
+	line-height: 1.05;
+	color: var(--texte-clair) !important;
+	text-transform: none;
+}
+
+/* Panneaux de Forumactif → boîtes du thème */
+body#modernbb .ecriture-1740 .panel {
+	margin: 0 0 18px !important;
+	padding: 18px 20px !important;
+	border: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: var(--surface) var(--img-grain) !important;
+	box-shadow: none !important;
+	color: var(--texte);
+}
+body#modernbb .ecriture-1740 .panel .inner { padding: 0 !important; }
+body#modernbb .ecriture-1740 .corners-top,
+body#modernbb .ecriture-1740 .corners-bottom { display: none; }
+
+/* Titres de section (« Poster une réponse », « Options », etc.) */
+body#modernbb .ecriture-1740 .h3,
+body#modernbb .revue-titre-1740 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 12px !important;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 16px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.14em;
+	text-transform: none;
+	color: var(--accent-clair) !important;
+}
+body#modernbb .ecriture-1740 .h3::after,
+body#modernbb .revue-titre-1740::after { content: ""; flex: 1; height: 1px; background: var(--ligne); order: 1; }
+body#modernbb .ecriture-1740 .h3.forum-hideable { cursor: pointer; }
+body#modernbb .ecriture-1740 .forum-hide { order: 2; filter: grayscale(1) invert(0.8); opacity: 0.6; }
+
+/* Champs : libellé à gauche, champ à droite */
+body#modernbb .ecriture-1740 fieldset.fields1 { margin: 0; padding: 0; border: none; }
+body#modernbb .ecriture-1740 fieldset.fields1 dl {
+	display: grid;
+	grid-template-columns: 170px minmax(0, 1fr);
+	align-items: center;
+	gap: 6px 14px;
+	margin: 0 0 10px;
+}
+body#modernbb .ecriture-1740 fieldset.fields1 dt,
+body#modernbb .ecriture-1740 fieldset.fields1 dd { float: none !important; width: auto !important; margin: 0 !important; padding: 0 !important; }
+body#modernbb .ecriture-1740 fieldset.fields1 dt label {
+	font-family: 'Alegreya SC', serif;
+	font-size: 15px;
+	font-weight: 400;
+	letter-spacing: 0.08em;
+	color: var(--texte-doux) !important;
+}
+body#modernbb .ecriture-1740 input.inputbox.medium { width: 100% !important; max-width: 520px; }
+body#modernbb .ecriture-1740 .fields1 label,
+body#modernbb .ecriture-1740 .fields1 { color: var(--texte); font-size: 16px; }
+body#modernbb .ecriture-1740 hr.dashed { border: none; border-top: 1px dotted var(--ligne-forte); margin: 12px 0; }
+
+/* Éditeur et smileys côte à côte */
+body#modernbb .ecriture-1740 #message-box { width: auto !important; float: none !important; margin: 0 !important; }
+body#modernbb .ecriture-1740 #textarea_content { width: 100% !important; }
+body#modernbb .ecriture-1740 #smiley-box {
+	float: right;
+	width: 170px !important;
+	margin: 0 0 10px 16px !important;
+	padding: 10px !important;
+	border: 1px solid var(--ligne) !important;
+	background: var(--fond-nuit) !important;
+	font-size: 14px;
+	color: var(--texte-doux);
+}
+body#modernbb .ecriture-1740 #smiley-box a { color: var(--accent-lien); }
+body#modernbb .ecriture-1740 #smileyContainer select { width: 100%; }
+body#modernbb .ecriture-1740 #helpbox { font-size: 14px; font-style: italic; color: var(--texte-doux); }
+
+/* Barre d'envoi */
+body#modernbb .ecriture-1740 .envoi-1740 fieldset.submit-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+body#modernbb .ecriture-1740 .envoi-1740 .info { flex-basis: 100%; text-align: center; font-style: italic; color: var(--texte-doux); }
+
+/* ---------- Prévisualisation ---------- */
+body#modernbb #preview.post {
+	margin: 0 0 18px !important;
+	padding: 18px 22px !important;
+	border: 1px solid var(--ligne-forte) !important;
+	outline: 1px solid var(--ligne);
+	outline-offset: 3px;
+	border-radius: 0 !important;
+	background: rgba(22, 20, 15, 0.96) !important;
+	box-shadow: none !important;
+}
+body#modernbb #preview .postbody { float: none !important; width: auto !important; margin: 0 !important; padding: 0 !important; }
+body#modernbb #preview .h3 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 14px !important;
+	padding: 0 !important;
+	border: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 16px !important;
+	letter-spacing: 0.14em;
+	color: var(--accent-clair) !important;
+}
+body#modernbb #preview .h3::after { content: ""; flex: 1; height: 1px; background: var(--ligne); }
+body#modernbb #preview .content {
+	padding: 0 !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	line-height: 1.6 !important;
+	text-align: justify;
+	hyphens: auto;
+	color: var(--texte) !important;
+}
+body#modernbb .ecriture-1740 #preview + hr,
+body#modernbb .ecriture-1740 > hr { display: none; }
+
+/* ---------- Revue du sujet (messages précédents, sous le formulaire) ---------- */
+.revue-1740 { display: flex; flex-direction: column; gap: 12px; margin-bottom: 26px; }
+body#modernbb .post.revue-msg-1740 {
+	margin: 0 !important;
+	padding: 14px 20px !important;
+	border: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: var(--surface) var(--img-grain) !important;
+	box-shadow: none !important;
+}
+body#modernbb .revue-msg-1740 .postbody { float: none !important; width: auto !important; margin: 0 !important; padding: 0 !important; }
+body#modernbb .revue-msg-1740 h3 { margin: 0; padding: 0; border: none; font-family: 'Alegreya SC', serif; font-size: 17px; font-weight: 400; letter-spacing: 0.05em; color: var(--texte-clair); }
+body#modernbb .revue-msg-1740 h3:empty { display: none; }
+body#modernbb .revue-msg-1740 .author {
+	margin: 2px 0 10px !important;
+	padding: 0 0 8px !important;
+	border-bottom: 1px dotted var(--ligne-forte);
+	font-size: 15px !important;
+	font-style: italic;
+	color: var(--texte-doux) !important;
+}
+body#modernbb .revue-msg-1740 .author a { font-style: normal; }
+body#modernbb .revue-msg-1740 .content {
+	padding: 0 !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 15px !important;
+	line-height: 1.55 !important;
+	text-align: justify;
+	hyphens: auto;
+	color: var(--texte) !important;
+}
+
+/* ---------- Petits écrans ---------- */
+@media (max-width: 760px) {
+	body#modernbb .ecriture-1740 fieldset.fields1 dl { grid-template-columns: minmax(0, 1fr); }
+	body#modernbb .ecriture-1740 #smiley-box { float: none; width: auto !important; margin: 0 0 10px !important; }
+	body#modernbb .outils-bas-1740 { justify-content: flex-start; }
+	.plume-titre-1740 { font-size: 26px; }
+}
+
+/* ---------- Corrections (premier essai sur le forum) ---------- */
+/* Fenêtres de l'éditeur (couleurs, emojis…) : ne plus être coupées par le cadre */
+body#modernbb .sceditor-container,
+body#modernbb #textarea_content,
+body#modernbb #message-box,
+body#modernbb .plume-1740,
+body#modernbb #quick_reply { overflow: visible !important; }
+body#modernbb .sceditor-dropdown { z-index: 1000 !important; }
+
+/* Page « Poster » : éditeur à gauche, smileys à droite, sur la même rangée */
+body#modernbb .ecriture-1740 #postingbox fieldset.fields1 {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 170px;
+	grid-auto-flow: row dense;
+	column-gap: 16px;
+}
+body#modernbb .ecriture-1740 #postingbox fieldset.fields1 > * { grid-column: 1 / -1; }
+body#modernbb .ecriture-1740 #postingbox fieldset.fields1 > br { display: none; }
+body#modernbb .ecriture-1740 #postingbox #smiley-box { grid-column: 2; float: none; width: auto !important; margin: 0 !important; align-self: start; }
+body#modernbb .ecriture-1740 #postingbox #message-box { grid-column: 1; }
+body#modernbb .ecriture-1740 #postingbox #message-box > br,
+body#modernbb .ecriture-1740 #postingbox #message-box .left-box:has(#helpbox:empty) { display: none; }
+/* Smileys : fond sombre au lieu du blanc de Forumactif */
+body#modernbb .ecriture-1740 #smileyContainer,
+body#modernbb .ecriture-1740 #smileyContainer * { background-color: transparent !important; border-color: var(--ligne) !important; }
+body#modernbb .ecriture-1740 #smileyContainer { scrollbar-width: thin; scrollbar-color: var(--ligne-forte) transparent; }
+body#modernbb .ecriture-1740 #smileyContainer select { background-color: var(--fond-nuit) !important; color: var(--texte) !important; border: 1px solid var(--ligne-forte) !important; }
+@media (max-width: 760px) {
+	body#modernbb .ecriture-1740 #postingbox fieldset.fields1 { grid-template-columns: minmax(0, 1fr); }
+	body#modernbb .ecriture-1740 #postingbox #smiley-box,
+	body#modernbb .ecriture-1740 #postingbox #message-box { grid-column: 1; }
+}
+
+/* Texture du thème : page « Poster » */
+body#modernbb .ecriture-1740 .panel,
+body#modernbb #preview.post,
+body#modernbb .post.revue-msg-1740 {
+	background: var(--surface) var(--img-grain) !important;
+}
