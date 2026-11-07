@@ -144,12 +144,41 @@
 	}
 
 	function initCompteurs() {
+		var avisAvant = null;
+		var lettresDistantes = null; // nombre relu sur le serveur après un nouvel avis
 		function compter() {
 			var lettres = $('.toread-message');
 			var icone = document.getElementById('i_icon_mini_new_message');
-			majSceau('lettres', lireNombre(lettres ? lettres.textContent : (icone ? icone.getAttribute('alt') : '')));
+			var nbLettres = lireNombre(lettres ? lettres.textContent : (icone ? icone.getAttribute('alt') : ''));
+			if (lettresDistantes !== null && lettresDistantes > nbLettres) { nbLettres = lettresDistantes; }
+			majSceau('lettres', nbLettres);
 			var avis = document.getElementById('notif_unread');
-			majSceau('avis', lireNombre(avis ? avis.textContent : ''));
+			var nbAvis = lireNombre(avis ? avis.textContent : '');
+			majSceau('avis', nbAvis);
+			// Un avis vient d'arriver en direct : c'est peut-être une lettre. Forumactif ne met pas
+			// à jour le compteur des messages privés sans recharger la page : on va le relire.
+			if (avisAvant !== null && nbAvis > avisAvant) { relireLettres(); }
+			avisAvant = nbAvis;
+		}
+		function relireLettres() {
+			if (!window.fetch || !window.DOMParser) { return; }
+			fetch('/privmsg?folder=inbox', { credentials: 'same-origin' })
+				.then(function (r) { return r.text(); })
+				.then(function (html) {
+					var doc = new DOMParser().parseFromString(html, 'text/html');
+					var ic = doc.getElementById('i_icon_mini_new_message');
+					var tr = doc.querySelector('.toread-message');
+					var n = lireNombre(tr ? tr.textContent : (ic ? ic.getAttribute('alt') : ''));
+					// Repli : on compte les lettres non lues de la boîte de réception
+					if (!n) {
+						n = Array.prototype.filter.call(doc.querySelectorAll('.lettre-1740'), function (li) {
+							return /new|unread|non_?lu/i.test(li.getAttribute('data-icone') || '') || li.querySelector('.lettre-infos-1740 strong');
+						}).length;
+					}
+					lettresDistantes = n;
+					compter();
+				})
+				.catch(function () {});
 		}
 		compter();
 
