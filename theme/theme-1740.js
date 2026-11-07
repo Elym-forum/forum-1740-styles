@@ -1239,6 +1239,11 @@
 			});
 			// Liste des smileys de la page « Poster » : elle aussi est une petite page à part
 			$$('#smiley-box iframe').forEach(function (cadre) {
+				if (!cadre.dataset.ecoute1740) {
+					cadre.dataset.ecoute1740 = '1';
+					// La liste des smileys se recharge (« Voir plus de smileys ») : on rhabille à chaque fois
+					cadre.addEventListener('load', function () { var d = cadre.contentDocument; if (d) { var v = d.getElementById('style-1740'); if (v) { v.remove(); } } essais = 0; });
+				}
 				var doc;
 				try { doc = cadre.contentDocument; } catch (e) { return; }
 				if (!doc || !doc.head || doc.getElementById('style-1740')) { return; }
@@ -1248,7 +1253,7 @@
 				doc.head.appendChild(st);
 				cadre.style.background = 'transparent';
 			});
-			if (essais > 20) { clearInterval(minuterie); }
+			if (essais > 20 && !$('#smiley-box iframe')) { clearInterval(minuterie); }
 		}, 500);
 		// Retour au mode visuel après le mode source
 		document.addEventListener('click', function (e) {
@@ -1520,6 +1525,10 @@
 
 	// Page « Poster » utilisée pour une lettre : titres de la correspondance
 	function titresEcriture() {
+		// Historique d'une correspondance sous le formulaire : titre du thème
+		$$('.revue-zone-1740 h1, .revue-zone-1740 h2, .revue-zone-1740 .h3, .revue-zone-1740 .page-title').forEach(function (h) {
+			if (/historique/i.test(h.textContent)) { h.textContent = 'Correspondance précédente'; h.className = 'revue-titre-1740'; }
+		});
 		var h1 = $('.ecriture-tete-1740 h1.page-title');
 		if (!h1) { return; }
 		var t = h1.textContent.trim();
