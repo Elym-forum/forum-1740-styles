@@ -130,7 +130,7 @@ body#modernbb #wrap {
 	box-shadow: none;
 	border: none;
 }
-body#modernbb #page-body { margin: 0; padding: 0 0 56px; background: transparent !important; }
+body#modernbb #page-body { margin: 0; padding: 0 0 var(--esp); background: transparent !important; }
 body#modernbb #main,
 body#modernbb #main-content,
 body#modernbb #content-main,
