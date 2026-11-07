@@ -24,6 +24,8 @@
 		if (attr('data-theme-defaut')) { CONFIG.themeParDefaut = attr('data-theme-defaut'); }
 		if (attr('data-musique') !== undefined) { CONFIG.musique = attr('data-musique'); }
 		if (attr('data-volume')) { CONFIG.volumeMusique = parseFloat(attr('data-volume')); }
+		if (attr('data-ambiance')) { CONFIG.ambiance = attr('data-ambiance'); }
+		if (attr('data-corbeaux')) { CONFIG.corbeaux = attr('data-corbeaux').split(',').map(function (u) { return u.trim(); }).filter(Boolean); }
 		if (attr('data-duree-rumeur')) { CONFIG.dureeRumeur = parseFloat(attr('data-duree-rumeur')); }
 		if (attr('data-nb-ecrits')) { CONFIG.nbDerniersEcrits = parseInt(attr('data-nb-ecrits'), 10); }
 		if (attr('data-vignette-defaut')) { CONFIG.vignetteParDefaut = attr('data-vignette-defaut'); }
@@ -589,46 +591,96 @@
 	/* ------------------------------------------------------------------
 	   3. Musique (un clic pour lancer ou couper)
 	   ------------------------------------------------------------------ */
+	/* Ambiance sonore en couches : un bourdon (data-musique), une ambiance
+	   de fond facultative (data-ambiance, ex. le vent) et des croassements
+	   joués au hasard (data-corbeaux, adresses séparées par des virgules). */
 	function initMusique() {
 		var bouton = $('.musique-1740');
 		if (!bouton) { return; }
 		if (!CONFIG.musique) { bouton.hidden = true; return; }
 
-		var audio = new Audio(CONFIG.musique);
-		audio.loop = true;
-		audio.preload = 'none';
-		audio.volume = 0;
-		var cible = typeof CONFIG.volumeMusique === 'number' ? CONFIG.volumeMusique : 0.5;
+		var volume = typeof CONFIG.volumeMusique === 'number' ? CONFIG.volumeMusique : 0.5;
+		function piste(url, part) {
+			var a = new Audio(url);
+			a.loop = true;
+			a.preload = 'none';
+			a.volume = 0;
+			return { audio: a, cible: Math.min(1, volume * part) };
+		}
+		var couches = [piste(CONFIG.musique, 1)];
+		if (CONFIG.ambiance) { couches.push(piste(CONFIG.ambiance, 0.55)); }
+		var corbeaux = (CONFIG.corbeaux || []).map(function (url) {
+			var a = new Audio(url);
+			a.preload = 'none';
+			return a;
+		});
+		var enMarche = false;
 		var minuterie = null;
+		var prochainCorbeau = null;
 
-		function fondu(vers, fin) {
+		function fondu(monter, fin) {
 			clearInterval(minuterie);
+			var pas = 0;
 			minuterie = setInterval(function () {
-				var v = audio.volume + (vers > audio.volume ? 0.04 : -0.04);
-				if ((vers > audio.volume && v >= vers) || (vers <= audio.volume && v <= vers)) {
-					audio.volume = Math.max(0, Math.min(1, vers));
-					clearInterval(minuterie);
-					if (fin) { fin(); }
-				} else {
-					audio.volume = Math.max(0, Math.min(1, v));
-				}
+				pas++;
+				var t = Math.min(1, pas / 40); // environ 2,4 secondes
+				couches.forEach(function (c) {
+					c.audio.volume = Math.max(0, Math.min(1, monter ? c.cible * t : c.audio.volume * (1 - t)));
+				});
+				if (t >= 1) { clearInterval(minuterie); if (fin) { fin(); } }
 			}, 60);
 		}
 
+		function croasser() {
+			if (!enMarche || !corbeaux.length) { return; }
+			var a = corbeaux[Math.floor(Math.random() * corbeaux.length)];
+			a.volume = Math.min(1, volume * (0.35 + Math.random() * 0.3)); // plus ou moins lointain
+			a.currentTime = 0;
+			var p = a.play();
+			if (p && p.catch) { p.catch(function () {}); }
+			// Parfois un second cri peu après, comme une réponse
+			if (Math.random() < 0.3) {
+				setTimeout(function () {
+					if (!enMarche) { return; }
+					var b = corbeaux[Math.floor(Math.random() * corbeaux.length)];
+					if (b === a) { return; }
+					b.volume = Math.min(1, volume * 0.3);
+					b.currentTime = 0;
+					var q = b.play();
+					if (q && q.catch) { q.catch(function () {}); }
+				}, 1500 + Math.random() * 2500);
+			}
+			planifierCorbeau();
+		}
+		function planifierCorbeau() {
+			clearTimeout(prochainCorbeau);
+			prochainCorbeau = setTimeout(croasser, 40000 + Math.random() * 50000); // 40 à 90 s
+		}
+
+		function etiquette(joue) {
+			var texte = joue ? 'Couper l’ambiance sonore' : 'Jouer l’ambiance sonore';
+			bouton.setAttribute('aria-pressed', joue ? 'true' : 'false');
+			bouton.setAttribute('aria-label', texte);
+			bouton.title = texte;
+		}
+
 		bouton.addEventListener('click', function () {
-			var joue = bouton.getAttribute('aria-pressed') === 'true';
-			if (joue) {
-				bouton.setAttribute('aria-pressed', 'false');
-				bouton.setAttribute('aria-label', 'Jouer l’air de veillée');
-				bouton.title = 'Jouer l’air de veillée';
-				fondu(0, function () { audio.pause(); });
+			if (enMarche) {
+				enMarche = false;
+				etiquette(false);
+				clearTimeout(prochainCorbeau);
+				fondu(false, function () { couches.forEach(function (c) { c.audio.pause(); }); });
 			} else {
-				bouton.setAttribute('aria-pressed', 'true');
-				bouton.setAttribute('aria-label', 'Couper l’air de veillée');
-				bouton.title = 'Couper l’air de veillée';
-				var p = audio.play();
-				if (p && p.catch) { p.catch(function () { bouton.setAttribute('aria-pressed', 'false'); }); }
-				fondu(cible);
+				enMarche = true;
+				etiquette(true);
+				couches.forEach(function (c) {
+					var p = c.audio.play();
+					if (p && p.catch) { p.catch(function () { enMarche = false; etiquette(false); }); }
+				});
+				fondu(true);
+				// Premier cri assez tôt pour qu'on l'entende, puis au hasard
+				clearTimeout(prochainCorbeau);
+				prochainCorbeau = setTimeout(croasser, 12000 + Math.random() * 10000);
 			}
 		});
 	}
