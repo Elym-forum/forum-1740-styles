@@ -1059,6 +1059,45 @@
 		if ($('#presences-1740')) { document.documentElement.classList.add('index-1740'); }
 	}
 
+
+	/* ------------------------------------------------------------------
+	   Page d'un sujet
+	   - surtitre du bloc de titre : nom du forum (dernier lien du fil d'Ariane)
+	   - dates des messages : « Mar 20 Oct 2026 - 17:23 » devient
+	     « Le 20 octobre 2026, à 17 h 23 »
+	   ------------------------------------------------------------------ */
+	var MOIS_1740 = { jan: 'janvier', 'fév': 'février', fev: 'février', mar: 'mars', avr: 'avril', mai: 'mai', juin: 'juin', juil: 'juillet', 'aoû': 'août', aou: 'août', sep: 'septembre', sept: 'septembre', oct: 'octobre', nov: 'novembre', 'déc': 'décembre', dec: 'décembre' };
+
+	function heure1740(h, m) { return parseInt(h, 10) + ' h ' + m; }
+
+	function dateLongue1740(texte) {
+		var t = texte.replace(/\s+/g, ' ').trim();
+		var r = t.match(/^(?:[A-Za-zÀ-ÿ]+\.?\s+)?(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\.?\s+(\d{4})\s*-\s*(\d{1,2}):(\d{2})$/);
+		if (r) {
+			var mois = MOIS_1740[r[2].toLowerCase()];
+			if (mois) { return 'Le ' + parseInt(r[1], 10) + (r[1] === '1' || r[1] === '01' ? 'er' : '') + ' ' + mois + ' ' + r[3] + ', à ' + heure1740(r[4], r[5]); }
+		}
+		r = t.match(/^(Aujourd'hui|Hier)\s+à\s+(\d{1,2}):(\d{2})$/i);
+		if (r) { return r[1].charAt(0).toUpperCase() + r[1].slice(1).toLowerCase() + ', à ' + heure1740(r[2], r[3]); }
+		return null;
+	}
+
+	function initSujet() {
+		var surtitre = $('.sujet-surtitre-1740');
+		if (surtitre) {
+			var liens = $$('.ariane-1740 a.nav');
+			if (liens.length > 1) { surtitre.textContent = liens[liens.length - 1].textContent.trim(); }
+		}
+		$$('.post-1740 .topic-date').forEach(function (el) {
+			// Seul le premier nœud texte contient la date (le reste : votes éventuels)
+			var n = el.firstChild;
+			while (n && !(n.nodeType === 3 && n.nodeValue.trim())) { n = n.nextSibling; }
+			if (!n) { return; }
+			var longue = dateLongue1740(n.nodeValue);
+			if (longue) { n.nodeValue = longue; el.title = n.nodeValue; }
+		});
+	}
+
 	/* ------------------------------------------------------------------
 	   Démarrage
 	   ------------------------------------------------------------------ */
@@ -1078,6 +1117,7 @@
 		nettoyerPresents();
 		deplacerRaccourcis();
 		initPied();
+		if ($('.post-1740')) { initSujet(); }
 	}
 
 	if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', demarrer); }
