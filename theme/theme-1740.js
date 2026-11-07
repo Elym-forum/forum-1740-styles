@@ -1330,6 +1330,87 @@
 		});
 	}
 
+
+	/* ------------------------------------------------------------------
+	   Correspondance (messagerie) : dossiers, titres, état des lettres
+	   ------------------------------------------------------------------ */
+	var DOSSIERS_1740 = {
+		inbox: { onglet: 'Reçues', titre: 'Lettres reçues' },
+		sentbox: { onglet: 'Envoyées', titre: 'Lettres envoyées' },
+		outbox: { onglet: 'En partance', titre: 'Lettres en partance' },
+		savebox: { onglet: 'Conservées', titre: 'Lettres conservées' }
+	};
+
+	function initLettres() {
+		var m = location.search.match(/[?&]folder=(\w+)/);
+		var dossier = m && DOSSIERS_1740[m[1]] ? m[1] : 'inbox';
+
+		// Onglets : libellés courts, dossier actif marqué
+		$$('.onglet-l-1740').forEach(function (li) {
+			var cle = li.getAttribute('data-dossier');
+			var d = DOSSIERS_1740[cle];
+			var lien = $('a', li);
+			if (d) {
+				if (lien) { lien.textContent = d.onglet; }
+				else {
+					// Dossier courant affiché sans lien par Forumactif : on garde l'icône, on remplace le texte
+					Array.prototype.slice.call(li.childNodes).forEach(function (n) { if (n.nodeType === 3 && n.nodeValue.trim()) { n.nodeValue = d.onglet; } });
+				}
+			}
+			if (cle === dossier) { li.setAttribute('aria-current', 'page'); li.classList.add('actif'); }
+			// Les icônes vont dans le lien pour être cliquables
+			var ico = $('svg', li);
+			if (ico && lien) { lien.insertBefore(ico, lien.firstChild); }
+		});
+
+		// Titre de la boîte
+		var titre = $('.lettres-titre-1740');
+		if (titre && !titre.textContent.trim().replace(/^Lettres$/, '')) { titre.textContent = DOSSIERS_1740[dossier].titre; }
+
+		// « Votre boîte de réception est pleine à 2% » → « Coffret rempli à 2 % »
+		$$('.coffret-1740').forEach(function (c) {
+			if (c.classList.contains('dossier-1740')) { c.textContent = DOSSIERS_1740[dossier].titre; return; }
+			var pct = c.textContent.match(/(\d+)\s*%/);
+			if (pct) { c.textContent = 'Coffret rempli à ' + pct[1] + ' %'; }
+		});
+
+		// État de chaque lettre d'après l'icône de Forumactif
+		$$('.lettre-1740').forEach(function (li) {
+			var src = (li.getAttribute('data-icone') || '').toLowerCase();
+			var etat = 'lue';
+			if (/new|unread|non_?lu/.test(src) || $('strong', $('.lettre-infos-1740', li) || li)) { etat = 'non-lue'; }
+			else if (/repl|answer|repondu|reponse/.test(src)) { etat = 'repondue'; }
+			li.classList.add('est-' + etat);
+		});
+
+		// Dates en toutes lettres
+		$$('.lettre-date-1740').forEach(function (el) {
+			var longue = dateLongue1740(el.textContent);
+			if (longue) { el.title = el.textContent.trim(); el.textContent = longue; }
+		});
+
+		// Citer, Modifier, Profil : du texte à la place des petites images
+		[['.lettre-citer-1740', 'Citer'], ['.lettre-modifier-1740', 'Modifier'], ['.lettre-profil-1740', 'Profil']].forEach(function (p) {
+			$$(p[0]).forEach(function (zone) {
+				var a = $('a', zone);
+				if (!a) { zone.remove(); return; }
+				a.textContent = p[1];
+			});
+		});
+	}
+
+	// Page « Poster » utilisée pour une lettre : titres de la correspondance
+	function titresEcriture() {
+		var h1 = $('.ecriture-tete-1740 h1.page-title');
+		if (!h1) { return; }
+		var t = h1.textContent.trim();
+		if (/message priv/i.test(t)) {
+			h1.textContent = /r[ée]pondre/i.test(t) ? 'Répondre à une lettre' : 'Écrire une lettre';
+			var sur = $('.ecriture-surtitre-1740');
+			if (sur) { sur.textContent = 'Correspondance'; }
+		}
+	}
+
 	/* ------------------------------------------------------------------
 	   Démarrage
 	   ------------------------------------------------------------------ */
@@ -1352,6 +1433,8 @@
 		if ($('.post-1740')) { initSujet(); }
 		if ($('.forum-tete-1740')) { initListe(); }
 		initProgression();
+		if ($('.lettres-tete-1740')) { initLettres(); }
+		titresEcriture();
 		if ($('#text_editor_textarea')) { initEditeur(); }
 	}
 
