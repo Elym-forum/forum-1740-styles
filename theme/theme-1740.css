@@ -1,7 +1,7 @@
 /* ==========================================================================
    THÈME 1740 (© Elym) — feuille assemblée
    Ne pas modifier directement : elle est générée par outils/assembler.py
-   à partir de themes.css, base.css, entete.css, index.css et sujet.css.
+   à partir de themes.css, base.css, entete.css, index.css, sujet.css et liste.css.
    ========================================================================== */
 
 /* ---------- themes.css ---------- */
@@ -2698,4 +2698,373 @@ body#modernbb #preview.post,
 body#modernbb .post.revue-msg-1740 {
 	background: var(--surface) var(--img-grain) !important;
 }
+
+/* ---------- liste.css ---------- */
+/* ==========================================================================
+   LISTE DES SUJETS 1740 (© Elym) — page d'un forum
+   Templates : viewforum_body, topics_list_box (+ index_box pour les sous-forums)
+   Réutilise les styles du sujet : fil d'Ariane, cadre du titre, boutons,
+   feuillets.
+   ========================================================================== */
+
+/* ---------- Tête : description, recherche ---------- */
+body#modernbb .forum-tete-1740 { padding-bottom: 18px; }
+.forum-desc-1740 {
+	margin: 2px 0 0;
+	font-size: 16px;
+	font-style: italic;
+	color: var(--texte-doux);
+	text-align: center;
+}
+.lecteur-1740 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+body#modernbb .chercher-ici-1740 {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	margin: 0;
+	border-bottom: 1px solid var(--ligne-forte);
+}
+body#modernbb .chercher-ici-1740 button {
+	display: inline-flex;
+	align-items: center;
+	padding: 4px 2px;
+	border: none;
+	background: none;
+	color: var(--accent-lien);
+	cursor: pointer;
+}
+body#modernbb .chercher-ici-1740 button svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+body#modernbb .chercher-ici-1740 input[type="text"] {
+	width: 110px;
+	min-height: 0;
+	padding: 4px 2px !important;
+	border: none !important;
+	border-radius: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 15px !important;
+	font-style: italic;
+	color: var(--texte) !important;
+	transition: width 0.4s;
+}
+body#modernbb .chercher-ici-1740 input[type="text"]::placeholder { color: var(--accent-lien); opacity: 1; }
+body#modernbb .chercher-ici-1740 input[type="text"]:focus { width: 160px; outline: none; }
+body#modernbb .chercher-ici-1740:focus-within { border-bottom-color: var(--accent); }
+
+/* ---------- Sous-forums : forme simple, dans le cadre de la tête ---------- */
+.sous-forums-1740 { align-self: stretch; margin-top: 14px; }
+.sous-forums-1740:not(:has(.forum-1740)) { display: none; }
+body#modernbb .sous-forums-1740 .linklist { display: none !important; } /* liens de l'index (nouveaux messages, etc.) */
+body#modernbb .sous-forums-1740 .chapitre-1740 {
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	border-image: none !important;
+	background: none !important;
+}
+body#modernbb .sous-forums-1740 .chapitre-tete,
+body#modernbb .sous-forums-1740 .chapitre-bandeau,
+body#modernbb .sous-forums-1740 .forum-vignette,
+body#modernbb .sous-forums-1740 .forum-sous,
+body#modernbb .sous-forums-1740 .forum-moderateurs:empty { display: none !important; }
+body#modernbb .sous-forums-1740 .chapitre-corps { display: block; }
+body#modernbb .sous-forums-1740 .chapitre-corps::before {
+	content: "Sous-forums";
+	display: flex;
+	padding: 10px 16px 6px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.16em;
+	color: var(--accent-clair);
+	border-bottom: 1px solid var(--ligne);
+}
+body#modernbb .sous-forums-1740 .forum-1740 {
+	grid-template-columns: 24px minmax(0, 1fr) 230px !important;
+	text-align: left;
+}
+body#modernbb .sous-forums-1740 .forum-dernier .forum-stats { text-align: center; }
+
+/* ---------- Rangée des feuillets et du tri ---------- */
+body#modernbb .actions-forum-1740 { margin: 0 0 18px !important; }
+body#modernbb .actions-forum-1740:not(:has(.pagination a, .pagination strong)):not(:has(#sort-box)) { display: none !important; }
+body#modernbb .feuillets-1740:not(:has(a, strong)) { visibility: hidden; }
+
+body#modernbb .trier-1740 { position: relative; margin-left: auto; }
+body#modernbb .trier-1740 #sort-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 4px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 15px;
+	letter-spacing: 0.08em;
+	color: var(--accent-lien);
+	cursor: pointer;
+}
+body#modernbb .trier-1740 #sort-btn::after { content: "▾"; font-size: 12px; }
+body#modernbb .trier-1740 #sort-btn:hover { color: var(--texte-clair); }
+body#modernbb .trier-1740 .sort-form {
+	display: none;
+	position: absolute;
+	right: 0;
+	top: calc(100% + 6px);
+	z-index: 20;
+	width: 240px;
+	padding: 14px 16px !important;
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: var(--surface-pleine) var(--img-grain) !important;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+	color: var(--texte);
+}
+body#modernbb .trier-1740 #sort-btn.expanded + .sort-form { display: flex; flex-direction: column; gap: 10px; }
+.trier-titre-1740 { font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.1em; color: var(--texte-doux); }
+body#modernbb .trier-1740 select {
+	padding: 6px 8px;
+	border: 1px solid var(--ligne-forte);
+	border-radius: 0;
+	background: var(--fond-nuit);
+	color: var(--texte);
+	font-family: 'Alegreya', Georgia, serif;
+	font-size: 15px;
+}
+.trier-ordre-1740 { display: flex; flex-direction: column; gap: 4px; font-size: 15px; }
+.trier-ordre-1740 input { accent-color: var(--accent); }
+body#modernbb .trier-1740 input[type="submit"] {
+	align-self: flex-start;
+	min-height: 34px;
+	padding: 0 14px;
+	border: 1px solid var(--accent);
+	border-radius: 0;
+	background: rgba(var(--accent-rgb), 0.18);
+	color: var(--texte-clair);
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.1em;
+	cursor: pointer;
+}
+
+/* ==========================================================================
+   GROUPES DE SUJETS (annonces, épinglés, sujets)
+   ========================================================================== */
+body#modernbb .liste-1740 { margin: 0 0 18px; padding: 8px 8px 10px; }
+body#modernbb .groupes-1740 {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	border-radius: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+}
+/* Forumactif répète le conteneur quand il y a plusieurs listes : on garde l'espacement */
+body#modernbb .liste-1740 .groupes-1740 + .groupes-1740 { margin-top: 14px !important; }
+
+.groupe-tete-1740,
+body#modernbb .sujet-1740 {
+	display: grid;
+	grid-template-columns: 24px minmax(0, 1fr) 90px 90px 230px;
+	gap: 14px;
+	align-items: center;
+}
+.groupe-tete-1740 {
+	padding: 9px 16px;
+	background: rgba(14, 13, 10, 0.55);
+	border-bottom: 3px double var(--ligne);
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.14em;
+	color: var(--accent-clair);
+}
+.groupe-col-1740 { text-align: center; font-size: 13px; letter-spacing: 0.08em; color: var(--texte-doux); }
+.groupe-dernier-1740 { text-align: left; padding-left: 15px; }
+.groupe-coche-1740 input { accent-color: var(--accent); }
+
+body#modernbb .groupe-liste-1740 {
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
+	list-style: none;
+}
+
+/* ---------- Une rangée ---------- */
+body#modernbb .sujet-1740 {
+	position: relative;
+	margin: 0 !important;
+	padding: 12px 16px !important;
+	border: none !important;
+	border-top: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: none !important;
+	transition: background-color 0.4s;
+}
+body#modernbb .sujet-1740:first-child { border-top: none !important; }
+body#modernbb .sujet-1740:hover { background-color: rgba(var(--accent-rgb), 0.07) !important; }
+body#modernbb .sujet-vide-1740 {
+	padding: 16px !important;
+	font-style: italic;
+	color: var(--texte-doux);
+	text-align: center;
+	list-style: none;
+	background: none !important;
+	border: none !important;
+}
+
+/* Bouton radio (déplacement de sujet) et cases de modération : glissés à côté de l'icône */
+body#modernbb .sujet-1740 .choix-1740,
+body#modernbb .sujet-1740 .coche-1740 { position: absolute; left: 2px; top: 50%; transform: translateY(-50%); margin: 0; accent-color: var(--accent); }
+
+/* Icône d'état */
+.etat-sujet-1740 { display: block; overflow: hidden; }
+.etat-sujet-1740 > g { display: none; }
+.est-nouveau .etat-sujet-1740 .e-nouveau,
+.est-lu .etat-sujet-1740 .e-lu,
+.est-scelle .etat-sujet-1740 .e-scelle,
+.est-annonce .etat-sujet-1740 .e-annonce,
+.est-epingle .etat-sujet-1740 .e-epingle { display: inline; }
+.etat-sujet-1740 .e-nouveau .disque { fill: rgba(var(--accent-vif-rgb), 0.22); stroke: var(--accent-vif); }
+.etat-sujet-1740 .e-nouveau .petales circle { fill: none; stroke: var(--accent-vif); stroke-width: 0.9; }
+.etat-sujet-1740 .e-nouveau .coeur { fill: var(--accent-vif); }
+.est-nouveau .etat-sujet-1740 { animation: respire-1740 3.6s ease-in-out infinite; }
+.etat-sujet-1740 .e-lu circle { fill: none; stroke: var(--ligne-douce); }
+.etat-sujet-1740 .e-scelle .cire { fill: #6E3A2E; stroke: #8E4A3A; }
+.etat-sujet-1740 .e-scelle .empreinte { fill: none; stroke: #B06A55; }
+.etat-sujet-1740 .e-annonce path { fill: rgba(168, 139, 90, 0.25); stroke: var(--ocre-doux); stroke-linejoin: round; }
+.etat-sujet-1740 .e-epingle circle { fill: rgba(var(--accent-rgb), 0.25); stroke: var(--accent-clair); }
+.etat-sujet-1740 .e-epingle path { fill: none; stroke: var(--accent-clair); stroke-linecap: round; }
+@keyframes respire-1740 { 0%, 100% { opacity: 0.75; transform: scale(0.94); } 50% { opacity: 1; transform: scale(1); } }
+
+/* Titre, auteur, pages */
+.sujet-infos-1740 { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+body#modernbb .sujet-1740 h2.topic-title {
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 19px !important;
+	font-weight: 400 !important;
+	line-height: 1.2;
+	letter-spacing: 0.03em;
+	text-transform: none;
+}
+body#modernbb .sujet-1740 a.topictitle {
+	color: var(--texte-clair) !important;
+	font: inherit !important;
+	background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0 1px no-repeat;
+	transition: background-size 0.6s ease;
+}
+body#modernbb .sujet-1740:hover a.topictitle { background-size: 100% 1px; text-decoration: none; }
+.mini-pages-1740 { display: inline-flex; gap: 6px; margin-left: 8px; font-size: 13px; font-variant-numeric: oldstyle-nums; vertical-align: middle; }
+.mini-pages-1740:empty { display: none; }
+.mini-pages-1740 a { color: var(--texte-doux) !important; }
+.mini-pages-1740 a:hover { color: var(--texte-clair) !important; }
+body#modernbb .sujet-1740 .topic-description { font-size: 15px; font-style: italic; color: var(--texte-doux); }
+body#modernbb .sujet-1740 .topic-author { font-size: 14px; font-style: italic; color: var(--texte-doux); }
+body#modernbb .sujet-1740 .topic-author a { font-style: normal; }
+.sujet-chemin-1740 { font-size: 13px; color: var(--texte-doux); }
+
+/* Réponses et vues */
+.sujet-nb-1740 {
+	text-align: center;
+	font-size: 19px;
+	font-variant-numeric: oldstyle-nums;
+	color: var(--texte-clair);
+}
+
+/* Dernier écrit : avatar rond, auteur, date, flèche */
+.sujet-dernier-1740 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-width: 0;
+	align-self: stretch;
+	padding-left: 14px;
+	border-left: 1px solid var(--ligne);
+}
+body#modernbb .sujet-dernier-1740 .dernier-avatar img {
+	display: block;
+	width: 42px !important;
+	height: 42px !important;
+	object-fit: cover;
+	border-radius: 50%;
+	padding: 3px;
+	border: 1px solid var(--accent);
+	box-sizing: border-box;
+	filter: brightness(0.85);
+	transition: filter 0.6s;
+}
+body#modernbb .sujet-1740:hover .sujet-dernier-1740 .dernier-avatar img { filter: brightness(1.1); }
+.sujet-dernier-infos-1740 { min-width: 0; flex: 1; display: flex; flex-direction: column; line-height: 1.25; }
+.dernier-auteur-1740 { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dernier-date-1740 { font-size: 13px; font-style: italic; color: var(--texte-doux); font-variant-numeric: oldstyle-nums; }
+/* L'icône « dernier message » de Forumactif devient une flèche */
+.dernier-lien-1740 a { display: inline-block; font-size: 17px; line-height: 1; color: var(--accent-lien); }
+.dernier-lien-1740 a img { display: none; }
+.dernier-lien-1740 a::after { content: "→"; }
+.dernier-lien-1740 a:hover { color: var(--texte-clair); text-decoration: none; }
+
+/* La légende des icônes sert au script, pas à l'affichage */
+body#modernbb #picture_legend { display: none; }
+
+/* ---------- Petits écrans ---------- */
+@media (max-width: 760px) {
+	.groupe-tete-1740 { grid-template-columns: 24px minmax(0, 1fr); }
+	.groupe-col-1740 { display: none; }
+	body#modernbb .sujet-1740 { grid-template-columns: 24px minmax(0, 1fr) 44px; row-gap: 8px; }
+	body#modernbb .sujet-1740 .views { display: none; }
+	.sujet-dernier-1740 { grid-column: 2 / -1; border-left: none; padding-left: 0; border-top: 1px dotted var(--ligne); padding-top: 8px; }
+	body#modernbb .sous-forums-1740 .forum-1740 { grid-template-columns: 24px minmax(0, 1fr) !important; }
+	body#modernbb .chercher-ici-1740 input[type="text"]:focus { width: 120px; }
+	/* Ordre dans la tête : catégorie, titre, ornement, description, liens, bouton, sous-forums */
+	body#modernbb .forum-tete-1740 .forum-desc-1740 { order: 2; }
+	body#modernbb .forum-tete-1740 .sujet-liens-1740 { order: 3; }
+	body#modernbb .forum-tete-1740 .sujet-ligne-1740 .sujet-boutons-1740 { order: 4; }
+	body#modernbb .forum-tete-1740 .sous-forums-1740 { order: 5; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.est-nouveau .etat-sujet-1740 { animation: none; }
+}
+
+/* ---------- Ajustements validés sur le forum ---------- */
+/* Tête du forum : fond uni foncé, comme la maquette (sans la texture de la page de sujet) */
+html body#modernbb .sujet-cadre-1740.forum-tete-1740 { background: rgba(22, 20, 15, 0.96) !important; background-clip: padding-box !important; }
+/* Liens de l'index (nouveaux messages, mes écrits…) : jamais dans les sous-forums */
+html body#modernbb .forum-tete-1740 ul.linklist { display: none !important; }
+/* Sous-forums : sans statistiques, titre centré, colonne du dernier message élargie */
+html body#modernbb .sous-forums-1740 .forum-stats { display: none !important; }
+html body#modernbb .sous-forums-1740 .forum-1740 { grid-template-columns: 24px minmax(0, 1fr) 340px !important; align-items: center; min-height: 0; padding-top: 12px; padding-bottom: 12px; }
+html body#modernbb .sous-forums-1740 .forum-infos { align-self: center; }
+html body#modernbb .sous-forums-1740 .forum-dernier { align-self: center; padding-top: 4px; padding-bottom: 4px; }
+/* Liste des sujets : dernier écrit plus large, chiffres sans le « 0 » en forme de « o » */
+.groupe-tete-1740,
+body#modernbb .sujet-1740 { grid-template-columns: 24px minmax(0, 1fr) 80px 80px 290px; }
+.sujet-nb-1740 { font-variant-numeric: lining-nums; }
+@media (max-width: 760px) {
+	html body#modernbb .sous-forums-1740 .forum-1740 { grid-template-columns: 24px minmax(0, 1fr) !important; }
+	.groupe-tete-1740 { grid-template-columns: 24px minmax(0, 1fr); }
+	body#modernbb .sujet-1740 { grid-template-columns: 24px minmax(0, 1fr) 44px; }
+}
+
+/* Sous-forums : on retire les zones vides sous le titre pour qu'il soit centré */
+html body#modernbb .sous-forums-1740 .forum-desc:empty,
+html body#modernbb .sous-forums-1740 .forum-moderateurs,
+html body#modernbb .sous-forums-1740 .forum-sous { display: none !important; }
+html body#modernbb .sous-forums-1740 .forum-infos {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 2px;
+	margin: 0 !important;
+}
+html body#modernbb .sous-forums-1740 .forum-tete { margin: 0 !important; }
+
+/* Tête du forum : même espace entre la boîte des sous-forums et le cadre que dans la liste des sujets */
+html body#modernbb .sujet-cadre-1740.forum-tete-1740 { padding: 6px 8px 10px !important; }
+html body#modernbb .forum-tete-1740 .sujet-ligne-1740 { padding: 0 12px; box-sizing: border-box; }
+html body#modernbb .forum-tete-1740 .sous-forums-1740 { margin-top: 16px; }
 
