@@ -1302,6 +1302,34 @@
 		});
 	}
 
+
+	/* ------------------------------------------------------------------
+	   Barre de progression (messages, pages) : construite à partir de
+	   <span data-part="25" data-etat="fait">Nom</span>
+	   ------------------------------------------------------------------ */
+	function initProgression() {
+		$$('.progression-1740').forEach(function (bloc) {
+			if (bloc.classList.contains('prete-1740')) { return; }
+			var etapes = $$('span[data-part]', bloc).map(function (s) {
+				var etat = (s.getAttribute('data-etat') || 'avenir').trim().toLowerCase();
+				return { nom: s.textContent.trim(), part: parseFloat(s.getAttribute('data-part')) || 0, etat: etat };
+			});
+			var total = etapes.reduce(function (t, e) { return t + (e.etat === 'fait' || e.etat === 'dernier' ? e.part : 0); }, 0);
+			var titre = bloc.getAttribute('data-titre') || 'Avancement';
+			var html = '<div class="p-tete"><span class="p-titre">' + echapper(titre) + '</span><span class="p-total">' + Math.round(total) + ' %</span></div>';
+			html += '<div class="p-barre" aria-hidden="true">' + etapes.map(function (e) {
+				return '<span class="p-seg ' + e.etat + '" style="--part:' + e.part + '" title="' + echapper(e.nom) + ' · ' + e.part + ' %"></span>';
+			}).join('') + '</div>';
+			html += '<div class="p-legende">' + etapes.map(function (e) {
+				return '<span class="p-item ' + e.etat + '">' + echapper(e.nom) + ' <b>' + e.part + ' %</b></span>';
+			}).join('') + '</div>';
+			bloc.innerHTML = html; // retire aussi les <br> ajoutés par Forumactif
+			bloc.setAttribute('role', 'group');
+			bloc.setAttribute('aria-label', titre + ' : ' + Math.round(total) + ' %');
+			bloc.classList.add('prete-1740');
+		});
+	}
+
 	/* ------------------------------------------------------------------
 	   Démarrage
 	   ------------------------------------------------------------------ */
@@ -1323,6 +1351,7 @@
 		initPied();
 		if ($('.post-1740')) { initSujet(); }
 		if ($('.forum-tete-1740')) { initListe(); }
+		initProgression();
 		if ($('#text_editor_textarea')) { initEditeur(); }
 	}
 
