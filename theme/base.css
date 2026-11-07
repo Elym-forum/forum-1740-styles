@@ -270,11 +270,12 @@ img.avatar-rond-1740 {
 
 /* ==========================================================================
    PIED DE PAGE (overall_footer_begin + overall_footer_end)
-   - .statistics : bandeau de statistiques. Masqué sur l'index (doublon avec
-     le coin du feu), harmonisé sur les autres pages.
+   - .statistics : bandeau de statistiques natif, masqué partout : sur l'index
+     ses chiffres sont repris par le coin du feu (le script les lit quand même),
+     et sur les autres pages Forumactif le laisse vide.
    - #page-footer et .copyright : liens légaux de Forumactif, toujours visibles.
    ========================================================================== */
-html.index-1740 body#modernbb .statistics { display: none !important; }
+body#modernbb .statistics { display: none !important; }
 
 body#modernbb .statistics,
 body#modernbb #page-footer,
