@@ -1105,6 +1105,56 @@
 		});
 	}
 
+
+	/* ------------------------------------------------------------------
+	   Éditeur (SCEditor) : la zone de texte en mode visuel est une petite
+	   page à part (iframe) que le CSS du forum n'atteint pas. On lui donne
+	   le fond, la police et les couleurs du thème.
+	   ------------------------------------------------------------------ */
+	function habillerEditeur(cadre) {
+		var doc;
+		try { doc = cadre.contentDocument; } catch (e) { return; }
+		if (!doc || !doc.head || !doc.body || doc.getElementById('style-1740')) { return; }
+		var css = getComputedStyle(document.documentElement);
+		function v(nom, defaut) { return (css.getPropertyValue(nom) || '').trim() || defaut; }
+		var police = doc.createElement('link');
+		police.rel = 'stylesheet';
+		police.href = 'https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;1,400&display=swap';
+		doc.head.appendChild(police);
+		var style = doc.createElement('style');
+		style.id = 'style-1740';
+		style.textContent =
+			'html,body{background:' + v('--fond-nuit', '#0E0D0A') + ' !important;}' +
+			'body{margin:0;padding:12px 14px;color:' + v('--texte', '#DDD6C6') + ';font-family:Alegreya,Georgia,serif;font-size:16px;line-height:1.6;}' +
+			'a{color:' + v('--accent-lien', '#B3BA98') + ';}' +
+			'blockquote,code,pre{background:rgba(255,255,255,0.04);border:1px solid ' + v('--ligne', '#3A352B') + ';}' +
+			'::selection{background:rgba(' + v('--accent-rgb', '124,132,102') + ',0.45);}';
+		doc.head.appendChild(style);
+	}
+
+	function initEditeur() {
+		var essais = 0;
+		var minuterie = setInterval(function () {
+			essais++;
+			var cadres = $$('.sceditor-container iframe');
+			cadres.forEach(function (cadre) {
+				habillerEditeur(cadre);
+				if (!cadre.dataset.ecoute1740) {
+					cadre.dataset.ecoute1740 = '1';
+					// SCEditor recrée parfois le contenu (changement de mode) : on rhabille
+					cadre.addEventListener('load', function () { habillerEditeur(cadre); });
+				}
+			});
+			if (essais > 20) { clearInterval(minuterie); }
+		}, 500);
+		// Retour au mode visuel après le mode source
+		document.addEventListener('click', function (e) {
+			if (e.target.closest && e.target.closest('.sceditor-button-source')) {
+				setTimeout(function () { $$('.sceditor-container iframe').forEach(habillerEditeur); }, 100);
+			}
+		});
+	}
+
 	/* ------------------------------------------------------------------
 	   Démarrage
 	   ------------------------------------------------------------------ */
@@ -1125,6 +1175,7 @@
 		deplacerRaccourcis();
 		initPied();
 		if ($('.post-1740')) { initSujet(); }
+		if ($('#text_editor_textarea')) { initEditeur(); }
 	}
 
 	if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', demarrer); }
