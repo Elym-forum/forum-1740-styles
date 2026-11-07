@@ -1395,6 +1395,24 @@
 			if (longue) { el.title = el.textContent.trim(); el.textContent = longue; }
 		});
 
+		// Lettre ouverte : « Correspondance de [expéditeur] », « A » → « à »
+		var lue = $('.lettre-lue-1740');
+		if (lue) {
+			var exp = $('.lettre-expediteur-1740', lue);
+			var sur = $('.lettres-surtitre-1740');
+			if (exp && sur && exp.textContent.trim()) { sur.textContent = 'Correspondance de ' + exp.textContent.trim(); }
+			var deA = $('.lettre-de-a-1740', lue);
+			if (deA) {
+				Array.prototype.slice.call(deA.childNodes).forEach(function (n) {
+					if (n.nodeType === 3) { n.nodeValue = n.nodeValue.replace(/(^|\s)A(\s|$)/, '$1à$2'); }
+				});
+			}
+		}
+		// Correspondance précédente : on retire le grand titre de Forumactif
+		$$('.historique-1740 h1, .historique-1740 h2, .historique-1740 .h3, .historique-1740 .page-title').forEach(function (h) {
+			if (/historique/i.test(h.textContent)) { h.remove(); }
+		});
+
 		// Citer, Modifier, Profil : du texte à la place des petites images
 		[['.lettre-citer-1740', 'Citer'], ['.lettre-modifier-1740', 'Modifier'], ['.lettre-profil-1740', 'Profil']].forEach(function (p) {
 			$$(p[0]).forEach(function (zone) {
