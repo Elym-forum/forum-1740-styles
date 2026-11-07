@@ -362,6 +362,6 @@ html body#modernbb .sous-forums-1740 .forum-infos {
 html body#modernbb .sous-forums-1740 .forum-tete { margin: 0 !important; }
 
 /* Tête du forum : même espace entre la boîte des sous-forums et le cadre que dans la liste des sujets */
-html body#modernbb .sujet-cadre-1740.forum-tete-1740 { padding: 6px 8px 10px !important; }
-html body#modernbb .forum-tete-1740 .sujet-ligne-1740 { padding: 0 12px; box-sizing: border-box; }
+html body#modernbb .sujet-cadre-1740.forum-tete-1740 { padding: var(--esp) 8px 10px !important; }
+html body#modernbb .forum-tete-1740 .sujet-ligne-1740 { padding: 0 8px; box-sizing: border-box; }
 html body#modernbb .forum-tete-1740 .sous-forums-1740 { margin-top: 16px; }

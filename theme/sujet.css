@@ -51,7 +51,7 @@ body#modernbb .sujet-cadre-1740 {
 	flex-direction: column;
 	align-items: center;
 	gap: 4px;
-	padding: 6px 20px 10px;
+	padding: var(--esp);
 	text-align: center;
 }
 body#modernbb .sujet-surtitre-1740 { font-style: italic; font-size: 17px; color: var(--texte-doux); min-height: 1em; }
@@ -933,7 +933,7 @@ body#modernbb .ecriture-tete-1740 {
 	align-items: center;
 	gap: 4px;
 	margin: 0 0 18px;
-	padding: 6px 20px 10px;
+	padding: var(--esp);
 	text-align: center;
 }
 .ecriture-surtitre-1740 { font-style: italic; font-size: 17px; color: var(--texte-doux); }
