@@ -93,6 +93,26 @@ html[data-theme="ocre"] {
 }
 
 /* ---------- base.css ---------- */
+/* Alegreya italique : ses lettres sont plus petites que le romain ; on la grossit de 15 % partout */
+@font-face {
+	font-family: "Alegreya";
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+	size-adjust: 115%;
+	src: url("https://cdn.jsdelivr.net/npm/@fontsource/alegreya@5.2.5/files/alegreya-latin-ext-400-italic.woff2") format("woff2");
+	unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+	font-family: "Alegreya";
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+	size-adjust: 115%;
+	src: url("https://cdn.jsdelivr.net/npm/@fontsource/alegreya@5.2.5/files/alegreya-latin-400-italic.woff2") format("woff2");
+	unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
 /* ==========================================================================
    FORUM 1740 — BASE (© Elym)
    Fond, typographie, composants communs et animations.
@@ -618,7 +638,7 @@ body#modernbb #entete-1740 .entete-titre { font-family: 'Grenze Gotisch', serif 
 #entete-1740 .entete-surtitre { font-family: 'Alegreya SC', serif; font-size: 16px; letter-spacing: 0.3em; color: var(--accent-clair); }
 #entete-1740 .entete-titre { margin: 0; font-family: 'Grenze Gotisch', serif; font-weight: 400; font-size: 62px; line-height: 0.95; color: var(--texte-clair); }
 #entete-1740 .entete-titre a { color: inherit; text-decoration: none; }
-#entete-1740 .entete-motscles { margin: 0; font-size: 17px; color: var(--texte-doux); font-style: italic; }
+#entete-1740 .entete-motscles { margin: 0; font-size: 15px; color: var(--texte-doux); font-style: italic; }
 #entete-1740 .entete-motscles .sep { color: var(--accent); font-style: normal; }
 #entete-1740 .entete-accroche { margin: 0; font-size: 18px; }
 
@@ -652,7 +672,7 @@ body#modernbb #entete-1740 .entete-titre { font-family: 'Grenze Gotisch', serif 
 	border-top: 1px solid var(--ligne);
 	padding-top: 8px;
 }
-#entete-1740 .entete-salut { font-style: italic; }
+#entete-1740 .entete-salut { font-size: 15px; font-style: italic; }
 #entete-1740 .entete-reglages { display: flex; gap: 6px; align-items: center; }
 
 .pastille-1740 { width: 14px; height: 14px; padding: 0; border: 1px solid var(--ligne); cursor: pointer; }
@@ -889,7 +909,7 @@ body#modernbb { padding-top: 0 !important; }
 }
 .panneau-1740 .pa-texte a { color: var(--accent-lien); }
 .panneau-1740 .pa-texte a:hover { color: var(--texte-clair); }
-.panneau-1740 .pa-heure { margin-top: 4px; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+.panneau-1740 .pa-heure { margin-top: 4px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 .panneau-1740 .pa-suppr {
 	position: absolute;
 	right: 10px;
@@ -902,7 +922,7 @@ body#modernbb { padding-top: 0 !important; }
 .panneau-1740 .pa-avis:hover .pa-suppr,
 .panneau-1740 .pa-suppr:focus-visible { opacity: 1; }
 .panneau-1740 .pa-suppr:hover { color: var(--texte-clair); }
-.panneau-1740 .pa-vide { padding: 18px 16px; font-style: italic; color: var(--texte-doux); }
+.panneau-1740 .pa-vide { padding: 18px 16px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 
 @media (max-width: 1100px) {
 	.panneau-1740 {
@@ -993,7 +1013,7 @@ body#modernbb #panneau-comptes-1740 .pc-formulaire input:focus { outline: 1px so
 	cursor: pointer;
 }
 #panneau-comptes-1740 .pc-bouton:hover { background: rgba(var(--accent-rgb), 0.3); }
-#panneau-comptes-1740 .pc-avertissement { margin: 0; padding: 0 16px 12px; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+#panneau-comptes-1740 .pc-avertissement { margin: 0; padding: 0 16px 12px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 #panneau-comptes-1740 .pc-etat { margin: 0; padding: 0 16px; font-size: 15px; color: var(--ocre-doux); }
 #panneau-comptes-1740 .pc-etat:not(:empty) { padding: 10px 16px; border-top: 1px dotted var(--ligne); }
 
@@ -1060,7 +1080,7 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 #accueil-1740 .resume p { margin: 0 0 10px; }
 #accueil-1740 .lettrine { float: left; font-family: 'Grenze Gotisch', serif; font-size: 60px; line-height: 0.8; padding: 5px 8px 0 0; color: var(--accent-clair); }
 #accueil-1740 .resume-actions { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-top: auto; padding-top: 10px; border-top: 1px dotted var(--ligne); }
-#accueil-1740 .resume-actions .secondaire { font-size: 17px; font-style: italic; }
+#accueil-1740 .resume-actions .secondaire { font-size: 15px; font-style: italic; }
 
 /* Gardiens */
 #accueil-1740 .gardiens { padding: 18px 20px 14px; display: flex; flex-direction: column; gap: 10px; }
@@ -1091,13 +1111,13 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 #accueil-1740 .periode[data-saison="Sommar"] svg [data-saison="Sommar"],
 #accueil-1740 .periode[data-saison="Höst"] svg [data-saison="Höst"] { display: inline; }
 #accueil-1740 .periode-nom { font-family: 'Grenze Gotisch', serif; font-size: 24px; line-height: 1; color: var(--texte-clair); }
-#accueil-1740 .periode-fr { color: var(--texte-doux); font-style: italic; font-size: 16px; }
+#accueil-1740 .periode-fr { color: var(--texte-doux); font-style: italic; font-size: 15px; }
 
 /* Courroux des créatures */
 #accueil-1740 .courroux { margin-top: auto; border-top: 1px solid var(--ligne); padding: 12px 20px 16px; display: flex; flex-direction: column; gap: 7px; }
 #accueil-1740 .courroux-tete { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 #accueil-1740 .courroux-titre { font-family: 'Alegreya SC', serif; font-size: 16px; letter-spacing: 0.12em; color: var(--accent-clair); }
-#accueil-1740 .courroux-humeur { font-style: italic; font-size: 16px; color: var(--ocre-doux); }
+#accueil-1740 .courroux-humeur { font-style: italic; font-size: 15px; color: var(--ocre-doux); }
 #accueil-1740 .jauge { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3px; padding: 3px; border: 1px solid var(--ligne); }
 #accueil-1740 .jauge span { height: 12px; background: rgba(58, 53, 43, 0.5); }
 #accueil-1740 .jauge span.rempli:nth-child(1) { background: var(--courroux-1); }
@@ -1123,7 +1143,7 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 #accueil-1740 .ecrit-titre { display: block; font-size: 17px; color: var(--texte-clair); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #accueil-1740 .ecrit-meta { font-size: 15px; color: var(--texte-doux); }
 #accueil-1740 .ecrit-fleche { font-size: 18px; }
-#accueil-1740 .derniers-vide { font-size: 16px; font-style: italic; color: var(--texte-doux); }
+#accueil-1740 .derniers-vide { font-size: 15px; font-style: italic; color: var(--texte-doux); }
 
 /* Rumeurs : centrées sur toute la largeur du bandeau */
 #accueil-1740 .rumeurs { display: flex; border-top: 1px solid var(--ligne); position: relative; min-height: 46px; }
@@ -1154,7 +1174,7 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 	transform: translateY(-50%);
 	text-align: center;
 	font-style: italic;
-	font-size: 18px;
+	font-size: 15px;
 	color: var(--texte-murmure);
 	opacity: 0;
 	filter: blur(6px);
@@ -1172,7 +1192,7 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
    ========================================================================== */
 .chapitre-1740 { margin-bottom: 26px; }
 .chapitre-tete { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0 14px; }
-.chapitre-surtitre { font-style: italic; font-size: 17px; color: var(--texte-doux); min-height: 1em; }
+.chapitre-surtitre { font-style: italic; font-size: 15px; color: var(--texte-doux); min-height: 1em; }
 .chapitre-titre { margin: 0; font-family: 'Grenze Gotisch', serif; font-weight: 400; font-size: 40px; line-height: 1.05; color: var(--texte); border: none; }
 .chapitre-corps { display: flex; flex-wrap: wrap; }
 .chapitre-forums { list-style: none; margin: 0; padding: 0; flex: 999 1 420px; min-width: 0; }
@@ -1200,7 +1220,7 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 .forum-titre { margin: 0; font-family: 'Grenze Gotisch', serif; font-weight: 400; font-size: 26px; line-height: 1.05; border: none; padding: 0; }
 .forum-titre a { color: var(--texte-clair) !important; transition: color 0.4s ease; }
 .forum-1740:hover .forum-titre a { color: var(--accent-vif) !important; text-decoration: none !important; }
-.forum-desc { font-size: 17px; color: var(--texte-doux); font-style: italic; }
+.forum-desc { font-size: 15px; color: var(--texte-doux); font-style: italic; }
 .forum-sous { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 0; font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.04em; }
 .forum-sous a + a::before { content: "·"; display: inline-block; margin: 0 9px; color: var(--accent); }
 .forum-sous:empty { display: none; }
@@ -1251,7 +1271,7 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 	background-size: cover;
 }
 .chapitre-panneau:hover { text-decoration: none !important; }
-.chapitre-panneau .sous { font-style: italic; font-size: 17px; color: var(--texte-murmure); }
+.chapitre-panneau .sous { font-style: italic; font-size: 15px; color: var(--texte-murmure); }
 .chapitre-panneau .titre { font-family: 'Grenze Gotisch', serif; font-size: 32px; line-height: 1; }
 
 /* Bandeau gravé (Terres) */
@@ -1266,7 +1286,7 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 	background: var(--fond) var(--img-bandeau) center / cover;
 	box-shadow: inset 0 -70px 50px -30px rgba(14, 13, 10, 0.95);
 }
-.chapitre-bandeau p { margin: 0; font-style: italic; font-size: 18px; color: var(--texte); }
+.chapitre-bandeau p { margin: 0; font-style: italic; font-size: 15px; color: var(--texte); }
 
 /* ---------- Gabarit I : Fondements ---------- */
 .chapitre-1740[data-gabarit="fondements"] .forum-1740 { grid-template-columns: 24px minmax(0, 1fr) 240px; }
@@ -1358,7 +1378,7 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 /* On ne garde que la liste des présents : total, record et anniversaires sont masqués */
 #presences-1740 .case:first-child > div:not(.presents) { display: none !important; }
 #presences-1740 .case:first-child { justify-content: flex-start; gap: 10px; }
-#presences-1740 .presents:empty::before { content: "Personne pour l’instant"; font-style: italic; color: var(--texte-doux); font-size: 16px; }
+#presences-1740 .presents:empty::before { content: "Personne pour l’instant"; font-style: italic; color: var(--texte-doux); font-size: 15px; }
 #presences-1740 .presents a { font-size: 18px; }
 #presences-1740 .stats { padding: 0; display: grid; grid-template-rows: repeat(2, minmax(0, 1fr)); text-align: center; gap: 0; }
 #presences-1740 .stats > div { padding: 10px 8px; display: flex; flex-direction: column; justify-content: center; }
@@ -1464,7 +1484,7 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 #accueil-1740 .veillee .chatbox-compte {
 	margin-left: 0 !important;
 	font-family: 'Alegreya', Georgia, serif;
-	font-size: 16px !important;
+	font-size: 15px !important;
 	font-style: italic;
 	opacity: 1 !important;
 	color: var(--texte-doux);
@@ -1535,7 +1555,7 @@ body#modernbb #main-content > ul.linklist.top { padding: 0 4px; font-size: 15px;
 #accueil-1740 .veillee .chatbox-avis { font-size: 15px !important; padding: 8px 14px !important; line-height: 1.4; }
 #accueil-1740 .veillee .chatbox-heure { font-size: 14px !important; }
 #accueil-1740 .veillee .chatbox-badge-modo { font-size: 14px !important; }
-#accueil-1740 .veillee .chatbox-evenement { font-size: 0.95em !important; font-style: italic; }
+#accueil-1740 .veillee .chatbox-evenement { font-size: 15px !important; font-style: italic; }
 #accueil-1740 .veillee .chatbox-membres { font-size: 17px !important; }
 #accueil-1740 .veillee .chatbox-membres-titre { font-size: 14px !important; font-family: 'Alegreya SC', serif; letter-spacing: 0.1em; }
 #accueil-1740 .veillee .chatbox-saisie { font-size: 17px !important; }
@@ -1692,7 +1712,7 @@ body#modernbb .sujet-cadre-1740 {
 	padding: var(--esp);
 	text-align: center;
 }
-body#modernbb .sujet-surtitre-1740 { font-style: italic; font-size: 17px; color: var(--texte-doux); min-height: 1em; }
+body#modernbb .sujet-surtitre-1740 { font-style: italic; font-size: 15px; color: var(--texte-doux); min-height: 1em; }
 body#modernbb .sujet-cadre-1740 h1.page-title {
 	margin: 0;
 	padding: 0;
@@ -2168,7 +2188,7 @@ body#modernbb .post-1740 .postbody .content {
 	overflow-wrap: break-word;
 }
 body#modernbb .post-1740 .postbody .content img { max-width: 100%; }
-body#modernbb .post-1740 .edited-message { font-size: 14px; font-style: italic; color: var(--texte-doux); }
+body#modernbb .post-1740 .edited-message { font-size: 15px; font-style: italic; color: var(--texte-doux); }
 body#modernbb .post-1740 .edited-message:empty { display: none; }
 body#modernbb .post-1740 .signature_div {
 	margin: 0 !important;
@@ -2229,7 +2249,7 @@ body#modernbb .reactions-1740 .rep-nb:not([style*="none"]) { display: inline-fle
 .larme-r { transform-origin: 50% 0; }
 .reactions-1740 .rep-button:hover .larme-r { color: var(--accent-clair); animation: goutte-1740 1.6s ease-in-out infinite; }
 @keyframes goutte-1740 { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(2px) scaleY(1.06); } }
-body#modernbb .reactions-1740 .fa_like_list { margin: 0; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+body#modernbb .reactions-1740 .fa_like_list { margin: 0; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 .haut-1740 { margin-left: auto; padding: 8px 0; font-family: 'Alegreya SC', serif; font-size: 15px; letter-spacing: 0.08em; }
 
 /* Message masqué (« Voir le message ») */
@@ -2574,7 +2594,7 @@ body#modernbb .ecriture-tete-1740 {
 	padding: var(--esp);
 	text-align: center;
 }
-.ecriture-surtitre-1740 { font-style: italic; font-size: 17px; color: var(--texte-doux); }
+.ecriture-surtitre-1740 { font-style: italic; font-size: 15px; color: var(--texte-doux); }
 body#modernbb .ecriture-tete-1740 h1.page-title {
 	margin: 0 !important;
 	padding: 0 !important;
@@ -2661,7 +2681,7 @@ body#modernbb .ecriture-1740 #smiley-box {
 }
 body#modernbb .ecriture-1740 #smiley-box a { color: var(--accent-lien); }
 body#modernbb .ecriture-1740 #smileyContainer select { width: 100%; }
-body#modernbb .ecriture-1740 #helpbox { font-size: 14px; font-style: italic; color: var(--texte-doux); }
+body#modernbb .ecriture-1740 #helpbox { font-size: 15px; font-style: italic; color: var(--texte-doux); }
 
 /* Barre d'envoi */
 body#modernbb .ecriture-1740 .envoi-1740 fieldset.submit-buttons {
@@ -2674,7 +2694,7 @@ body#modernbb .ecriture-1740 .envoi-1740 fieldset.submit-buttons {
 	padding: 0;
 	border: none;
 }
-body#modernbb .ecriture-1740 .envoi-1740 .info { flex-basis: 100%; text-align: center; font-style: italic; color: var(--texte-doux); }
+body#modernbb .ecriture-1740 .envoi-1740 .info { flex-basis: 100%; text-align: center; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 
 /* ---------- Prévisualisation ---------- */
 body#modernbb #preview.post {
@@ -2805,7 +2825,7 @@ body#modernbb .post.revue-msg-1740 {
 body#modernbb .forum-tete-1740 { padding-bottom: 18px; }
 .forum-desc-1740 {
 	margin: 2px 0 0;
-	font-size: 16px;
+	font-size: 15px;
 	font-style: italic;
 	color: var(--texte-doux);
 	text-align: center;
@@ -3058,7 +3078,7 @@ body#modernbb .sujet-1740:hover a.topictitle { background-size: 100% 1px; text-d
 .mini-pages-1740 a { color: var(--texte-doux) !important; }
 .mini-pages-1740 a:hover { color: var(--texte-clair) !important; }
 body#modernbb .sujet-1740 .topic-description { font-size: 15px; font-style: italic; color: var(--texte-doux); }
-body#modernbb .sujet-1740 .topic-author { font-size: 14px; font-style: italic; color: var(--texte-doux); }
+body#modernbb .sujet-1740 .topic-author { font-size: 15px; font-style: italic; color: var(--texte-doux); }
 body#modernbb .sujet-1740 .topic-author a { font-style: normal; }
 .sujet-chemin-1740 { font-size: 13px; color: var(--texte-doux); }
 
@@ -3095,7 +3115,7 @@ body#modernbb .sujet-dernier-1740 .dernier-avatar img {
 body#modernbb .sujet-1740:hover .sujet-dernier-1740 .dernier-avatar img { filter: brightness(1.1); }
 .sujet-dernier-infos-1740 { min-width: 0; flex: 1; display: flex; flex-direction: column; line-height: 1.25; }
 .dernier-auteur-1740 { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dernier-date-1740 { font-size: 13px; font-style: italic; color: var(--texte-doux); font-variant-numeric: oldstyle-nums; }
+.dernier-date-1740 { font-size: 15px; font-style: italic; color: var(--texte-doux); font-variant-numeric: oldstyle-nums; }
 /* L'icône « dernier message » de Forumactif devient une flèche */
 .dernier-lien-1740 a { display: inline-block; font-size: 17px; line-height: 1; color: var(--accent-lien); }
 .dernier-lien-1740 a img { display: none; }
@@ -3179,7 +3199,7 @@ html body#modernbb .sujet-cadre-1740.lettres-tete-1740 {
 }
 .coffret-1740 {
 	font-family: 'Alegreya', Georgia, serif;
-	font-size: 14px;
+	font-size: 15px;
 	font-style: italic;
 	letter-spacing: 0;
 	color: var(--texte-doux);
@@ -3326,7 +3346,7 @@ body#modernbb a.lettre-sujet-1740 {
 body#modernbb .est-non-lue a.lettre-sujet-1740 { color: var(--texte-clair) !important; }
 body#modernbb .lettre-1740:hover a.lettre-sujet-1740 { background-size: 100% 1px; text-decoration: none; }
 .lettre-infos-1740 strong { font-weight: 400; }
-.lettre-de-1740 { font-size: 14px; font-style: italic; color: var(--texte-doux); font-variant-numeric: oldstyle-nums; }
+.lettre-de-1740 { font-size: 15px; font-style: italic; color: var(--texte-doux); font-variant-numeric: oldstyle-nums; }
 .lettre-de-1740 a { font-style: normal; }
 .coche-l-1740 { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
 
@@ -3437,7 +3457,7 @@ body#modernbb .historique-1740 .postprofile { float: none !important; width: aut
 body#modernbb .historique-1740 .postbody { float: none !important; width: auto !important; margin: 0 !important; padding: 0 !important; }
 body#modernbb .historique-1740 h3,
 body#modernbb .historique-1740 .h3 { margin: 0 0 2px; padding: 0; border: none; font-family: 'Alegreya SC', serif; font-size: 16px; font-weight: 400; color: var(--texte-clair); }
-body#modernbb .historique-1740 .author { margin: 0 0 6px; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+body#modernbb .historique-1740 .author { margin: 0 0 6px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 body#modernbb .historique-1740 .content { font-size: 15px !important; line-height: 1.5 !important; color: #CFC8B8 !important; }
 body#modernbb .historique-1740 > br,
 body#modernbb .historique-1740 > .h3 { display: none; }
@@ -3477,7 +3497,7 @@ html body#modernbb .lettres-1740 .sujet-vide-1740 {
 	display: block !important;
 	padding: 22px 16px !important;
 	font-family: 'Alegreya', Georgia, serif !important;
-	font-size: 17px !important;
+	font-size: 15px !important;
 	font-style: italic;
 	text-align: center;
 	color: var(--texte-doux) !important;
@@ -3500,7 +3520,7 @@ html body#modernbb .revue-zone-1740 .post:not(.revue-msg-1740) {
 html body#modernbb .revue-zone-1740 .post:not(.revue-msg-1740) .postprofile { display: none !important; }
 html body#modernbb .revue-zone-1740 .post:not(.revue-msg-1740) .postbody { float: none !important; width: auto !important; margin: 0 !important; padding: 0 !important; }
 html body#modernbb .revue-zone-1740 .post:not(.revue-msg-1740) :is(h3, .h3, .topic-title) { margin: 0 0 2px !important; padding: 0 !important; border: none !important; font-family: 'Alegreya SC', serif !important; font-size: 16px !important; font-weight: 400 !important; color: var(--texte-clair) !important; }
-html body#modernbb .revue-zone-1740 .post:not(.revue-msg-1740) .author { margin: 0 0 6px !important; font-size: 14px !important; font-style: italic; color: var(--texte-doux) !important; }
+html body#modernbb .revue-zone-1740 .post:not(.revue-msg-1740) .author { margin: 0 0 6px !important; font-size: 15px !important; font-style: italic; color: var(--texte-doux) !important; }
 html body#modernbb .revue-zone-1740 .post:not(.revue-msg-1740) .author img { display: none; }
 html body#modernbb .revue-zone-1740 .post:not(.revue-msg-1740) .content { font-family: 'Alegreya', Georgia, serif !important; font-size: 15px !important; line-height: 1.5 !important; color: #CFC8B8 !important; }
 
@@ -3567,7 +3587,7 @@ body#modernbb .recensement-filtres-1740 input.grave-1740 {
 /* ---------- Les médaillons ---------- */
 body#modernbb .recensement-1740 { margin: 0 0 18px; padding: 8px; }
 .ames-1740 { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
-.ames-vide-1740 { grid-column: 1 / -1; margin: 0; padding: 24px; text-align: center; font-style: italic; color: var(--texte-doux); }
+.ames-vide-1740 { grid-column: 1 / -1; margin: 0; padding: 24px; text-align: center; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 
 .ame-1740 {
 	display: flex;

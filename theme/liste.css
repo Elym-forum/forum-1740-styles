@@ -9,7 +9,7 @@
 body#modernbb .forum-tete-1740 { padding-bottom: 18px; }
 .forum-desc-1740 {
 	margin: 2px 0 0;
-	font-size: 16px;
+	font-size: 15px;
 	font-style: italic;
 	color: var(--texte-doux);
 	text-align: center;
@@ -262,7 +262,7 @@ body#modernbb .sujet-1740:hover a.topictitle { background-size: 100% 1px; text-d
 .mini-pages-1740 a { color: var(--texte-doux) !important; }
 .mini-pages-1740 a:hover { color: var(--texte-clair) !important; }
 body#modernbb .sujet-1740 .topic-description { font-size: 15px; font-style: italic; color: var(--texte-doux); }
-body#modernbb .sujet-1740 .topic-author { font-size: 14px; font-style: italic; color: var(--texte-doux); }
+body#modernbb .sujet-1740 .topic-author { font-size: 15px; font-style: italic; color: var(--texte-doux); }
 body#modernbb .sujet-1740 .topic-author a { font-style: normal; }
 .sujet-chemin-1740 { font-size: 13px; color: var(--texte-doux); }
 
@@ -299,7 +299,7 @@ body#modernbb .sujet-dernier-1740 .dernier-avatar img {
 body#modernbb .sujet-1740:hover .sujet-dernier-1740 .dernier-avatar img { filter: brightness(1.1); }
 .sujet-dernier-infos-1740 { min-width: 0; flex: 1; display: flex; flex-direction: column; line-height: 1.25; }
 .dernier-auteur-1740 { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dernier-date-1740 { font-size: 13px; font-style: italic; color: var(--texte-doux); font-variant-numeric: oldstyle-nums; }
+.dernier-date-1740 { font-size: 15px; font-style: italic; color: var(--texte-doux); font-variant-numeric: oldstyle-nums; }
 /* L'icône « dernier message » de Forumactif devient une flèche */
 .dernier-lien-1740 a { display: inline-block; font-size: 17px; line-height: 1; color: var(--accent-lien); }
 .dernier-lien-1740 a img { display: none; }

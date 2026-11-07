@@ -54,7 +54,7 @@ body#modernbb .sujet-cadre-1740 {
 	padding: var(--esp);
 	text-align: center;
 }
-body#modernbb .sujet-surtitre-1740 { font-style: italic; font-size: 17px; color: var(--texte-doux); min-height: 1em; }
+body#modernbb .sujet-surtitre-1740 { font-style: italic; font-size: 15px; color: var(--texte-doux); min-height: 1em; }
 body#modernbb .sujet-cadre-1740 h1.page-title {
 	margin: 0;
 	padding: 0;
@@ -530,7 +530,7 @@ body#modernbb .post-1740 .postbody .content {
 	overflow-wrap: break-word;
 }
 body#modernbb .post-1740 .postbody .content img { max-width: 100%; }
-body#modernbb .post-1740 .edited-message { font-size: 14px; font-style: italic; color: var(--texte-doux); }
+body#modernbb .post-1740 .edited-message { font-size: 15px; font-style: italic; color: var(--texte-doux); }
 body#modernbb .post-1740 .edited-message:empty { display: none; }
 body#modernbb .post-1740 .signature_div {
 	margin: 0 !important;
@@ -591,7 +591,7 @@ body#modernbb .reactions-1740 .rep-nb:not([style*="none"]) { display: inline-fle
 .larme-r { transform-origin: 50% 0; }
 .reactions-1740 .rep-button:hover .larme-r { color: var(--accent-clair); animation: goutte-1740 1.6s ease-in-out infinite; }
 @keyframes goutte-1740 { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(2px) scaleY(1.06); } }
-body#modernbb .reactions-1740 .fa_like_list { margin: 0; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+body#modernbb .reactions-1740 .fa_like_list { margin: 0; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 .haut-1740 { margin-left: auto; padding: 8px 0; font-family: 'Alegreya SC', serif; font-size: 15px; letter-spacing: 0.08em; }
 
 /* Message masqué (« Voir le message ») */
@@ -936,7 +936,7 @@ body#modernbb .ecriture-tete-1740 {
 	padding: var(--esp);
 	text-align: center;
 }
-.ecriture-surtitre-1740 { font-style: italic; font-size: 17px; color: var(--texte-doux); }
+.ecriture-surtitre-1740 { font-style: italic; font-size: 15px; color: var(--texte-doux); }
 body#modernbb .ecriture-tete-1740 h1.page-title {
 	margin: 0 !important;
 	padding: 0 !important;
@@ -1023,7 +1023,7 @@ body#modernbb .ecriture-1740 #smiley-box {
 }
 body#modernbb .ecriture-1740 #smiley-box a { color: var(--accent-lien); }
 body#modernbb .ecriture-1740 #smileyContainer select { width: 100%; }
-body#modernbb .ecriture-1740 #helpbox { font-size: 14px; font-style: italic; color: var(--texte-doux); }
+body#modernbb .ecriture-1740 #helpbox { font-size: 15px; font-style: italic; color: var(--texte-doux); }
 
 /* Barre d'envoi */
 body#modernbb .ecriture-1740 .envoi-1740 fieldset.submit-buttons {
@@ -1036,7 +1036,7 @@ body#modernbb .ecriture-1740 .envoi-1740 fieldset.submit-buttons {
 	padding: 0;
 	border: none;
 }
-body#modernbb .ecriture-1740 .envoi-1740 .info { flex-basis: 100%; text-align: center; font-style: italic; color: var(--texte-doux); }
+body#modernbb .ecriture-1740 .envoi-1740 .info { flex-basis: 100%; text-align: center; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 
 /* ---------- Prévisualisation ---------- */
 body#modernbb #preview.post {

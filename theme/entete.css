@@ -69,7 +69,7 @@ body#modernbb #entete-1740 .entete-titre { font-family: 'Grenze Gotisch', serif 
 #entete-1740 .entete-surtitre { font-family: 'Alegreya SC', serif; font-size: 16px; letter-spacing: 0.3em; color: var(--accent-clair); }
 #entete-1740 .entete-titre { margin: 0; font-family: 'Grenze Gotisch', serif; font-weight: 400; font-size: 62px; line-height: 0.95; color: var(--texte-clair); }
 #entete-1740 .entete-titre a { color: inherit; text-decoration: none; }
-#entete-1740 .entete-motscles { margin: 0; font-size: 17px; color: var(--texte-doux); font-style: italic; }
+#entete-1740 .entete-motscles { margin: 0; font-size: 15px; color: var(--texte-doux); font-style: italic; }
 #entete-1740 .entete-motscles .sep { color: var(--accent); font-style: normal; }
 #entete-1740 .entete-accroche { margin: 0; font-size: 18px; }
 
@@ -103,7 +103,7 @@ body#modernbb #entete-1740 .entete-titre { font-family: 'Grenze Gotisch', serif 
 	border-top: 1px solid var(--ligne);
 	padding-top: 8px;
 }
-#entete-1740 .entete-salut { font-style: italic; }
+#entete-1740 .entete-salut { font-size: 15px; font-style: italic; }
 #entete-1740 .entete-reglages { display: flex; gap: 6px; align-items: center; }
 
 .pastille-1740 { width: 14px; height: 14px; padding: 0; border: 1px solid var(--ligne); cursor: pointer; }
@@ -340,7 +340,7 @@ body#modernbb { padding-top: 0 !important; }
 }
 .panneau-1740 .pa-texte a { color: var(--accent-lien); }
 .panneau-1740 .pa-texte a:hover { color: var(--texte-clair); }
-.panneau-1740 .pa-heure { margin-top: 4px; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+.panneau-1740 .pa-heure { margin-top: 4px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 .panneau-1740 .pa-suppr {
 	position: absolute;
 	right: 10px;
@@ -353,7 +353,7 @@ body#modernbb { padding-top: 0 !important; }
 .panneau-1740 .pa-avis:hover .pa-suppr,
 .panneau-1740 .pa-suppr:focus-visible { opacity: 1; }
 .panneau-1740 .pa-suppr:hover { color: var(--texte-clair); }
-.panneau-1740 .pa-vide { padding: 18px 16px; font-style: italic; color: var(--texte-doux); }
+.panneau-1740 .pa-vide { padding: 18px 16px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 
 @media (max-width: 1100px) {
 	.panneau-1740 {
@@ -444,6 +444,6 @@ body#modernbb #panneau-comptes-1740 .pc-formulaire input:focus { outline: 1px so
 	cursor: pointer;
 }
 #panneau-comptes-1740 .pc-bouton:hover { background: rgba(var(--accent-rgb), 0.3); }
-#panneau-comptes-1740 .pc-avertissement { margin: 0; padding: 0 16px 12px; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+#panneau-comptes-1740 .pc-avertissement { margin: 0; padding: 0 16px 12px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 #panneau-comptes-1740 .pc-etat { margin: 0; padding: 0 16px; font-size: 15px; color: var(--ocre-doux); }
 #panneau-comptes-1740 .pc-etat:not(:empty) { padding: 10px 16px; border-top: 1px dotted var(--ligne); }

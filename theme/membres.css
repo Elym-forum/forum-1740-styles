@@ -60,7 +60,7 @@ body#modernbb .recensement-filtres-1740 input.grave-1740 {
 /* ---------- Les médaillons ---------- */
 body#modernbb .recensement-1740 { margin: 0 0 18px; padding: 8px; }
 .ames-1740 { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
-.ames-vide-1740 { grid-column: 1 / -1; margin: 0; padding: 24px; text-align: center; font-style: italic; color: var(--texte-doux); }
+.ames-vide-1740 { grid-column: 1 / -1; margin: 0; padding: 24px; text-align: center; font-size: 15px; font-style: italic; color: var(--texte-doux); }
 
 .ame-1740 {
 	display: flex;
