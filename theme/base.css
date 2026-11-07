@@ -421,3 +421,32 @@ body#modernbb .adform-adbox {
 /* Menus déroulants : la liste qui s'ouvre suit le thème sombre */
 body#modernbb select { color-scheme: dark; }
 body#modernbb select option { background-color: var(--fond-nuit); color: var(--texte); }
+/* Navigateurs récents (Chrome, Edge) : liste entièrement aux couleurs du thème,
+   sans la surbrillance bleue du système. Les autres gardent le menu sombre ci-dessus. */
+@supports (appearance: base-select) {
+	body#modernbb select,
+	body#modernbb select::picker(select) { appearance: base-select; }
+	body#modernbb select { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+	body#modernbb select::picker-icon { color: var(--accent-lien); transition: rotate 0.3s; }
+	body#modernbb select:open::picker-icon { rotate: 180deg; }
+	body#modernbb select::picker(select) {
+		margin-top: 4px;
+		padding: 4px 0;
+		border: 1px solid var(--ligne-forte);
+		border-radius: 0;
+		background: var(--surface-pleine) var(--img-grain);
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+		color: var(--texte);
+	}
+	body#modernbb select option {
+		padding: 5px 14px;
+		background: transparent;
+		font-family: 'Alegreya', Georgia, serif;
+		font-size: 15px;
+		color: var(--texte);
+	}
+	body#modernbb select option::checkmark { display: none; }
+	body#modernbb select option:hover,
+	body#modernbb select option:focus-visible { background: rgba(var(--accent-rgb), 0.28); color: var(--texte-clair); outline: none; }
+	body#modernbb select option:checked { background: rgba(var(--accent-rgb), 0.16); color: var(--accent-vif); }
+}
