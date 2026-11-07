@@ -1539,6 +1539,85 @@
 		}
 	}
 
+
+	/* ------------------------------------------------------------------
+	   Recensement (liste des membres)
+	   - dates courtes : 07/11/26
+	   - liens « Fiche » (champ site web) et « Lettre »
+	   - Faceclaim lu dans le profil au premier survol, puis gardé en mémoire
+	   ------------------------------------------------------------------ */
+	var MOIS_NUM_1740 = { jan: 1, 'fév': 2, fev: 2, mar: 3, avr: 4, mai: 5, juin: 6, juil: 7, 'aoû': 8, aou: 8, sep: 9, sept: 9, oct: 10, nov: 11, 'déc': 12, dec: 12 };
+	function deux(n) { return (n < 10 ? '0' : '') + n; }
+	function dateCourte1740(texte) {
+		var t = (texte || '').replace(/\s+/g, ' ').trim();
+		var d = new Date();
+		if (/^aujourd/i.test(t)) { return deux(d.getDate()) + '/' + deux(d.getMonth() + 1) + '/' + String(d.getFullYear()).slice(2); }
+		if (/^hier/i.test(t)) { d.setDate(d.getDate() - 1); return deux(d.getDate()) + '/' + deux(d.getMonth() + 1) + '/' + String(d.getFullYear()).slice(2); }
+		var r = t.match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+		if (r) { return deux(+r[1]) + '/' + deux(+r[2]) + '/' + r[3].slice(-2); }
+		r = t.match(/(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\.?\s+(\d{4})/);
+		if (r && MOIS_NUM_1740[r[2].toLowerCase()]) { return deux(+r[1]) + '/' + deux(MOIS_NUM_1740[r[2].toLowerCase()]) + '/' + r[3].slice(2); }
+		return t;
+	}
+
+	function lireFaceclaim(html) {
+		var doc = new DOMParser().parseFromString(html, 'text/html');
+		var etiquettes = doc.querySelectorAll('dt, label, span, div, th, b, strong');
+		for (var i = 0; i < etiquettes.length; i++) {
+			var el = etiquettes[i];
+			if (el.children.length > 1) { continue; }
+			if (!/^\s*faceclaim\s*:?\s*$/i.test(el.textContent)) { continue; }
+			var dt = el.closest('dt, th, label') || el;
+			var valeur = dt.nextElementSibling;
+			if (!valeur && dt.parentElement) { valeur = dt.parentElement.nextElementSibling; }
+			var champ = valeur && (valeur.querySelector('.field_uneditable') || valeur);
+			var texte = champ ? champ.textContent.replace(/\s+/g, ' ').trim() : '';
+			if (texte) { return texte; }
+		}
+		return '';
+	}
+
+	function initRecensement() {
+		var memoire = {};
+		try { memoire = JSON.parse(localStorage.getItem('faceclaims1740') || '{}'); } catch (e) {}
+		var UNE_JOURNEE = 24 * 3600 * 1000;
+
+		$$('.ame-1740').forEach(function (carte) {
+			$$('.ame-date-1740', carte).forEach(function (dd) { dd.title = dd.textContent.trim(); dd.textContent = dateCourte1740(dd.textContent); });
+			[['.ame-fiche-1740', 'Fiche'], ['.ame-lettre-1740', 'Lettre']].forEach(function (p) {
+				var zone = $(p[0], carte);
+				if (!zone) { return; }
+				var a = $('a', zone);
+				if (!a) { zone.innerHTML = ''; return; }
+				a.textContent = p[1];
+				zone.innerHTML = '';
+				zone.appendChild(a);
+			});
+
+			var url = carte.getAttribute('data-profil');
+			var fc = $('.ame-fc-1740', carte);
+			if (!url || !fc) { return; }
+			var connu = memoire[url];
+			if (connu && Date.now() - connu.t < UNE_JOURNEE) { fc.textContent = connu.v || '—'; return; }
+			var charge = false;
+			function charger() {
+				if (charge || !window.fetch) { return; }
+				charge = true;
+				fetch(url, { credentials: 'same-origin' })
+					.then(function (r) { return r.text(); })
+					.then(function (html) {
+						var v = lireFaceclaim(html);
+						fc.textContent = v || '—';
+						memoire[url] = { v: v, t: Date.now() };
+						try { localStorage.setItem('faceclaims1740', JSON.stringify(memoire)); } catch (e) {}
+					})
+					.catch(function () { fc.textContent = '—'; charge = false; });
+			}
+			carte.addEventListener('mouseenter', charger);
+			carte.addEventListener('focusin', charger);
+		});
+	}
+
 	/* ------------------------------------------------------------------
 	   Démarrage
 	   ------------------------------------------------------------------ */
@@ -1563,6 +1642,7 @@
 		initProgression();
 		if ($('.lettres-tete-1740')) { initLettres(); initOngletsLettres(); }
 		titresEcriture();
+		if ($('.ames-1740')) { initRecensement(); }
 		if ($('#text_editor_textarea')) { initEditeur(); }
 	}
 
