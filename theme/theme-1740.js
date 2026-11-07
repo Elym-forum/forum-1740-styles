@@ -1145,6 +1145,17 @@
 					cadre.addEventListener('load', function () { habillerEditeur(cadre); });
 				}
 			});
+			// Liste des smileys de la page « Poster » : elle aussi est une petite page à part
+			$$('#smiley-box iframe').forEach(function (cadre) {
+				var doc;
+				try { doc = cadre.contentDocument; } catch (e) { return; }
+				if (!doc || !doc.head || doc.getElementById('style-1740')) { return; }
+				var st = doc.createElement('style');
+				st.id = 'style-1740';
+				st.textContent = 'html,body,table,td,div{background:transparent !important;border-color:rgba(255,255,255,0.08) !important;}body{color:#A9A190;scrollbar-width:thin;scrollbar-color:#4A4536 transparent;}';
+				doc.head.appendChild(st);
+				cadre.style.background = 'transparent';
+			});
 			if (essais > 20) { clearInterval(minuterie); }
 		}, 500);
 		// Retour au mode visuel après le mode source
