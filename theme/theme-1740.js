@@ -749,7 +749,11 @@
 	/* ------------------------------------------------------------------
 	   6. Rangées de forums
 	   ------------------------------------------------------------------ */
-	var ICONES = window.FA_ICONES_1740 || {};
+	var ICONES = window.FA_ICONES_1740 || null;
+	try {
+		if (ICONES && ICONES.nouveau) { localStorage.setItem('icones1740', JSON.stringify(ICONES)); }
+		else { ICONES = JSON.parse(localStorage.getItem('icones1740') || '{}'); }
+	} catch (e) { ICONES = ICONES || {}; }
 	var ecrits = [];
 
 	function memeImage(a, b) {
@@ -933,7 +937,14 @@
 	function initChapitres() {
 		var chapitres = $$('.chapitre-1740');
 		var reglages = CONFIG.chapitres || [];
+		var surIndex = !$('.forum-tete-1740');
 		chapitres.forEach(function (ch, i) {
+			if (!surIndex) {
+				// Page d'un forum : forme simple (Les Terres, sans gravure ni vignette)
+				ch.setAttribute('data-gabarit', 'terres');
+				ch.classList.add('chapitre-simple-1740');
+				return;
+			}
 			var r = reglages[i] || {};
 			var gabarit = r.gabarit || 'terres';
 			ch.setAttribute('data-gabarit', gabarit);
@@ -1218,6 +1229,69 @@
 		});
 	}
 
+
+	/* ------------------------------------------------------------------
+	   Page d'un forum : liste des sujets
+	   - surtitre : la catégorie (avant-dernier lien du fil d'Ariane)
+	   - état de chaque sujet (nouveau, lu, verrouillé, annonce, note)
+	   - les notes sont séparées des annonces dans un groupe « Épinglés »
+	   ------------------------------------------------------------------ */
+	function initListe() {
+		var surtitre = $('.forum-tete-1740 .sujet-surtitre-1740');
+		var liens = $$('.forum-page-1740 .ariane-1740 a.nav');
+		if (surtitre && liens.length > 1) { surtitre.textContent = liens[liens.length - 2].textContent.trim(); }
+
+		// « Utilisateurs parcourant actuellement ce forum : » → seulement les noms
+		var parcourent = $('.parcourent-texte-1740');
+		if (parcourent) {
+			var premier = parcourent.firstChild;
+			while (premier && !(premier.nodeType === 3 && premier.nodeValue.trim())) { premier = premier.nextSibling; }
+			if (premier && /:\s*$/.test(premier.nodeValue)) { premier.nodeValue = ''; }
+		}
+
+		var I = window.FA_SUJETS_1740 || {};
+		function parmi(liste, src) { return (liste || []).some(function (x) { return memeImage(src, x); }); }
+		function etatDe(li) {
+			var src = li.getAttribute('data-icone') || '';
+			var type = ($('.sujet-type-1740', li) || {}).textContent || '';
+			if (/annonce/i.test(type) || parmi(I.annonce, src)) { return 'annonce'; }
+			if (/note|post-it|épingl/i.test(type) || parmi(I.epingle, src)) { return 'epingle'; }
+			if (parmi(I.scelle, src)) { return 'scelle'; }
+			if (parmi(I.nouveau, src)) { return 'nouveau'; }
+			return 'lu';
+		}
+		$$('.sujet-1740').forEach(function (li) { li.classList.add('est-' + etatDe(li)); });
+
+		// Groupes : on sépare annonces et notes si Forumactif les a mis ensemble
+		$$('.groupe-1740').forEach(function (g) {
+			var rangees = $$('.sujet-1740', g);
+			var annonces = rangees.filter(function (li) { return li.classList.contains('est-annonce'); });
+			var notes = rangees.filter(function (li) { return li.classList.contains('est-epingle'); });
+			var nom = $('.groupe-nom-1740', g);
+			if (annonces.length && notes.length) {
+				var copie = g.cloneNode(true);
+				$$('.sujet-1740', copie).forEach(function (li) { li.remove(); });
+				var nomCopie = $('.groupe-nom-1740', copie);
+				if (nomCopie) { nomCopie.textContent = 'Épinglés'; }
+				var liste = $('.groupe-liste-1740', copie);
+				notes.forEach(function (li) { liste.appendChild(li); });
+				g.parentNode.insertBefore(copie, g.nextSibling);
+				if (nom) { nom.textContent = 'Annonces'; }
+			} else if (notes.length && notes.length === rangees.length && nom) {
+				nom.textContent = 'Épinglés';
+			} else if (annonces.length && annonces.length === rangees.length && nom) {
+				nom.textContent = 'Annonces';
+			}
+		});
+
+		// Numéros de pages d'un sujet : seulement les liens, sans « Aller à la page »
+		$$('.mini-pages-1740').forEach(function (z) {
+			var liensPages = $$('a', z).filter(function (a) { return /\d/.test(a.textContent); });
+			z.innerHTML = '';
+			liensPages.forEach(function (a) { z.appendChild(a); });
+		});
+	}
+
 	/* ------------------------------------------------------------------
 	   Démarrage
 	   ------------------------------------------------------------------ */
@@ -1238,6 +1312,7 @@
 		deplacerRaccourcis();
 		initPied();
 		if ($('.post-1740')) { initSujet(); }
+		if ($('.forum-tete-1740')) { initListe(); }
 		if ($('#text_editor_textarea')) { initEditeur(); }
 	}
 
