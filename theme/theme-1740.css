@@ -1,7 +1,7 @@
 /* ==========================================================================
    THÈME 1740 (© Elym) — feuille assemblée
    Ne pas modifier directement : elle est générée par outils/assembler.py
-   à partir de themes.css, base.css, entete.css, index.css, sujet.css, liste.css, lettres.css et membres.css.
+   à partir de themes.css, base.css, entete.css, index.css, sujet.css, liste.css, lettres.css, membres.css et formulaires.css.
    ========================================================================== */
 
 /* ---------- themes.css ---------- */
@@ -3708,5 +3708,593 @@ body#modernbb .recensement-pages-1740:not(:has(a)) { display: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
 	.ame-cadre-1740 img { transition: none; }
+}
+
+/* ---------- formulaires.css ---------- */
+/* ==========================================================================
+   FORMULAIRES 1740 (© Elym) — connexion, inscription, conditions,
+   mot de passe oublié, et couche générale qui remplace le bleu de ModernBB
+   sur les pages pas encore habillées.
+   Templates : agreement, profile_add_body, profile_send_pass_body
+   (la connexion n'a pas de template sous ModernBB : CSS seulement)
+   ========================================================================== */
+
+/* ---------- Tête des pages ---------- */
+html body#modernbb .sujet-cadre-1740.page-tete-1740 {
+	margin: 0 0 18px;
+	padding: var(--esp) !important;
+	background: rgba(22, 20, 15, 0.96) !important;
+	background-clip: padding-box !important;
+}
+body#modernbb .page-tete-1740 h1.page-title { color: var(--texte-clair) !important; }
+
+/* Même template pour l'inscription et l'édition du profil : le bon titre */
+.profil-tete-1740 .si-profil-1740,
+.mode-profil-1740 ~ .profil-tete-1740 .si-inscription-1740 { display: none; }
+.mode-profil-1740 ~ .profil-tete-1740 .si-profil-1740 { display: inline; }
+
+/* ==========================================================================
+   COUCHE GÉNÉRALE (pages de Forumactif sans template habillé)
+   ========================================================================== */
+/* Panneaux blancs → boîtes texturées */
+body#modernbb #main-content .panel,
+body#modernbb #main-content .block,
+body#modernbb #main-content .module {
+	border: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: var(--surface) var(--img-grain) !important;
+	box-shadow: none !important;
+	color: var(--texte);
+}
+body#modernbb #main-content .panel { margin: 0 0 18px !important; padding: var(--esp) 20px !important; }
+body#modernbb #main-content .panel .panel { border: none !important; background: none !important; padding: 0 !important; }
+body#modernbb #main-content .corners-top,
+body#modernbb #main-content .corners-bottom { display: none; }
+
+/* Titres de section (souvent soulignés en bleu) */
+body#modernbb #main-content .h3,
+body#modernbb #main-content .panel h1.page-title,
+body#modernbb #main-content .formulaire-1740 h1.page-title,
+body#modernbb #main-content .panel h2,
+body#modernbb #main-content .panel h3 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 12px !important;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 16px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.14em;
+	text-transform: none;
+	color: var(--accent-clair) !important;
+}
+body#modernbb #main-content .h3::after,
+body#modernbb #main-content .panel h1.page-title::after,
+body#modernbb #main-content .formulaire-1740 h1.page-title::after { content: ""; flex: 1; height: 1px; background: var(--ligne); }
+body#modernbb #main-content .h3 i { display: none; }
+
+/* Onglets de ModernBB (connexion : « Mot de passe » / « Lien par e-mail ») */
+body#modernbb #main-content :is([class~="tabs"], [class*="tabs-"], [class*="-tabs"], [class*="tab-"], [class*="-tab"], [role="tablist"]):not(table, tr, td) :is(a, button, li, span),
+body#modernbb #main-content [role="tab"] {
+	border-color: transparent !important;
+	background: none !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 15px !important;
+	letter-spacing: 0.08em;
+	color: var(--texte-doux) !important;
+}
+body#modernbb #main-content :is([class~="tabs"], [class*="tabs-"], [class*="-tabs"], [class*="tab-"], [class*="-tab"], [role="tablist"]):not(table, tr, td) :is(a, button, li)::after { background: var(--accent) !important; border-color: var(--accent) !important; }
+body#modernbb #main-content :is([class~="tabs"], [class*="tabs-"], [class*="-tabs"], [class*="tab-"], [class*="-tab"], [role="tablist"]):not(table, tr, td) :is(.active, .activetab, .selected, .is-active, .current, [aria-selected="true"]),
+body#modernbb #main-content :is([class~="tabs"], [class*="tabs-"], [class*="-tabs"], [class*="tab-"], [class*="-tab"], [role="tablist"]):not(table, tr, td) :is(.active, .activetab, .selected, .is-active, .current, [aria-selected="true"]) :is(a, span) {
+	color: var(--texte-clair) !important;
+	border-bottom-color: var(--accent) !important;
+}
+body#modernbb #main-content :is([class~="tabs"], [class*="tabs-"], [class*="-tabs"], [class*="tab-"], [class*="-tab"], [role="tablist"]):not(table, tr, td) :is(svg, i, img) { color: var(--accent-clair) !important; fill: currentColor !important; filter: none; }
+
+/* Libellés et champs */
+body#modernbb #main-content fieldset { border: none; }
+body#modernbb #main-content fieldset dl {
+	display: grid;
+	grid-template-columns: 200px minmax(0, 1fr);
+	align-items: center;
+	gap: 6px 16px;
+	margin: 0 0 12px;
+}
+body#modernbb #main-content fieldset dl dt,
+body#modernbb #main-content fieldset dl dd { float: none !important; width: auto !important; margin: 0 !important; padding: 0 !important; }
+body#modernbb #main-content fieldset dl dt,
+body#modernbb #main-content fieldset dl dt label {
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 15px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.08em;
+	color: var(--texte-doux) !important;
+}
+body#modernbb #main-content fieldset .italic,
+body#modernbb #main-content .italic { font-size: 15px; font-style: italic; color: var(--texte-doux) !important; }
+
+body#modernbb #main-content input.inputbox,
+body#modernbb #main-content input[type="text"],
+body#modernbb #main-content input[type="password"],
+body#modernbb #main-content input[type="email"],
+body#modernbb #main-content input[type="url"],
+body#modernbb #main-content input[type="number"],
+body#modernbb #main-content textarea:not(.sceditor-container textarea) {
+	box-sizing: border-box;
+	max-width: 100%;
+	min-height: 36px;
+	padding: 6px 10px !important;
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: var(--fond-nuit) !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	color: var(--texte) !important;
+}
+/* Tous les champs à la même largeur, quelle que soit leur taille d'origine */
+body#modernbb #main-content fieldset :is(input.inputbox, input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="number"]),
+body#modernbb #main-content .panel :is(input.inputbox, input[type="text"], input[type="password"], input[type="email"]) { width: min(100%, 420px) !important; }
+body#modernbb #main-content :is(input, textarea):focus { outline: none !important; border-color: var(--accent) !important; }
+/* Remplissage automatique du navigateur (fond bleu clair) */
+body#modernbb #main-content input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0 40px var(--fond-nuit) inset !important;
+	-webkit-text-fill-color: var(--texte) !important;
+	caret-color: var(--texte);
+}
+/* Cases à cocher : sombres, cochées à l'encre de mousse */
+body#modernbb #main-content input[type="checkbox"],
+body#modernbb #main-content input[type="radio"] {
+	appearance: none;
+	-webkit-appearance: none;
+	display: inline-grid;
+	place-content: center;
+	flex: none;
+	width: 16px;
+	height: 16px;
+	margin: 0 4px 0 0;
+	border: 1px solid var(--ligne-forte);
+	background: var(--fond-nuit);
+	vertical-align: -3px;
+	cursor: pointer;
+}
+body#modernbb #main-content input[type="radio"] { border-radius: 50%; }
+body#modernbb #main-content input[type="checkbox"]::before,
+body#modernbb #main-content input[type="radio"]::before {
+	content: "";
+	width: 8px;
+	height: 8px;
+	background: var(--accent-clair);
+	transform: scale(0);
+	transition: transform 0.2s;
+}
+body#modernbb #main-content input[type="radio"]::before { border-radius: 50%; }
+body#modernbb #main-content input[type="checkbox"]:checked,
+body#modernbb #main-content input[type="radio"]:checked { border-color: var(--accent); }
+body#modernbb #main-content input[type="checkbox"]:checked::before,
+body#modernbb #main-content input[type="radio"]:checked::before { transform: scale(1); }
+body#modernbb #main-content input[type="checkbox"]:focus-visible,
+body#modernbb #main-content input[type="radio"]:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+body#modernbb #main-content label { color: var(--texte); }
+
+/* Boutons : gravés, comme le reste du thème */
+body#modernbb #main-content input.button1,
+body#modernbb #main-content input.button2,
+body#modernbb #main-content button.button1,
+body#modernbb #main-content button.button2,
+body#modernbb #main-content a.button1,
+body#modernbb #main-content a.button2,
+body#modernbb #main-content .btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 38px;
+	box-sizing: border-box;
+	padding: 0 16px !important;
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: rgba(14, 13, 10, 0.55) var(--img-grain) !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 15px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.1em;
+	text-transform: none !important;
+	color: var(--texte) !important;
+	cursor: pointer;
+	transition: border-color 0.4s, color 0.4s, background-color 0.4s;
+}
+body#modernbb #main-content input.button1,
+body#modernbb #main-content button.button1,
+body#modernbb #main-content a.button1 {
+	border-color: var(--accent) !important;
+	background: rgba(var(--accent-rgb), 0.18) var(--img-grain) !important;
+	color: var(--texte-clair) !important;
+}
+body#modernbb #main-content input.button1:hover,
+body#modernbb #main-content input.button2:hover,
+body#modernbb #main-content a.button1:hover,
+body#modernbb #main-content a.button2:hover,
+body#modernbb #main-content .btn:hover { border-color: var(--accent) !important; color: var(--texte-clair) !important; text-decoration: none; }
+body#modernbb #main-content a.button1::before,
+body#modernbb #main-content a.button2::before { display: none !important; }
+
+/* Liens bleus de ModernBB */
+body#modernbb #main-content a:not([class]) { color: var(--accent-lien); }
+
+/* ==========================================================================
+   PAGES DU FORMULAIRE (inscription, conditions, mot de passe oublié)
+   ========================================================================== */
+body#modernbb .formulaire-1740 .panel { margin: 0 0 18px !important; padding: 18px 20px !important; }
+.formulaire-note-1740,
+body#modernbb .formulaire-1740 .panel > p:first-child,
+body#modernbb #cp-main .panel .inner > p:first-of-type { margin: 0 0 12px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
+body#modernbb #cp-main { float: none !important; width: auto !important; margin: 0 !important; padding: 0 !important; background: none !important; border: none !important; }
+body#modernbb .formulaire-envoi-1740 {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+}
+
+/* Conditions d'utilisation : texte lisible, accords, bouton */
+.conditions-texte-1740 {
+	font-size: 16px;
+	line-height: 1.6;
+	text-align: justify;
+	hyphens: auto;
+	color: var(--texte);
+}
+.conditions-texte-1740 b,
+.conditions-texte-1740 strong { font-weight: 500; color: var(--texte-clair); }
+.conditions-texte-1740 a { color: var(--accent-lien); text-decoration: underline; text-underline-offset: 3px; }
+/* Le paragraphe rouge de Forumactif devient une mise en garde du thème */
+.conditions-texte-1740 [style*="red"],
+.conditions-texte-1740 font[color] { color: var(--ocre-doux) !important; }
+.conditions-accord-1740 {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+	width: fit-content;
+	margin: 18px auto;
+	padding: 14px 18px;
+	border: 1px dotted var(--ligne-forte);
+	font-size: 16px;
+}
+.conditions-accord-1740 label { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
+.conditions-accord-1740 a { color: var(--accent-lien); }
+
+/* Texte des panneaux : la police et les couleurs du thème (plus de Roboto gris) */
+body#modernbb #main-content .panel :where(p, span, div, dd, li, label, b, strong) { font-family: 'Alegreya', Georgia, serif; }
+body#modernbb #main-content .panel :where(p, span, div, dd, li, label) { color: inherit; }
+body#modernbb #main-content .panel { font-family: 'Alegreya', Georgia, serif; font-size: 16px; color: var(--texte) !important; }
+body#modernbb #main-content .panel fieldset dl dt,
+body#modernbb #main-content .panel fieldset dl dt label { font-family: 'Alegreya SC', serif !important; color: var(--texte-doux) !important; }
+/* Filets (dont le pointillé blanc de « S'enregistrer ») */
+body#modernbb #main-content .panel :where(div, hr, p, fieldset, form, dl) { border-color: var(--ligne) !important; }
+body#modernbb #main-content .panel hr { border: none !important; border-top: 1px dotted var(--ligne-forte) !important; background: none !important; height: 0; }
+
+/* Inscription : une seule boîte pour tout le formulaire */
+body#modernbb #main-content .panel:has(> .inner > #cp-main),
+body#modernbb #main-content .panel:has(#cp-main) {
+	border: none !important;
+	background: none !important;
+	padding: 0 !important;
+}
+html body#modernbb #main-content #cp-main form#ucp,
+body#modernbb #cp-main > form {
+	display: block;
+	box-sizing: border-box;
+	padding: 20px 24px !important;
+	border: 1px solid var(--ligne);
+	background: var(--surface) var(--img-grain);
+}
+body#modernbb #cp-main h1.page-title { margin-top: 24px !important; }
+body#modernbb #cp-main h1.page-title:first-of-type { margin-top: 0 !important; }
+body#modernbb #cp-main .panel { margin: 0 !important; padding: 0 !important; }
+body#modernbb #cp-main .formulaire-envoi-1740 { margin-top: 24px !important; }
+
+/* Conditions : la taille du texte s'impose aux morceaux de Forumactif */
+.conditions-texte-1740 :is(p, span, div, font, li) { font-size: inherit !important; line-height: inherit; }
+
+/* Connexion : une seule colonne, champs pleine largeur */
+body#modernbb .login-tabbed .login-tabs { display: flex; gap: 24px; margin: 0 0 18px; border-bottom: 1px solid var(--ligne); }
+body#modernbb .login-tabbed .login-tab {
+	display: inline-flex; align-items: center; gap: 8px;
+	margin: 0 0 -1px; padding: 0 2px 10px !important;
+	border: none !important; border-bottom: 1px solid transparent !important;
+	cursor: pointer;
+}
+body#modernbb .login-tabbed .login-tab[aria-selected="true"] { color: var(--texte-clair) !important; border-bottom-color: var(--accent) !important; }
+body#modernbb .login-tabbed .login-tab i { font-size: 15px; color: var(--accent-clair) !important; }
+body#modernbb .login-tabbed .login-body { display: block !important; }
+body#modernbb .login-tabbed .login-body > form { display: block; width: 100% !important; max-width: none !important; float: none !important; }
+/* ModernBB rétrécit la colonne du formulaire de connexion : on lui rend toute la largeur */
+html body#modernbb #main-content .login-tabbed :is(.content, .login-body, .login-body > form, fieldset.fld_connexion) {
+	display: block !important;
+	width: auto !important;
+	max-width: none !important;
+	min-width: 0 !important;
+	flex: none !important;
+	float: none !important;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	grid-template-columns: none !important;
+}
+html body#modernbb #main-content .login-tabbed fieldset.fld_connexion dl {
+	display: grid !important;
+	grid-template-columns: 200px minmax(0, 1fr) !important;
+	width: auto !important;
+	max-width: none !important;
+}
+html body#modernbb #main-content .login-tabbed fieldset.fld_connexion :is(dt, dd) { width: auto !important; max-width: none !important; min-width: 0 !important; text-align: left !important; }
+html body#modernbb #main-content .login-tabbed fieldset.fld_connexion label { white-space: nowrap; }
+html body#modernbb #main-content .login-tabbed .login-body > form[hidden][hidden] { display: none !important; }
+body#modernbb .login-tabbed .login-hint { margin: 0 0 12px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
+/* Lignes sans libellé (connexion auto, bouton) et 2e ligne (mot de passe oublié) : colonne des champs */
+body#modernbb #main-content fieldset dl > dd:first-child,
+body#modernbb #main-content fieldset dl > dd + dd { grid-column: 2; }
+body#modernbb .login-tabbed dd a[href*="sendpassword"] {
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 15px !important;
+	font-style: italic;
+	letter-spacing: 0 !important;
+	text-transform: none;
+	color: var(--accent-lien) !important;
+}
+/* Force du mot de passe (inscription) */
+body#modernbb #cp-main dd[style*="flex"] { align-items: center; }
+body#modernbb #cp-main dd[style*="flex"] input { align-self: center; }
+/* Boutons du bas de l'inscription, centrés comme ailleurs */
+body#modernbb #cp-main fieldset.submit-buttons { display: flex; justify-content: center; gap: 10px; margin: 24px 0 0 !important; padding: 0 !important; }
+body#modernbb #cont_pwd { margin-left: 10px; align-self: center; font-size: 15px; font-style: italic; color: var(--texte-doux); }
+body#modernbb #cont_pwd .pwd_img { background: none !important; padding: 0 !important; }
+body#modernbb .password-container { display: flex; align-items: center; gap: 8px; }
+body#modernbb .password-container .show_hide_pwd { opacity: 0.6; filter: invert(0.85) sepia(0.3); cursor: pointer; }
+
+/* Topic'it retiré (connexion et « Pré-remplir le formulaire » de l'inscription) */
+body#modernbb #main-content .social_btn,
+body#modernbb #main-content .ti-connect { display: none !important; }
+body#modernbb #main-content fieldset dl:has(.ti-connect) { display: none !important; }
+
+body#modernbb #main-content :is([class*="topicit" i], [class*="topic-it" i], [id*="topicit" i], a[href*="topicit" i]) { display: none !important; }
+body#modernbb #main-content fieldset dl:has(:is([class*="topicit" i], [id*="topicit" i], a[href*="topicit" i])):not(:has(input:not([type="hidden"]))) { display: none !important; }
+
+
+/* Petits textes des formulaires : lisibles */
+html body#modernbb #main-content fieldset dd label,
+html body#modernbb #main-content fieldset dd label *,
+html body#modernbb #main-content .login-tabbed .login-hint {
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+	color: var(--texte) !important;
+}
+html body#modernbb #main-content .login-tabbed .login-hint { font-size: 15px !important; font-style: italic; color: var(--texte-doux) !important; }
+html body#modernbb #main-content fieldset dd .italic,
+html body#modernbb #main-content #cp-main fieldset dl dd span.italic,
+html body#modernbb #main-content .panel dd span.italic.italic {
+	display: inline-block;
+	margin-top: 4px;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 15px !important;
+	font-style: italic !important;
+	line-height: 1.4 !important;
+	color: var(--texte-doux) !important;
+}
+html body#modernbb #main-content fieldset dd label { display: inline-flex; align-items: center; gap: 8px; }
+html body#modernbb #main-content fieldset dd input[type="checkbox"] + label { display: inline; margin-left: 6px; }
+
+
+/* ==========================================================================
+   PROFIL (même template que l'inscription)
+   ========================================================================== */
+/* Titre « Mon profil » quand les onglets du profil suivent la tête */
+.profil-tete-1740:has(+ .onglets-profil-1740) .si-inscription-1740 { display: none; }
+.profil-tete-1740:has(+ .onglets-profil-1740) .si-profil-1740 { display: inline; }
+
+/* Onglets du profil (#tabs) : Informations, Préférences, Avatar, Notifications, Sujets surveillés */
+body#modernbb #main-content #tabs li:has(> a[href*="friendsfoes"]),
+body#modernbb #main-content #tabs li:has(> a[href*="page_profil=followers"]),
+body#modernbb #main-content #tabs li:has(> a[href*="favouritesearch"]) { display: none !important; }
+body#modernbb #main-content #tabs {
+	margin: 0 0 18px !important;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
+}
+body#modernbb #main-content #tabs ul {
+	display: flex !important;
+	flex-wrap: nowrap !important;
+	justify-content: center;
+	gap: 22px;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	border-bottom: 1px solid var(--ligne) !important;
+	background: none !important;
+	list-style: none;
+}
+body#modernbb #main-content #tabs li { margin: 0 !important; padding: 0 !important; border: none !important; background: none !important; float: none !important; }
+body#modernbb #main-content #tabs li a {
+	display: inline-block !important;
+	margin: 0 0 -1px !important;
+	padding: 0 2px 10px !important;
+	border: none !important;
+	border-bottom: 1px solid transparent !important;
+	border-radius: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+	text-decoration: none !important;
+}
+body#modernbb #main-content #tabs li a span {
+	display: inline !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 16px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.08em;
+	white-space: nowrap;
+	color: var(--texte-doux) !important;
+	transition: color 0.3s;
+}
+body#modernbb #main-content #tabs li a:hover span { color: var(--texte-clair) !important; }
+body#modernbb #main-content #tabs li.activetab a { border-bottom-color: var(--accent) !important; }
+body#modernbb #main-content #tabs li.activetab a span { color: var(--texte-clair) !important; }
+body#modernbb #main-content #tabs :is(a, li, span, ul)::after,
+body#modernbb #main-content #tabs :is(a, li, span, ul)::before { display: none !important; }
+
+/* Pages du profil sans template habillé (notifications, sujets surveillés) :
+   chaque formulaire dans sa boîte */
+body#modernbb #cp-main .cp_notifs > form { display: block; margin-top: 18px; padding: 20px 24px; border: 1px solid var(--ligne); background: var(--surface) var(--img-grain); }
+body#modernbb #cp-main .cp_notifs { margin: 0 !important; padding: 0 !important; border: none !important; background: none !important; }
+
+/* Tableaux des pages du profil */
+html body#modernbb #main-content #cp-main table.table1 {
+	width: 100% !important;
+	margin: 0 !important;
+	border: none !important;
+	border-collapse: collapse !important;
+	border-spacing: 0 !important;
+	background: none !important;
+}
+html body#modernbb #main-content #cp-main table.table1 thead tr,
+html body#modernbb #main-content #cp-main table.table1 th {
+	background: none !important;
+	box-shadow: none !important;
+}
+html body#modernbb #main-content #cp-main table.table1 th {
+	padding: 0 10px 10px !important;
+	border: none !important;
+	border-bottom: 1px solid var(--ligne-forte) !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 15px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.08em;
+	text-transform: none !important;
+	text-align: left;
+	vertical-align: bottom;
+	color: var(--texte-doux) !important;
+}
+html body#modernbb #main-content #cp-main table.table1 tbody tr { background: none !important; }
+html body#modernbb #main-content #cp-main table.table1 td {
+	padding: 9px 10px !important;
+	border: none !important;
+	border-bottom: 1px dotted var(--ligne) !important;
+	background: none !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	line-height: 1.4;
+	vertical-align: middle;
+	color: var(--texte) !important;
+}
+html body#modernbb #main-content #cp-main table.table1 tbody tr:hover td { background: rgba(var(--accent-rgb), 0.06) !important; }
+html body#modernbb #main-content #cp-main table.table1 td[align="middle"],
+html body#modernbb #main-content #cp-main table.table1 th[width="10%"] { text-align: center !important; }
+html body#modernbb #main-content #cp-main table.table1 th:last-child,
+html body#modernbb #main-content #cp-main table.table1 td:last-child { width: 48px; text-align: center !important; }
+html body#modernbb #main-content #cp-main table.table1 td a { color: var(--accent-lien) !important; text-decoration: none; }
+html body#modernbb #main-content #cp-main table.table1 td a:hover { color: var(--texte-clair) !important; }
+html body#modernbb #main-content #cp-main table.table1 td a .usr_grp_clr,
+html body#modernbb #main-content #cp-main table.table1 td a strong { font-weight: 500; }
+html body#modernbb #main-content #cp-main table.table1 td img { max-height: 28px; opacity: 0.8; filter: grayscale(1) sepia(0.35) brightness(0.9); }
+html body#modernbb #main-content #cp-main table.table1 input[disabled] { opacity: 0.35; cursor: not-allowed; }
+/* « Tout sélectionner :: Tout désélectionner » */
+html body#modernbb #main-content #cp-main p.right-box {
+	margin: 12px 0 0 !important;
+	text-align: right;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 15px !important;
+	font-style: italic;
+	color: var(--texte-doux) !important;
+}
+html body#modernbb #main-content #cp-main p.right-box a { color: var(--accent-lien) !important; font-size: 15px !important; }
+html body#modernbb #main-content #cp-main p.pagination:empty { display: none; }
+
+/* Sujets surveillés : polices et icônes du thème */
+html body#modernbb #main-content #cp-main table.table1 td :is(a, span, strong, b, div, p):not(.usr_grp_clr) { font-family: 'Alegreya', Georgia, serif !important; }
+html body#modernbb #main-content #cp-main table.table1 td a.topictitle,
+html body#modernbb #main-content #cp-main table.table1 td a[href^="/t"]:not([href*="#"]) {
+	font-size: 17px !important;
+	font-weight: 500 !important;
+	color: var(--texte-clair) !important;
+}
+html body#modernbb #main-content #cp-main table.table1 td.icone-surveille-1740 { width: 40px; padding-right: 0 !important; text-align: center !important; }
+html body#modernbb #main-content #cp-main table.table1 td.icone-surveille-1740 .etat-sujet-1740 { display: inline-block; vertical-align: middle; }
+.sujet-prefixe-1740 {
+	display: block;
+	margin-bottom: 2px;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 14px;
+	letter-spacing: 0.1em;
+	color: var(--ocre-doux);
+}
+.est-epingle .sujet-prefixe-1740 { color: var(--accent-clair); }
+
+/* « Sauter vers » : retiré, comme sur les autres pages */
+body#modernbb #main-content form[name="jumpbox"] { display: none !important; }
+
+/* Libellés : tous pareils, obligatoires ou non (Genre, Date de naissance…) */
+html body#modernbb #main-content #cp-main fieldset dl dt,
+html body#modernbb #main-content #cp-main fieldset dl dt * {
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 15px !important;
+	font-style: normal !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.08em;
+	color: var(--texte-doux) !important;
+	opacity: 1 !important;
+}
+/* Boutons radio (Genre) */
+html body#modernbb #main-content #cp-main dd label { gap: 10px; }
+html body#modernbb #main-content #cp-main dd label img { width: 14px; height: auto; opacity: 0.75; filter: grayscale(1) sepia(0.4); }
+/* Date de naissance : listes et année */
+html body#modernbb #main-content #cp-main dd:has(select) {
+	display: flex !important;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 10px;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	color: var(--texte-doux) !important;
+}
+html body#modernbb #main-content #cp-main dd select {
+	min-height: 36px;
+	padding: 4px 8px !important;
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: var(--fond-nuit) !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	color: var(--texte) !important;
+}
+html body#modernbb #main-content #cp-main dd:has(select) input[type="text"] { width: 90px !important; }
+/* « < Modifier > » (mot de passe) */
+html body#modernbb #main-content #cp-main dd a[href*="password" i],
+html body#modernbb #main-content #cp-main dd a[onclick] {
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	font-weight: 400 !important;
+	color: var(--accent-lien) !important;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+/* ---------- Petits écrans ---------- */
+@media (max-width: 760px) {
+	body#modernbb #main-content fieldset dl { grid-template-columns: minmax(0, 1fr); }
 }
 
