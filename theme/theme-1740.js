@@ -1350,7 +1350,7 @@
 				var etat = (s.getAttribute('data-etat') || 'avenir').trim().toLowerCase();
 				return { nom: s.textContent.trim(), part: parseFloat(s.getAttribute('data-part')) || 0, etat: etat };
 			});
-			var total = etapes.reduce(function (t, e) { return t + (e.etat === 'fait' || e.etat === 'dernier' ? e.part : 0); }, 0);
+			var total = etapes.reduce(function (t, e) { return t + (e.etat === 'fait' ? e.part : 0); }, 0);
 			var titre = bloc.getAttribute('data-titre') || 'Avancement';
 			var html = '<div class="p-tete"><span class="p-titre">' + echapper(titre) + '</span><span class="p-total">' + Math.round(total) + ' %</span></div>';
 			html += '<div class="p-barre" aria-hidden="true">' + etapes.map(function (e) {
