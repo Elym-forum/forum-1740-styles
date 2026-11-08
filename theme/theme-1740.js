@@ -1873,7 +1873,7 @@
 	}
 
 	/* ---------- Codes de messages : liste, champs, exergue, signature, titres\u2026 ---------- */
-	var BLOCS_1740 = ['page', 'bandeau', 'surtitre', 'grand-titre', 'titre', 'texte', 'note', 'liste', 'exergue', 'cadre', 'colonnes', 'champs', 'filet', 'signature', 'centre', 'image', 'medaillons', 'rp-infos', 'registre', 'avis-deces', 'pleine-largeur', 'lettre', 'journal', 'avis', 'livre', 'remede', 'comptine', 'incantation', 't1', 't2', 't3', 'sous-titre', 'intertitre', 'date', 'sign', 'jour', 'entete', 'titre-avis', 'par', 'chap', 'chap-titre', 'folio', 'r-titre', 'r-sous', 'c-titre'];
+	var BLOCS_1740 = ['page', 'bandeau', 'surtitre', 'grand-titre', 'titre', 'texte', 'note', 'liste', 'exergue', 'cadre', 'colonnes', 'champs', 'filet', 'signature', 'centre', 'image', 'medaillons', 'rp-infos', 'registre', 'avis-deces', 'pleine-largeur', 'lettre', 'journal', 'avis', 'livre', 'remede', 'comptine', 'incantation', 't1', 't2', 't3', 'sous-titre', 'intertitre', 'date', 'sign', 'jour', 'entete', 'titre-avis', 'par', 'chap', 'chap-titre', 'folio', 'r-titre', 'r-sous', 'c-titre', 'demande', 'types-demandes'];
 	function estBloc(n) {
 		return n && n.nodeType === 1 && BLOCS_1740.some(function (c) { return n.classList.contains(c); });
 	}
@@ -1919,20 +1919,23 @@
 	function cleChamp(t) {
 		return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z]/g, '');
 	}
-	function lireAmesMessage(reg) {
-		return $$(':scope > .ame', reg).map(function (el) {
-			var ame = {};
-			lignes(el).forEach(function (ln) {
-				var premier = ln[0];
-				var m = premier && premier.nodeType === 3 ? premier.nodeValue.match(/^\s*([^:]+?)\s*:\s*([\s\S]*)$/) : null;
-				if (!m) { return; }
-				premier.nodeValue = m[2];
-				var frag = document.createDocumentFragment();
-				ln.forEach(function (n) { frag.appendChild(n); });
-				ame[cleChamp(m[1])] = frag;
-			});
-			return ame;
+	function lireChamps(el) {
+		var res = { _ordre: [] };
+		lignes(el).forEach(function (ln) {
+			var premier = ln[0];
+			var m = premier && premier.nodeType === 3 ? premier.nodeValue.match(/^\s*([^:]+?)\s*:\s*([\s\S]*)$/) : null;
+			if (!m) { return; }
+			premier.nodeValue = m[2];
+			var frag = document.createDocumentFragment();
+			ln.forEach(function (n) { frag.appendChild(n); });
+			var cle = cleChamp(m[1]);
+			res[cle] = frag;
+			res._ordre.push([cle, m[1]]);
 		});
+		return res;
+	}
+	function lireAmesMessage(reg) {
+		return $$(':scope > .ame', reg).map(lireChamps);
 	}
 	function texteDe(v) { return v ? (typeof v === 'string' ? v : v.textContent).trim() : ''; }
 	function valeurNoeud(v) {
@@ -2059,6 +2062,74 @@
 		}
 	}
 
+	/* ---------- Demandes : types (message du staff) et fiches de demande ---------- */
+	var ICONES_DEMANDE_1740 = {
+		deplacer: '<path d="M4 12h14M14 8l4 4-4 4"></path>',
+		archiver: '<rect x="4" y="5" width="16" height="4"></rect><path d="M6 9v10h12V9M10 13h4"></path>',
+		desarchiver: '<rect x="4" y="5" width="16" height="4"></rect><path d="M6 9v10h12V9M12 17v-5M10 14l2-2 2 2"></path>',
+		supprimer: '<path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"></path>',
+		changer: '<path d="M4 20l1-4L16 5l3 3L8 19z"></path>',
+		autre: '<circle cx="12" cy="12" r="8"></circle><path d="M12 16v.5M12 8a2.5 2.5 0 0 1 1 4.8V14"></path>'
+	};
+	function iconeDemande(t, taille) {
+		var n = t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+		var k = /desarchiv/.test(n) ? 'desarchiver' : /archiv/.test(n) ? 'archiver' : /deplac/.test(n) ? 'deplacer' :
+			/suppr|effac/.test(n) ? 'supprimer' : /chang|modif|nom|avatar|groupe/.test(n) ? 'changer' : 'autre';
+		return '<svg width="' + taille + '" height="' + taille + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONES_DEMANDE_1740[k] + '</svg>';
+	}
+	function initDemandes(zone) {
+		$$('.types-demandes', zone).forEach(function (bloc) {
+			if (bloc.dataset.fait) { return; }
+			bloc.dataset.fait = '1';
+			var ls = lignes(bloc);
+			bloc.innerHTML = '';
+			ls.forEach(function (ln) {
+				var frag = document.createElement('span');
+				ln.forEach(function (n) { frag.appendChild(n); });
+				var parts = frag.innerHTML.split('|');
+				var titre = parts[0].trim(), detail = (parts[1] || '').trim();
+				var tmp = document.createElement('span'); tmp.innerHTML = titre;
+				var d = document.createElement('div');
+				d.className = 'type-demande-1740';
+				d.innerHTML = iconeDemande(tmp.textContent, 18) + '<span><b>' + titre + '</b>' + (detail ? '<br>' + detail : '') + '</span>';
+				bloc.appendChild(d);
+			});
+		});
+		$$('.demande', zone).forEach(function (dem) {
+			if (dem.dataset.fait) { return; }
+			dem.dataset.fait = '1';
+			var champs = lireChamps(dem);
+			var type = texteDe(champs.demande) || 'Demande';
+			var statut = texteDe(champs.statut);
+			var tete = '<div class="demande-tete-1740"><span class="ic-1740">' + iconeDemande(type, 16) + '</span><span><span class="q-1740">Demande</span><span class="t-1740"></span></span></div>';
+			var tampon = '';
+			if (statut) {
+				var etat = /trait|fait|accept|valid/i.test(statut) ? 'faite' : /refus/i.test(statut) ? 'refusee' : 'attente';
+				var bouts = statut.split('|');
+				tampon = '<span class="statut-1740 ' + etat + '"><span class="s-1740"></span>' + (bouts[1] ? '<small></small>' : '') + '</span>';
+			} else {
+				tampon = '<span class="statut-1740 attente"><span class="s-1740">En attente</span></span>';
+			}
+			var ch = document.createElement('div');
+			ch.className = 'd-ch-1740';
+			champs._ordre.forEach(function (o) {
+				var cle = o[0], nom = o[1];
+				if (cle === 'demande' || cle === 'statut' || !texteDe(champs[cle])) { return; }
+				var l = document.createElement('span'); l.className = 'l-1740'; l.textContent = nom;
+				var v = document.createElement('span'); v.appendChild(valeurNoeud(champs[cle]));
+				ch.appendChild(l); ch.appendChild(v);
+			});
+			dem.innerHTML = tete + tampon + '<div class="demande-corps-1740"></div>';
+			$('.t-1740', dem).textContent = type;
+			if (statut) {
+				var b = statut.split('|');
+				$('.s-1740', dem).textContent = b[0].trim();
+				if (b[1]) { $('.statut-1740 small', dem).textContent = b[1].trim(); }
+			}
+			$('.demande-corps-1740', dem).appendChild(ch);
+		});
+	}
+
 	function initCodes() {
 		$$('.postbody .content, #preview .content').forEach(function (zone) {
 			if ($('.lettre .sign', zone)) { policeLettre(); }
@@ -2176,6 +2247,7 @@
 				if (!$('.l-1740', f)) { f.innerHTML = '<span class="l-1740"></span>'; f.setAttribute('aria-hidden', 'true'); }
 			});
 			initRegistre(zone);
+			initDemandes(zone);
 			// Lettre : « Nom|I » donne la signature et la lettre du cachet
 			$$('.lettre .sign', zone).forEach(function (sg) {
 				var t = sg.textContent.split('|');

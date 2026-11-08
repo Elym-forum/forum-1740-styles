@@ -5803,3 +5803,51 @@ html body#modernbb .emojis-pop-1740 { width: 340px; max-height: 340px; }
 html body#modernbb .emojis-pop-1740 .smiley-1740 img { display: block; max-width: 30px; max-height: 30px; width: auto; height: auto; }
 html body#modernbb .emojis-pop-1740 .smiley-1740 { height: 36px; }
 
+/* ==========================================================================
+   DEMANDES
+   ========================================================================== */
+:is(.postbody, #preview) .content .types-demandes { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; margin: 0 0 14px; }
+:is(.postbody, #preview) .content .type-demande-1740 { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--ligne); background: rgba(14, 13, 10, 0.5); font-size: 15px; line-height: 1.35; color: var(--texte-doux); }
+:is(.postbody, #preview) .content .type-demande-1740 b { font-family: 'Alegreya SC', serif; font-weight: 400; font-size: 16px; letter-spacing: 0.06em; color: var(--texte-clair); }
+:is(.postbody, #preview) .content .type-demande-1740 svg { flex: none; color: var(--accent-clair); }
+:is(.postbody, #preview) .content .demande {
+	position: relative;
+	margin: 6px 4px 14px;
+	border: 1px solid var(--ligne-forte);
+	outline: 1px solid var(--ligne);
+	outline-offset: 4px;
+	background: #17150F var(--img-grain);
+}
+:is(.postbody, #preview) .content .demande-tete-1740 { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-bottom: 3px double var(--ligne); background: rgba(var(--accent-rgb), 0.12); }
+:is(.postbody, #preview) .content .demande-tete-1740 .ic-1740 { display: flex; align-items: center; justify-content: center; flex: none; width: 32px; height: 32px; margin: 0 4px; border: 1px solid var(--accent); transform: rotate(45deg); }
+:is(.postbody, #preview) .content .demande-tete-1740 .ic-1740 svg { transform: rotate(-45deg); color: var(--accent-vif); }
+:is(.postbody, #preview) .content .demande-tete-1740 .q-1740 { display: block; font-family: 'Alegreya SC', serif; font-size: 13px; letter-spacing: 0.14em; color: var(--accent); }
+:is(.postbody, #preview) .content .demande-tete-1740 .t-1740 { display: block; font-family: 'Grenze Gotisch', serif; font-size: 26px; line-height: 1.05; color: var(--texte-clair); }
+:is(.postbody, #preview) .content .demande-corps-1740 { padding: 14px 18px 18px; }
+:is(.postbody, #preview) .content .d-ch-1740 { display: grid; grid-template-columns: minmax(120px, auto) 1fr; column-gap: 16px; font-size: 16px; }
+:is(.postbody, #preview) .content .d-ch-1740 > span { padding: 7px 0; border-bottom: 1px dotted var(--ligne); }
+:is(.postbody, #preview) .content .d-ch-1740 > .l-1740 { font-family: 'Alegreya SC', serif; font-size: 15px; letter-spacing: 0.06em; color: var(--texte-doux); }
+:is(.postbody, #preview) .content .statut-1740 {
+	position: absolute;
+	top: 14px;
+	right: 20px;
+	padding: 4px 14px;
+	border: 2px solid currentColor;
+	box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.25);
+	font-family: 'Alegreya SC', serif;
+	font-size: 16px;
+	letter-spacing: 0.16em;
+	text-align: center;
+	opacity: 0.88;
+	transform: rotate(-8deg);
+}
+:is(.postbody, #preview) .content .statut-1740.attente { color: var(--ocre-doux); }
+:is(.postbody, #preview) .content .statut-1740.faite { color: var(--accent-clair); }
+:is(.postbody, #preview) .content .statut-1740.refusee { color: #B5584A; }
+:is(.postbody, #preview) .content .statut-1740 small { display: block; font-family: 'Alegreya', Georgia, serif; font-size: 12px; font-style: italic; letter-spacing: 0; }
+@media (max-width: 640px) {
+	:is(.postbody, #preview) .content .d-ch-1740 { grid-template-columns: 1fr; }
+	:is(.postbody, #preview) .content .d-ch-1740 > .l-1740 { border-bottom: none; padding-bottom: 0; }
+	:is(.postbody, #preview) .content .statut-1740 { position: static; display: inline-block; margin: 12px 18px 0; }
+}
+
