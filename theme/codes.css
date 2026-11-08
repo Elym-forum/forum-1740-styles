@@ -792,3 +792,4 @@ html body#modernbb .balises-1740 .content .puce-1740 .espace { letter-spacing: 0
 html body#modernbb .balises-1740 .content .puce-1740 :is(.sous-titre, .murmure) { font-style: italic !important; }
 html body#modernbb .balises-1740 .content .puce-1740 .t3 { font-weight: 500 !important; }
 html body#modernbb .balises-1740 .content .puce-1740 .gras { font-weight: 700 !important; }
+html body#modernbb .balises-1740 .content p.astuce-1740 { font-size: 14px !important; line-height: 1.5 !important; font-style: italic; color: var(--texte-doux) !important; }
