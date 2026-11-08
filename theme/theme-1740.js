@@ -2249,15 +2249,6 @@
 			['<span class="cendre">Cendre</span>', '<span class="cendre">', '</span>'],
 			['<span class="lune">Lune</span>', '<span class="lune">', '</span>']
 		] },
-		{ g: 'Documents', l: [
-			['Lettre', '<div class="lettre">\n<div class="date">Lieu, saison et année</div>\n', '\n<div class="sign">Signature|I</div>\n</div>', 'Le corps de la lettre…'],
-			['Page de journal', '<div class="journal">\n<div class="jour">Jour, saison</div>\n', '\n</div>', 'Les pensées du personnage…'],
-			['Avis placardé', '<div class="avis">\n<div class="entete">Avis aux habitant·e·s</div>\n<div class="titre-avis">Titre de l\'avis</div>\n', '\n<div class="par">Par ordre de…</div>\n</div>', 'Ce que l\'on annonce…'],
-			['Extrait de livre', '<div class="livre">\n<div class="chap">Livre ou chapitre</div>\n<div class="chap-titre">Titre du chapitre</div>\n<div class="texte lettrine">', '</div>\n<div class="folio">112</div>\n</div>', 'Le texte de l\'extrait…'],
-			['Remède', '<div class="remede">\n<div class="r-titre">Nom du remède</div>\n<div class="r-sous">Pour quel mal</div>\n<div class="champs">\nPlante : quantité\nPlante : quantité\n</div>\n<div class="liste">\n', '\n</div>\n</div>', 'Première étape\nDeuxième étape'],
-			['Comptine', '<div class="comptine">\n<div class="c-titre">Titre de la comptine</div>\n', '\n<span class="refrain">Le refrain</span>\n</div>', 'Premier vers\nDeuxième vers'],
-			['Incantation', '<div class="incantation">\n', '\n</div>', 'Premier vers\nDeuxième vers, <span class="eteint">qui s\'éteint</span>']
-		] },
 		{ g: 'Gabarits de RP', l: [
 			['Bannière gravée', '<div class="page">\n<div class="bandeau">\n<a class="musique" href="LIEN DE LA MUSIQUE"></a>\n<div class="surtitre">Une phrase d\'ambiance</div>\n<div class="grand-titre">Titre du RP</div>\n</div>\n<div class="texte lettrine">', '</div>\n<div class="rp-infos">Lieu|Saison, moment|@"Nom"</div>\n</div>', 'Le texte du RP…'],
 			['Bannière avec image', '<div class="page">\n<div class="bandeau">\n<img class="fond" src="ADRESSE DE L\'IMAGE" alt="" />\n<a class="musique" href="LIEN DE LA MUSIQUE"></a>\n<div class="surtitre">Une phrase d\'ambiance</div>\n<div class="grand-titre">Titre du RP</div>\n</div>\n<div class="texte lettrine">', '</div>\n<div class="rp-infos">Lieu|Saison, moment|@"Nom"</div>\n</div>', 'Le texte du RP…'],
