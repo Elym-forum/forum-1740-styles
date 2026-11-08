@@ -5968,7 +5968,7 @@ html body#modernbb :is(.postbody, #preview, .balises-1740) .content .e-titre-174
 :is(.postbody, #preview, .balises-1740) .content .e-titre-1740 a { color: var(--texte-clair); text-decoration: none; }
 :is(.postbody, #preview, .balises-1740) .content .e-titre-1740 a::after { content: " \2192"; color: var(--accent-lien); }
 :is(.postbody, #preview, .balises-1740) .content .e-titre-1740 a:hover { color: var(--accent-vif); }
-:is(.postbody, #preview, .balises-1740) .content .e-resume-1740 { font-size: 15px; line-height: 1.55; color: var(--texte); }
+:is(.postbody, #preview, .balises-1740) .content .e-resume-1740 { font-size: 16px; line-height: 1.55; color: var(--texte); }
 html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.e-resume-1740, .sr-recit-1740, .indice-1740) p { margin: 0 0 6px !important; }
 html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.e-resume-1740, .sr-recit-1740, .indice-1740) p:last-child { margin-bottom: 0 !important; }
 
@@ -5979,7 +5979,7 @@ html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.e-resum
 	border: 1px solid #4E4434;
 	border-left: 3px solid #8A7452;
 	background: rgba(60, 48, 30, 0.22);
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 1.5;
 	color: var(--texte);
 }
@@ -6029,7 +6029,7 @@ html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.e-resum
 	text-align: center;
 	color: var(--texte-clair);
 }
-:is(.postbody, #preview, .balises-1740) .content .sr-recit-1740 { max-width: 640px; margin: 0 auto; font-size: 15px; line-height: 1.65; color: var(--texte); }
+:is(.postbody, #preview, .balises-1740) .content .sr-recit-1740 { max-width: 640px; margin: 0 auto; font-size: 16px; line-height: 1.65; color: var(--texte); }
 :is(.postbody, #preview, .balises-1740) .content .sr-orn-1740 {
 	width: 120px;
 	height: 9px;
@@ -6060,9 +6060,9 @@ html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.e-resum
 }
 
 /* Le texte des messages est à 17 px !important : le carnet garde ses propres tailles */
-html body#modernbb :is(.postbody, #preview, .balises-1740) .content .e-resume-1740 { font-size: 15px !important; line-height: 1.55 !important; }
-html body#modernbb :is(.postbody, #preview, .balises-1740) .content .indice-1740 { font-size: 14px !important; line-height: 1.5 !important; }
-html body#modernbb :is(.postbody, #preview, .balises-1740) .content .sr-recit-1740 { font-size: 15px !important; line-height: 1.65 !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .e-resume-1740 { font-size: 16px !important; line-height: 1.55 !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .indice-1740 { font-size: 16px !important; line-height: 1.5 !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .sr-recit-1740 { font-size: 16px !important; line-height: 1.65 !important; }
 html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.e-resume-1740, .sr-recit-1740, .indice-1740) p { font-size: inherit !important; line-height: inherit !important; text-align: left; }
 
 /* ---------- lecture.css ---------- */
