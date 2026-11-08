@@ -2196,13 +2196,8 @@
 				f.setAttribute('tabindex', '0');
 				f.setAttribute('role', 'button');
 				f.setAttribute('aria-label', 'Passage masqué' + (f.title ? ' (' + f.title + ')' : '') + ' : cliquer pour révéler');
-				if (f.title) {
-					var tw = document.createElement('span');
-					tw.className = 'tw-1740';
-					tw.textContent = 'TW · ' + f.title;
-					f.parentNode.insertBefore(tw, f);
-					f.removeAttribute('title');
-				}
+				// Le sujet de l'avertissement reste dans l'infobulle, sans étiquette qui coupe la lecture
+				if (f.title && !/^avertissement/i.test(f.title)) { f.title = 'Avertissement : ' + f.title; }
 				function voir() { f.classList.add('vu-1740'); f.removeAttribute('role'); f.removeAttribute('tabindex'); f.removeAttribute('aria-label'); }
 				f.addEventListener('click', voir);
 				f.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); voir(); } });
@@ -2239,7 +2234,7 @@
 			['<span class="pc">Petites capitales</span>', '<span class="pc">', '</span>'],
 			['<span class="espace">Espacé</span>', '<span class="espace">', '</span>'],
 			['<span class="barre">Barré</span>', '<span class="barre">', '</span>'],
-			['<span class="tw-1740">TW</span><span class="flou">Flouté</span>', '<span class="flou" title="avertissement">', '</span>']
+			['<span class="flou">Flouté</span>', '<span class="flou" title="sujet sensible">', '</span>']
 		] },
 		{ g: 'Couleurs', l: [
 			['<span class="mousse">Mousse</span>', '<span class="mousse">', '</span>'],

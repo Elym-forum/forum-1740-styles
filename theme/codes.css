@@ -779,3 +779,16 @@ html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.sang, .
 html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.cendre, .cendre *) { color: #9C978A !important; }
 html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.lune, .lune *) { color: #E6E2D3 !important; }
 html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.dialogue, .dialogue *) { color: var(--accent-vif) !important; }
+
+/* Boîte « Balises » : chaque aperçu garde sa vraie police, même sur la page d'écriture */
+html body#modernbb .balises-1740 .content .puce-1740 { font-family: 'Alegreya', Georgia, serif !important; font-size: 16px !important; letter-spacing: 0 !important; text-transform: none !important; font-weight: 400 !important; }
+html body#modernbb .balises-1740 .content .puce-1740 :is(.t1, .ancien) { font-family: 'Grenze Gotisch', serif !important; font-weight: 400 !important; }
+html body#modernbb .balises-1740 .content .puce-1740 :is(.t2, .intertitre, .cri, .pc) { font-family: 'Alegreya SC', serif !important; }
+html body#modernbb .balises-1740 .content .puce-1740 .t2 { letter-spacing: 0.1em !important; }
+html body#modernbb .balises-1740 .content .puce-1740 .intertitre { letter-spacing: 0.18em !important; font-size: 15px !important; }
+html body#modernbb .balises-1740 .content .puce-1740 .cri { letter-spacing: 0.06em !important; font-weight: 500 !important; }
+html body#modernbb .balises-1740 .content .puce-1740 .pc { letter-spacing: 0.06em !important; }
+html body#modernbb .balises-1740 .content .puce-1740 .espace { letter-spacing: 0.3em !important; }
+html body#modernbb .balises-1740 .content .puce-1740 :is(.sous-titre, .murmure) { font-style: italic !important; }
+html body#modernbb .balises-1740 .content .puce-1740 .t3 { font-weight: 500 !important; }
+html body#modernbb .balises-1740 .content .puce-1740 .gras { font-weight: 700 !important; }
