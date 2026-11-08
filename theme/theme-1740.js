@@ -796,8 +796,9 @@
 		// État : nouveau, lu ou scellé (comparaison avec les icônes de la légende)
 		var icone = li.getAttribute('data-icone') || '';
 		var etat = 'lu';
-		if (memeImage(icone, ICONES.nouveau)) { etat = 'nouveau'; }
-		else if (memeImage(icone, ICONES.scelle)) { etat = 'scelle'; }
+		// 1) icônes de la légende ; 2) à défaut, le nom de l'image de Forumactif (forum_unread…, …_locked…)
+		if (memeImage(icone, ICONES.nouveau) || /unread|_new/i.test(icone)) { etat = 'nouveau'; }
+		else if (memeImage(icone, ICONES.scelle) || /lock/i.test(icone)) { etat = 'scelle'; }
 		li.classList.add('est-' + etat);
 
 		// Identifiant du forum et vignette
@@ -1291,8 +1292,8 @@
 			var type = ($('.sujet-type-1740', li) || {}).textContent || '';
 			if (/annonce/i.test(type) || parmi(I.annonce, src)) { return 'annonce'; }
 			if (/note|post-it|épingl/i.test(type) || parmi(I.epingle, src)) { return 'epingle'; }
-			if (parmi(I.scelle, src)) { return 'scelle'; }
-			if (parmi(I.nouveau, src)) { return 'nouveau'; }
+			if (parmi(I.scelle, src) || /lock/i.test(src)) { return 'scelle'; }
+			if (parmi(I.nouveau, src) || /unread|_new/i.test(src)) { return 'nouveau'; }
 			return 'lu';
 		}
 		$$('.sujet-1740').forEach(function (li) { li.classList.add('est-' + etatDe(li)); });
