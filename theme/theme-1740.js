@@ -1817,6 +1817,11 @@
 			sous.remove();
 			return;
 		}
+		// Recherche avancée : « Recherche avancée » posé seul en haut de page
+		if (/^\/search/.test(location.pathname)) {
+			var rt = $(':scope > h1.page-title', zone);
+			if (rt) { poserTete(rt, 'Fouiller les archives', 'Recherche'); rt.remove(); return; }
+		}
 		// Page d'un groupe
 		if (/^\/g\d+/.test(location.pathname)) {
 			var t = $(':scope > h1.page-title', zone);

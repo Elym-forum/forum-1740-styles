@@ -314,3 +314,16 @@ body#modernbb .avis-1740 .avis-boutons-1740 {
 	border: none !important;
 }
 body#modernbb .avis-1740 .avis-boutons-1740 input { min-width: 90px; }
+
+/* ==========================================================================
+   RECHERCHE AVANCÉE
+   ========================================================================== */
+body#modernbb #main-content form[name="searchform"] input[type="button"][onclick*="google"] { display: none !important; }
+body#modernbb #main-content form[name="searchform"] hr.dashed { margin: 4px 0 14px; border: none; border-top: 1px dotted var(--ligne); background: none; height: 0; }
+body#modernbb #main-content form[name="searchform"] dd label { margin-right: 22px; }
+body#modernbb #main-content form[name="searchform"] .panel:has(> .inner > fieldset.submit-buttons:only-of-type) {
+	border: none !important;
+	background: none !important;
+	padding: 0 !important;
+}
+body#modernbb #main-content form[name="searchform"] fieldset.submit-buttons { display: flex; justify-content: center; margin: 0 !important; padding: 0 !important; }
