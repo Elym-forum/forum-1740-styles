@@ -1974,6 +1974,7 @@
 			'<div class="filtre-1740"><label for="' + id + 'p">Pacte</label><select id="' + id + 'p" data-cle="pacte"><option value="">Tous</option><option>Avec pacte</option><option>Sans pacte</option></select></div>' +
 			'<div class="filtre-1740"><label for="' + id + 'd">Demeure</label><select id="' + id + 'd" data-cle="demeure">' + options('demeure', 'Toutes') + '</select></div>' +
 			'<div class="filtre-1740"><label for="' + id + 'v">Âmes</label><select id="' + id + 'v" data-cle="vie"><option value="vivantes">Vivantes</option><option value="defuntes">Défuntes</option><option value="">Toutes</option></select></div>' +
+			'<div class="filtre-1740"><label for="' + id + 'o">Ordre</label><select id="' + id + 'o" data-ordre="1"><option value="">Arrivée</option><option value="nom">Nom (A-Z)</option><option value="fc">Faceclaim (A-Z)</option></select></div>' +
 			'<span class="compte-1740" aria-live="polite"></span>';
 		var grille = document.createElement('div');
 		grille.className = 'ames-1740';
@@ -1984,8 +1985,8 @@
 			var portrait = texteDe(a.portrait);
 			f.innerHTML = '<span class="medaillon-1740"><span>' + (portrait ? '<img src="' + echapper(portrait) + '" alt="" loading="lazy" />' : '') + '</span></span><div class="infos-1740"></div>';
 			var infos = $('.infos-1740', f);
-			var nom = document.createElement('h3'); nom.className = 'nom-1740'; nom.appendChild(valeurNoeud(a.nom)); infos.appendChild(nom);
-			if (texteDe(a.faceclaim)) { var fc = document.createElement('p'); fc.className = 'fc-1740'; fc.appendChild(valeurNoeud(a.faceclaim)); infos.appendChild(fc); }
+			var nom = document.createElement('div'); nom.className = 'nom-1740'; nom.appendChild(valeurNoeud(a.nom)); infos.appendChild(nom);
+			if (texteDe(a.faceclaim)) { var fc = document.createElement('div'); fc.className = 'fc-1740'; fc.appendChild(valeurNoeud(a.faceclaim)); infos.appendChild(fc); }
 			var ch = document.createElement('div'); ch.className = 'ch-1740';
 			[['naissance', 'Naissance'], ['occupation', 'Occupation'], ['demeure', 'Demeure'], ['union', 'Union'], ['enfants', 'Enfants']].forEach(function (c) {
 				if (!texteDe(a[c[0]])) { return; }
@@ -2004,9 +2005,20 @@
 		});
 		var vide = document.createElement('div'); vide.className = 'vide-1740'; vide.textContent = 'Aucune âme ne répond à ces critères.';
 		grille.appendChild(vide);
+		donnees.forEach(function (d, i) { d.rang = i; d.nomTri = texteDe(d.a.nom); d.fcTri = texteDe(d.a.faceclaim); });
+		function trier() {
+			var o = $('select[data-ordre]', barre).value;
+			var liste = donnees.slice().sort(function (x, y) {
+				if (o === 'nom') { return x.nomTri.localeCompare(y.nomTri, 'fr', { sensitivity: 'base' }); }
+				if (o === 'fc') { return (x.fcTri || '\uffff').localeCompare(y.fcTri || '\uffff', 'fr', { sensitivity: 'base' }); }
+				return x.rang - y.rang;
+			});
+			liste.forEach(function (d) { grille.insertBefore(d.el, vide); });
+		}
 		function filtrer() {
+			trier();
 			var crit = {};
-			$$('select', barre).forEach(function (s) { crit[s.dataset.cle] = s.value; });
+			$$('select[data-cle]', barre).forEach(function (s) { crit[s.dataset.cle] = s.value; });
 			var n = 0;
 			donnees.forEach(function (d) {
 				var ok = (!crit.genre || d.genre === crit.genre) && (!crit.union || d.union === crit.union) &&
