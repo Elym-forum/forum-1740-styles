@@ -2314,15 +2314,70 @@
 			}
 			placer();
 			var pop = creerPopCouleurs(ta);
+			var popE = creerPopEmojis(ta);
 			var essais = 0;
 			var veille = setInterval(function () {
 				var ok = placer();
 				var barreOutils = ok && $('.sceditor-toolbar', ta.parentNode);
-				if (barreOutils && !$('.groupe-1740', barreOutils)) { brancherBarre(barreOutils, bouton, boite, pop); }
+				if (barreOutils && !$('.groupe-1740', barreOutils)) { brancherBarre(barreOutils, bouton, boite, pop, popE); }
 				if ((barreOutils && $('.groupe-1740', barreOutils)) || ++essais > 30) { clearInterval(veille); }
 			}, 300);
 			initOutilsEcriture(ta);
 		});
+	}
+
+	/* ---------- Emojis : une sélection dans l'esprit du forum, et les récents ---------- */
+	var EMOJIS_1740 = [
+		['Visages', '😀 😊 🙂 😉 😄 😂 🥲 😅 😍 🥰 😘 😏 😌 🤔 🙄 😐 😶 😬 😳 🥺 😢 😭 😱 😨 😰 😡 😤 😴 🤫 🤭 😈 💀 👻'],
+		['Gestes', '👋 👍 👎 👏 🙌 🤝 🙏 ✋ 🤞 💪 🫂'],
+		['Nature', '🌲 🌳 🌿 🍃 🍂 🍁 🌾 🍄 🌸 🥀 🌙 🌑 🌕 ⭐ ✨ ☀️ 🌫️ 🌧️ ⛈️ ❄️ 🔥 💧 🌊 🪨'],
+		['Créatures', '🐺 🦉 🐦‍⬛ 🦇 🐍 🕷️ 🐈‍⬛ 🐀 🦌 🐗 🐐 🐑 🐴 🐓 🦋 🪲 🐌 🐟'],
+		['Objets', '🕯️ 🗝️ 📜 🪶 ✉️ 📖 ⚱️ 🪓 🔪 🪵 ⛓️ 🔔 🧪 🫖 🍷 🍺 🍞 🧀 🍎 🧶 🪡'],
+		['Signes', '❤️ 🖤 🤍 💔 ❣️ 💤 ❗ ❓ ✔️ ✖️ ➡️ ⏳']
+	];
+	function lireEmojisRecents() {
+		try { return JSON.parse(localStorage.getItem('emojis1740') || '[]'); } catch (e) { return []; }
+	}
+	function insererEmoji(ta, em) {
+		var inst = instanceEditeur(ta);
+		try {
+			if (inst && inst.insert) { inst.insert(em); inst.focus(); }
+			else {
+				var d = ta.selectionStart, f = ta.selectionEnd;
+				ta.value = ta.value.substring(0, d) + em + ta.value.substring(f);
+				ta.focus(); ta.selectionStart = ta.selectionEnd = d + em.length;
+			}
+		} catch (e) {}
+		var l = lireEmojisRecents().filter(function (x) { return x !== em; });
+		l.unshift(em);
+		try { localStorage.setItem('emojis1740', JSON.stringify(l.slice(0, 16))); } catch (e) {}
+	}
+	function remplirEmojis(pop) {
+		var rec = lireEmojisRecents();
+		var html = '';
+		if (rec.length) {
+			html += '<div class="emojis-titre-1740">Récents</div><div class="emojis-grille-1740">'
+				+ rec.map(function (e) { return '<button type="button" class="emoji-1740" data-e="' + e + '">' + e + '</button>'; }).join('') + '</div>';
+		}
+		EMOJIS_1740.forEach(function (g) {
+			html += '<div class="emojis-titre-1740">' + g[0] + '</div><div class="emojis-grille-1740">'
+				+ g[1].split(' ').map(function (e) { return '<button type="button" class="emoji-1740" data-e="' + e + '">' + e + '</button>'; }).join('') + '</div>';
+		});
+		pop.innerHTML = html;
+	}
+	function creerPopEmojis(ta) {
+		var pop = document.createElement('div');
+		pop.className = 'emojis-pop-1740';
+		pop.hidden = true;
+		pop.setAttribute('role', 'dialog');
+		pop.setAttribute('aria-label', 'Emojis');
+		pop.addEventListener('mousedown', function (e) { e.preventDefault(); }); // garde la position du curseur dans l'éditeur
+		pop.addEventListener('click', function (e) {
+			var b = e.target.closest('.emoji-1740');
+			if (!b) { return; }
+			insererEmoji(ta, b.dataset.e);
+		});
+		return pop;
 	}
 
 	/* ---------- Barre d'outils de l'éditeur : Balises et Couleur ---------- */
@@ -2356,13 +2411,16 @@
 		a.innerHTML = '<span class="icone-1740">' + icone + (texte ? '<span>' + texte + '</span>' : '') + '</span>';
 		return a;
 	}
-	function brancherBarre(barreOutils, bouton, boite, pop) {
+	function brancherBarre(barreOutils, bouton, boite, pop, popE) {
 		var groupe = document.createElement('div');
 		groupe.className = 'sceditor-group groupe-1740';
 		var bB = boutonBarre('bouton-balises-1740', 'Balises de mise en page', '', 'Balises');
 		var bC = boutonBarre('bouton-couleur-1740', 'Couleur du texte', ICONE_COULEUR_1740, 'Couleur');
+		var bE = boutonBarre('bouton-emojis-1740', 'Emojis', '<span class="emoji-icone-1740" aria-hidden="true">☺</span>', 'Emojis');
 		groupe.appendChild(bB);
 		groupe.appendChild(bC);
+		groupe.appendChild(bE);
+		document.body.appendChild(popE);
 		barreOutils.insertBefore(groupe, barreOutils.firstChild);
 		// La fenêtre vit hors de la barre (qui coupe ce qui dépasse) et se place sous le bouton
 		document.body.appendChild(pop);
@@ -2395,8 +2453,26 @@
 				});
 			});
 		});
+		['click', 'keydown'].forEach(function (t) {
+			bE.addEventListener(t, function (e) {
+				activer(e, function () {
+					var r = bE.getBoundingClientRect();
+					popE.style.left = Math.max(8, Math.min(r.left + window.scrollX, window.scrollX + document.documentElement.clientWidth - 330)) + 'px';
+					popE.style.top = (r.bottom + window.scrollY + 6) + 'px';
+					if (popE.hidden) { remplirEmojis(popE); }
+					if (!pop.hidden) { pop.hidden = true; bC.classList.remove('active'); }
+					basculer(popE, bE);
+				});
+			});
+		});
 		document.addEventListener('click', function (e) {
 			if (!pop.hidden && !pop.contains(e.target) && !bC.contains(e.target)) { pop.hidden = true; bC.classList.remove('active'); }
+			if (!popE.hidden && !popE.contains(e.target) && !bE.contains(e.target)) { popE.hidden = true; bE.classList.remove('active'); }
+		});
+		document.addEventListener('keydown', function (e) {
+			if (e.key !== 'Escape') { return; }
+			if (!popE.hidden) { popE.hidden = true; bE.classList.remove('active'); bE.focus(); }
+			if (!pop.hidden) { pop.hidden = true; bC.classList.remove('active'); bC.focus(); }
 		});
 	}
 
