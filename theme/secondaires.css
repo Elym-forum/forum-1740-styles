@@ -282,3 +282,35 @@ html body#modernbb #main-content fieldset.polls dd.sondage-res-1740 {
 	color: var(--texte-clair);
 }
 .sondage-nb-1740 small { display: block; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+
+/* ==========================================================================
+   AVIS ET CONFIRMATIONS (message_body, confirm_body)
+   ========================================================================== */
+html body#modernbb .sujet-cadre-1740.avis-1740 {
+	max-width: 640px;
+	margin: 24px auto 18px !important;
+	padding: 28px 32px !important;
+	text-align: center;
+}
+body#modernbb .avis-1740 .ornement-1740 { margin-bottom: 18px; }
+body#modernbb .avis-texte-1740 {
+	font-family: 'Alegreya', Georgia, serif;
+	font-size: 17px;
+	line-height: 1.6;
+	color: var(--texte);
+	text-align: center;
+}
+body#modernbb .avis-texte-1740 a { color: var(--accent-lien) !important; text-decoration: underline; text-underline-offset: 3px; }
+body#modernbb .avis-texte-1740 a:hover { color: var(--texte-clair) !important; }
+body#modernbb .avis-texte-1740 br + br { display: none; }
+body#modernbb .avis-1740 form { margin: 0; text-align: center; }
+body#modernbb .avis-1740 form fieldset:not(.avis-boutons-1740) { margin: 16px auto 0; text-align: left; max-width: 480px; }
+body#modernbb .avis-1740 .avis-boutons-1740 {
+	display: flex;
+	justify-content: center;
+	gap: 12px;
+	margin: 22px 0 0 !important;
+	padding: 0 !important;
+	border: none !important;
+}
+body#modernbb .avis-1740 .avis-boutons-1740 input { min-width: 90px; }
