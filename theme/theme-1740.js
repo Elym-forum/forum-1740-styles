@@ -1873,7 +1873,7 @@
 	}
 
 	/* ---------- Codes de messages : liste, champs, exergue, signature, titres… ---------- */
-	var BLOCS_1740 = ['page', 'bandeau', 'surtitre', 'grand-titre', 'titre', 'texte', 'note', 'liste', 'exergue', 'cadre', 'colonnes', 'champs', 'filet', 'signature', 'centre', 'image'];
+	var BLOCS_1740 = ['page', 'bandeau', 'surtitre', 'grand-titre', 'titre', 'texte', 'note', 'liste', 'exergue', 'cadre', 'colonnes', 'champs', 'filet', 'signature', 'centre', 'image', 'medaillons', 'rp-infos'];
 	function estBloc(n) {
 		return n && n.nodeType === 1 && BLOCS_1740.some(function (c) { return n.classList.contains(c); });
 	}
@@ -1992,6 +1992,37 @@
 				s3.className = 'sceau-1740'; s3.setAttribute('aria-hidden', 'true');
 				s3.textContent = c.texte.charAt(0);
 				sg.appendChild(s3);
+			});
+			// Bouton de musique : une icône seule, ouverte dans un nouvel onglet
+			$$('a.musique', zone).forEach(function (a) {
+				a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M9 18V5l11-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="17" cy="16" r="3"></circle></svg>';
+				a.setAttribute('aria-label', 'Écouter la musique du RP');
+				a.title = 'Écouter la musique du RP';
+				a.target = '_blank';
+				a.rel = 'noopener';
+			});
+			// Pied du RP : « Lieu | Période | Avec » en trois cases (les tags restent des liens)
+			$$('.rp-infos', zone).forEach(function (r) {
+				var cases = [[]];
+				Array.prototype.slice.call(r.childNodes).forEach(function (n) {
+					if (n.nodeName === 'BR') { return; }
+					if (n.nodeType === 3 && n.nodeValue.indexOf('|') >= 0) {
+						n.nodeValue.split('|').forEach(function (m, i) {
+							if (i > 0) { cases.push([]); }
+							if (m.trim()) { cases[cases.length - 1].push(document.createTextNode(m.trim())); }
+						});
+					} else { cases[cases.length - 1].push(n); }
+				});
+				var noms = ['Lieu', 'Période', 'Avec'];
+				r.innerHTML = '';
+				cases.forEach(function (c, i) {
+					var d = document.createElement('div');
+					d.className = 'case-1740';
+					d.innerHTML = '<span class="l-1740">' + (noms[i] || '') + '</span>';
+					c.forEach(function (n) { d.appendChild(n); });
+					r.appendChild(d);
+				});
+				r.style.setProperty('--cases', cases.length);
 			});
 			$$('.filet', zone).forEach(function (f) {
 				if (!$('.l-1740', f)) { f.innerHTML = '<span class="l-1740"></span>'; f.setAttribute('aria-hidden', 'true'); }
