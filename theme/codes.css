@@ -954,3 +954,23 @@ html body#modernbb .sceditor-toolbar :is(
 ) { display: none !important; }
 /* Un groupe vidé ne laisse pas de séparateur orphelin */
 html body#modernbb .sceditor-toolbar .sceditor-group:not(:has(.sceditor-button:not([style*="display: none"]):not(.sceditor-button-servimg, .sceditor-button-embed, .sceditor-button-youtube, .sceditor-button-headers, .sceditor-button-font, .sceditor-button-removeformat, .sceditor-button-emoticon, .sceditor-button-source, .sceditor-button-color))) { display: none !important; }
+
+/* Bouton « Copier » des blocs de code */
+html body#modernbb #main-content .postbody .content dl.codebox dt button.copier-1740,
+html body#modernbb :is(.postbody, #preview) .content dl.codebox dt button.copier-1740 {
+	display: inline-flex !important;
+	align-items: center;
+	margin: 0 0 0 auto !important;
+	padding: 2px 10px !important;
+	border: 1px solid var(--ligne-forte) !important;
+	background: var(--fond-nuit) !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 13px !important;
+	letter-spacing: 0.1em;
+	text-transform: none !important;
+	color: var(--texte) !important;
+	cursor: pointer;
+	transition: border-color 0.3s, color 0.3s;
+}
+html body#modernbb :is(.postbody, #preview) .content dl.codebox dt button.copier-1740:hover { border-color: var(--accent) !important; color: var(--texte-clair) !important; }
+html body#modernbb :is(.postbody, #preview) .content dl.codebox dt button.copier-1740.fait-1740 { border-color: var(--accent) !important; color: var(--accent-vif) !important; }

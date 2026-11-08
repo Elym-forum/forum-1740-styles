@@ -2522,6 +2522,40 @@
 		}
 	}
 
+	/* ---------- Bouton « Copier » sur les blocs de code ---------- */
+	function copierTexte(t) {
+		if (navigator.clipboard && window.isSecureContext) { return navigator.clipboard.writeText(t); }
+		return new Promise(function (ok, non) {
+			var z = document.createElement('textarea');
+			z.value = t; z.setAttribute('readonly', ''); z.style.position = 'fixed'; z.style.opacity = '0';
+			document.body.appendChild(z); z.select();
+			try { document.execCommand('copy') ? ok() : non(); } catch (e) { non(e); }
+			z.remove();
+		});
+	}
+	function initCopierCodes() {
+		$$('dl.codebox:not(.spoiler):not(.hidecode)').forEach(function (dl) {
+			var dt = $('dt', dl), code = $('code', dl);
+			if (!dt || !code || $('.copier-1740', dt)) { return; }
+			var b = document.createElement('button');
+			b.type = 'button';
+			b.className = 'copier-1740';
+			b.textContent = 'Copier';
+			b.setAttribute('aria-label', 'Copier le code');
+			b.addEventListener('click', function () {
+				copierTexte(code.innerText.replace(/ /g, ' ')).then(function () {
+					b.textContent = 'Copié ✓';
+					b.classList.add('fait-1740');
+				}, function () {
+					b.textContent = 'Échec';
+				}).then(function () {
+					setTimeout(function () { b.textContent = 'Copier'; b.classList.remove('fait-1740'); }, 1800);
+				});
+			});
+			dt.appendChild(b);
+		});
+	}
+
 	function demarrer() {
 		document.documentElement.classList.add('theme-1740');
 		lireReglages();
@@ -2555,6 +2589,7 @@
 		nettoyerEditions();
 		initCodes();
 		initBalisesEditeur();
+		initCopierCodes();
 	}
 
 	if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', demarrer); }

@@ -135,7 +135,7 @@ body#modernbb #main-content .postbody .content dl.codebox dt {
 	text-transform: none !important;
 	color: var(--accent-clair) !important;
 }
-body#modernbb #main-content .postbody .content dl.codebox dt :is(button, img, svg, i, span[class*="copy"]) { display: none !important; }
+body#modernbb #main-content .postbody .content dl.codebox dt :is(button:not(.copier-1740), img, svg, i, span[class*="copy"]) { display: none !important; }
 body#modernbb #main-content .postbody .content dl.codebox dd {
 	margin: 0 !important;
 	padding: 10px 14px !important;
