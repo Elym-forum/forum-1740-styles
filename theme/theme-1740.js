@@ -1974,7 +1974,7 @@
 			'<div class="filtre-1740"><label for="' + id + 'p">Pacte</label><select id="' + id + 'p" data-cle="pacte"><option value="">Tous</option><option>Avec pacte</option><option>Sans pacte</option></select></div>' +
 			'<div class="filtre-1740"><label for="' + id + 'd">Demeure</label><select id="' + id + 'd" data-cle="demeure">' + options('demeure', 'Toutes') + '</select></div>' +
 			'<div class="filtre-1740"><label for="' + id + 'v">Âmes</label><select id="' + id + 'v" data-cle="vie"><option value="vivantes">Vivantes</option><option value="defuntes">Défuntes</option><option value="">Toutes</option></select></div>' +
-			'<div class="filtre-1740"><label for="' + id + 'o">Ordre</label><select id="' + id + 'o" data-ordre="1"><option value="">Arrivée</option><option value="nom">Nom (A-Z)</option><option value="fc">Faceclaim (A-Z)</option></select></div>' +
+			'<div class="filtre-1740"><label for="' + id + 'o">Faceclaim</label><select id="' + id + 'o" data-ordre="1"><option value="az">A à Z</option><option value="za">Z à A</option></select></div>' +
 			'<span class="compte-1740" aria-live="polite"></span>';
 		var grille = document.createElement('div');
 		grille.className = 'ames-1740';
@@ -2009,9 +2009,10 @@
 		function trier() {
 			var o = $('select[data-ordre]', barre).value;
 			var liste = donnees.slice().sort(function (x, y) {
-				if (o === 'nom') { return x.nomTri.localeCompare(y.nomTri, 'fr', { sensitivity: 'base' }); }
-				if (o === 'fc') { return (x.fcTri || '\uffff').localeCompare(y.fcTri || '\uffff', 'fr', { sensitivity: 'base' }); }
-				return x.rang - y.rang;
+				// Les âmes sans faceclaim restent à la fin, dans les deux sens
+				if (!x.fcTri || !y.fcTri) { return (x.fcTri ? 0 : 1) - (y.fcTri ? 0 : 1) || x.rang - y.rang; }
+				var c = x.fcTri.localeCompare(y.fcTri, 'fr', { sensitivity: 'base' });
+				return o === 'za' ? -c : c;
 			});
 			liste.forEach(function (d) { grille.insertBefore(d.el, vide); });
 		}
