@@ -1016,3 +1016,7 @@ html body#modernbb .emojis-pop-1740 .emoji-1740 {
 html body#modernbb .emojis-pop-1740 .emoji-1740:hover,
 html body#modernbb .emojis-pop-1740 .emoji-1740:focus-visible { border-color: var(--ligne-forte); background: rgba(var(--accent-rgb), 0.15); }
 html body#modernbb .emojis-pop-1740 .emoji-1740 img { width: 20px; height: 20px; }
+
+html body#modernbb .emojis-pop-1740 { width: 340px; max-height: 340px; }
+html body#modernbb .emojis-pop-1740 .smiley-1740 img { display: block; max-width: 30px; max-height: 30px; width: auto; height: auto; }
+html body#modernbb .emojis-pop-1740 .smiley-1740 { height: 36px; }

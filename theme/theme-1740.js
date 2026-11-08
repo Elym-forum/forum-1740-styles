@@ -2335,33 +2335,200 @@
 		['Objets', '\ud83d\udd6f\ufe0f \ud83d\udddd\ufe0f \ud83d\udcdc \ud83e\udeb6 \u2709\ufe0f \ud83d\udcd6 \u26b1\ufe0f \ud83e\ude93 \ud83d\udd2a \ud83e\udeb5 \u26d3\ufe0f \ud83d\udd14 \ud83e\uddea \ud83e\uded6 \ud83c\udf77 \ud83c\udf7a \ud83c\udf5e \ud83e\uddc0 \ud83c\udf4e \ud83e\uddf6 \ud83e\udea1'],
 		['Signes', '\u2764\ufe0f \ud83d\udda4 \ud83e\udd0d \ud83d\udc94 \u2763\ufe0f \ud83d\udca4 \u2757 \u2753 \u2714\ufe0f \u2716\ufe0f \u27a1\ufe0f \u23f3']
 	];
+	/* Smileys du forum (images) : [nom, adresse] */
+	var SMILEYS_1740 = [
+		["eyes", "https://2img.net/u/4411/70/16/94/smiles/3177531898.png"],
+		["blurryeyes", "https://2img.net/u/4411/70/16/94/smiles/1669923774.png"],
+		["What a Face", "https://illipro.net/fa/i/smiles/fresse.png"],
+		["ui", "https://2img.net/u/4411/70/16/94/smiles/472940891.gif"],
+		["Arrow", "https://illipro.net/fa/i/smiles/icon_arrow.gif"],
+		["Wink", "https://illipro.net/fa/i/smiles/icon_wink.gif"],
+		["Razz", "https://illipro.net/fa/i/smiles/icon_razz.gif"],
+		["Evil no", "https://2img.net/u/4411/70/16/94/smiles/101609121.gif"],
+		["Evil yes", "https://2img.net/u/4411/70/16/94/smiles/3541097573.gif"],
+		["Stache", "https://2img.net/u/4411/70/16/94/smiles/579782056.png"],
+		["hihi", "https://2img.net/u/4411/70/16/94/smiles/1606421958.png"],
+		["hmm", "https://2img.net/u/4411/70/16/94/smiles/109027622.gif"],
+		["hey", "https://2img.net/u/4411/70/16/94/smiles/3224543446.png"],
+		["h\u00e9h\u00e9", "https://2img.net/u/4411/70/16/94/smiles/1672544379.gif"],
+		["han", "https://2img.net/u/4411/70/16/94/smiles/1773549207.png"],
+		["fucku", "https://2img.net/u/4411/70/16/94/smiles/1111257090.png"],
+		["facepalm", "https://2img.net/u/4411/70/16/94/smiles/435245650.gif"],
+		["cute", "https://2img.net/u/4411/70/16/94/smiles/2746488712.png"],
+		["creepywink", "https://2img.net/u/4411/70/16/94/smiles/1771040369.gif"],
+		["creepystab", "https://2img.net/u/4411/70/16/94/smiles/1482810269.gif"],
+		["creepysmile", "https://2img.net/u/4411/70/16/94/smiles/1213754654.gif"],
+		["creepysad", "https://2img.net/u/4411/70/16/94/smiles/835645899.gif"],
+		["creepydance", "https://2img.net/u/4411/70/16/94/smiles/1187508652.gif"],
+		["creepylove", "https://2img.net/u/4411/70/16/94/smiles/3701335347.gif"],
+		["choc", "https://2img.net/u/4411/70/16/94/smiles/3639322292.png"],
+		["arg", "https://2img.net/u/4411/70/16/94/smiles/2836171925.png"],
+		["afraid", "https://2img.net/u/4411/70/16/94/smiles/1023436970.gif"],
+		["you", "https://2img.net/u/4411/70/16/94/smiles/1594087956.gif"],
+		["yay", "https://2img.net/u/4411/70/16/94/smiles/113283969.gif"],
+		["x333", "https://2img.net/u/4411/70/16/94/smiles/3545334754.gif"],
+		["wink", "https://2img.net/u/4411/70/16/94/smiles/3665946034.gif"],
+		["tss", "https://2img.net/u/4411/70/16/94/smiles/3337958985.png"],
+		["siffle", "https://2img.net/u/4411/70/16/94/smiles/1589440575.gif"],
+		["shame", "https://2img.net/u/4411/70/16/94/smiles/307124865.gif"],
+		["puppy", "https://2img.net/u/4411/70/16/94/smiles/2933412864.gif"],
+		["please", "https://2img.net/u/4411/70/16/94/smiles/3096898339.gif"],
+		["pff", "https://2img.net/u/4411/70/16/94/smiles/4267168643.gif"],
+		["pervwink", "https://2img.net/u/4411/70/16/94/smiles/182591853.gif"],
+		["nyah", "https://2img.net/u/4411/70/16/94/smiles/2373193043.png"],
+		["nice", "https://2img.net/u/4411/70/16/94/smiles/1893595548.gif"],
+		["money", "https://2img.net/u/4411/70/16/94/smiles/966275855.gif"],
+		["lelele", "https://2img.net/u/4411/70/16/94/smiles/3870711600.gif"],
+		["huhu", "https://2img.net/u/4411/70/16/94/smiles/3086923383.gif"],
+		["angel", "https://2img.net/u/4411/70/16/94/smiles/1522770332.gif"],
+		["what", "https://2img.net/u/4411/70/16/94/smiles/788399122.gif"],
+		["verysad", "https://2img.net/u/4411/70/16/94/smiles/3176443628.gif"],
+		["sleepy", "https://2img.net/u/4411/70/16/94/smiles/3288198322.gif"],
+		["metal", "https://2img.net/u/4411/70/16/94/smiles/77360084.gif"],
+		["music", "https://2img.net/u/4411/70/16/94/smiles/3267476803.gif"],
+		["cool", "https://2img.net/u/4411/70/16/94/smiles/374393840.gif"],
+		["loser", "https://2img.net/u/4411/70/16/94/smiles/4024245373.gif"],
+		["disco", "https://2img.net/u/4411/70/16/94/smiles/379753510.gif"],
+		["worship", "https://2img.net/u/4411/70/16/94/smiles/1717139129.gif"],
+		["raspberry", "https://2img.net/u/4411/70/16/94/smiles/3673877944.gif"],
+		["smirk", "https://2img.net/u/4411/70/16/94/smiles/353984758.gif"],
+		["panic", "https://2img.net/u/4411/70/16/94/smiles/4090842561.gif"],
+		["hide", "https://2img.net/u/4411/70/16/94/smiles/471959999.gif"],
+		["excited", "https://2img.net/u/4411/70/16/94/smiles/3731146444.gif"],
+		["redheard", "https://2img.net/u/4411/70/16/94/smiles/735891920.gif"],
+		["dragon", "https://2img.net/u/4411/70/16/94/smiles/1229912207.gif"],
+		["satan", "https://2img.net/u/4411/70/16/94/smiles/2467308943.gif"],
+		["fire", "https://2img.net/u/4411/70/16/94/smiles/4126048345.gif"],
+		["cutie", "https://2img.net/u/4411/70/16/94/smiles/892961070.gif"],
+		["miniheart", "https://2img.net/u/4411/70/16/94/smiles/1670475621.gif"],
+		["heart", "https://2img.net/u/4411/70/16/94/smiles/2242882698.gif"],
+		["Insane", "https://2img.net/u/4411/70/16/94/smiles/2847602782.gif"],
+		["diable", "https://2img.net/u/4411/70/16/94/smiles/1307187935.gif"],
+		["plan", "https://2img.net/u/4411/70/16/94/smiles/237941722.gif"],
+		["sus", "https://2img.net/u/4411/70/16/94/smiles/4113063528.gif"],
+		["slip", "https://2img.net/u/4411/70/16/94/smiles/1594623657.gif"],
+		["sex", "https://2img.net/u/4411/70/16/94/smiles/2321631482.gif"],
+		["dramaqueen", "https://2img.net/u/4411/70/16/94/smiles/1821216215.gif"],
+		["mdr", "https://2img.net/u/4411/70/16/94/smiles/2564959990.gif"],
+		["love", "https://2img.net/u/4411/70/16/94/smiles/365299704.gif"],
+		["angel1", "https://2img.net/u/4411/70/16/94/smiles/3934686736.gif"],
+		["unicorn", "https://2img.net/u/4411/70/16/94/smiles/3909132326.gif"],
+		["youhou", "https://2img.net/u/4411/70/16/94/smiles/2360744695.gif"],
+		["blblbl", "https://2img.net/u/4411/70/16/94/smiles/3380145817.gif"],
+		["uwu", "https://2img.net/u/4411/70/16/94/smiles/4149460435.gif"],
+		["TT", "https://2img.net/u/4411/70/16/94/smiles/2018561126.gif"],
+		["wat", "https://2img.net/u/4411/70/16/94/smiles/604610314.png"],
+		["dance", "https://2img.net/u/4411/70/16/94/smiles/1307222032.gif"],
+		["yaaah", "https://2img.net/u/4411/70/16/94/smiles/3252099090.gif"],
+		["sad", "https://2img.net/u/4411/70/16/94/smiles/2575908693.gif"],
+		["love2", "https://2img.net/u/4411/70/16/94/smiles/806201620.gif"],
+		["socute", "https://2img.net/u/4411/70/16/94/smiles/1779504010.gif"],
+		["hello", "https://2img.net/u/4411/70/16/94/smiles/2895841602.gif"],
+		["love1", "https://2img.net/u/4411/70/16/94/smiles/3907890591.gif"],
+		["pervsus", "https://2img.net/u/4411/70/16/94/smiles/1456035731.gif"],
+		["by", "https://2img.net/u/4411/70/16/94/smiles/3413948057.gif"],
+		["flying", "https://2img.net/u/4411/70/16/94/smiles/1387063021.gif"],
+		["fear", "https://2img.net/u/4411/70/16/94/smiles/4172073153.gif"],
+		["hero", "https://2img.net/u/4411/70/16/94/smiles/4044971028.gif"],
+		["violetheart", "https://2img.net/u/4411/70/16/94/smiles/3344370891.gif"],
+		["tears", "https://2img.net/u/4411/70/16/94/smiles/3965424677.gif"],
+		["pc", "https://2img.net/u/4411/70/16/94/smiles/1271636532.gif"],
+		["rain", "https://2img.net/u/4411/70/16/94/smiles/1500469732.gif"],
+		["sleep", "https://2img.net/u/4411/70/16/94/smiles/16747610.gif"],
+		["tusors", "https://2img.net/u/4411/70/16/94/smiles/705701069.gif"],
+		["demon", "https://2img.net/u/4411/70/16/94/smiles/852620267.gif"],
+		["king", "https://2img.net/u/4411/70/16/94/smiles/2983132238.gif"],
+		["sigh", "https://2img.net/u/4411/70/16/94/smiles/1443127739.gif"],
+		["writing", "https://2img.net/u/4411/70/16/94/smiles/2536381519.gif"],
+		["string", "https://2img.net/u/4411/70/16/94/smiles/1580702974.gif"],
+		["rp", "https://2img.net/u/4411/70/16/94/smiles/3943383477.gif"],
+		["dead", "https://2img.net/u/4411/70/16/94/smiles/513723008.gif"],
+		["pliz", "https://2img.net/u/4411/70/16/94/smiles/4048962377.gif"],
+		["pickme", "https://2img.net/u/4411/70/16/94/smiles/2563367716.gif"],
+		["licking", "https://2img.net/u/4411/70/16/94/smiles/2963326436.gif"],
+		["cloud", "https://2img.net/u/4411/70/16/94/smiles/402372924.gif"],
+		["bave", "https://2img.net/u/4411/70/16/94/smiles/2725436977.gif"],
+		["ahah", "https://2img.net/u/4411/70/16/94/smiles/3626271242.gif"],
+		["flag", "https://2img.net/u/4411/70/16/94/smiles/2545399066.gif"],
+		["table", "https://2img.net/u/4411/70/16/94/smiles/297912328.gif"],
+		["sus1", "https://2img.net/u/4411/70/16/94/smiles/696897483.gif"],
+		["dance", "https://2img.net/u/4411/70/16/94/smiles/1152727765.gif"],
+		["shy", "https://2img.net/u/4411/70/16/94/smiles/2902606048.gif"],
+		["tears1", "https://2img.net/u/4411/70/16/94/smiles/2312435022.gif"],
+		["toilette", "https://2img.net/u/4411/70/16/94/smiles/2371455484.gif"],
+		["drama", "https://2img.net/u/4411/70/16/94/smiles/3009465301.png"],
+		["smile", "https://2img.net/u/4411/70/16/94/smiles/1556294999.gif"],
+		["run", "https://2img.net/u/4411/70/16/94/smiles/2804140581.gif"],
+		["huhu", "https://2img.net/u/4411/70/16/94/smiles/476450803.gif"],
+		["cookie", "https://2img.net/u/4411/70/16/94/smiles/3101514467.gif"],
+		["smile1", "https://2img.net/u/4411/70/16/94/smiles/1234572778.gif"],
+		["yiii", "https://2img.net/u/4411/70/16/94/smiles/3427605693.gif"],
+		["niark", "https://2img.net/u/4411/70/16/94/smiles/946705534.gif"],
+		["study", "https://2img.net/u/4411/70/16/94/smiles/791154980.gif"],
+		["verydead", "https://2img.net/u/4411/70/16/94/smiles/3893200826.gif"],
+		["popcorn", "https://2img.net/u/4411/70/16/94/smiles/3993433016.gif"],
+		["laugh", "https://2img.net/u/4411/70/16/94/smiles/3324873198.gif"],
+		["ass", "https://2img.net/u/4411/70/16/94/smiles/2962307673.gif"],
+		["horreur", "https://2img.net/u/4411/70/16/94/smiles/1281249081.gif"],
+		["hello", "https://2img.net/u/4411/70/16/94/smiles/3229670341.gif"],
+		["yeah", "https://2img.net/u/4411/70/16/94/smiles/1536957899.gif"],
+		["scream", "https://2img.net/u/4411/70/16/94/smiles/2009859456.gif"],
+		["poke", "https://2img.net/u/4411/70/16/94/smiles/2489612045.gif"],
+		["hugbis", "https://2img.net/u/4411/70/16/94/smiles/2268658667.gif"],
+		["ghost", "https://2img.net/u/4411/70/16/94/smiles/413549273.gif"],
+		["chasinglove", "https://2img.net/u/4411/70/16/94/smiles/3269343412.gif"],
+		["killing", "https://2img.net/u/4411/70/16/94/smiles/3742574854.gif"],
+		["kiss", "https://2img.net/u/4411/70/16/94/smiles/2721564914.gif"],
+		["conforthug", "https://2img.net/u/4411/70/16/94/smiles/3146562807.gif"],
+		["crushinghug", "https://2img.net/u/4411/70/16/94/smiles/1476841936.gif"],
+		["hug", "https://2img.net/u/4411/70/16/94/smiles/1211701061.gif"],
+		["whip", "https://2img.net/u/4411/70/16/94/smiles/1394936947.gif"],
+		["bros", "https://2img.net/u/4411/70/16/94/smiles/1210306412.gif"],
+		["patpat", "https://2img.net/u/4411/70/16/94/smiles/294372041.gif"],
+		["chew", "https://2img.net/u/4411/70/16/94/smiles/4080590044.gif"],
+		["num", "https://2img.net/u/4411/70/16/94/smiles/2686676025.gif"],
+		["nyan", "https://2img.net/u/4411/70/16/94/smiles/3614000442.gif"],
+		["grouphug", "https://2img.net/u/4411/70/16/94/smiles/587395375.gif"],
+		["cat", "https://2img.net/u/4411/70/16/94/smiles/1579622392.png"],
+		["bitch", "https://2img.net/u/4411/70/16/94/smiles/3442718624.png"],
+		["rip", "https://2img.net/u/4411/70/16/94/smiles/1662637656.gif"]
+	];
 	function lireEmojisRecents() {
 		try { return JSON.parse(localStorage.getItem('emojis1740') || '[]'); } catch (e) { return []; }
 	}
 	function insererEmoji(ta, em) {
 		var inst = instanceEditeur(ta);
+		var texte = em.indexOf('img:') === 0 ? '[img]' + em.slice(4) + '[/img]' : em;
 		try {
-			if (inst && inst.insert) { inst.insert(em); inst.focus(); }
+			if (inst && inst.insert) { inst.insert(texte); inst.focus(); }
 			else {
 				var d = ta.selectionStart, f = ta.selectionEnd;
-				ta.value = ta.value.substring(0, d) + em + ta.value.substring(f);
-				ta.focus(); ta.selectionStart = ta.selectionEnd = d + em.length;
+				ta.value = ta.value.substring(0, d) + texte + ta.value.substring(f);
+				ta.focus(); ta.selectionStart = ta.selectionEnd = d + texte.length;
 			}
 		} catch (e) {}
 		var l = lireEmojisRecents().filter(function (x) { return x !== em; });
 		l.unshift(em);
-		try { localStorage.setItem('emojis1740', JSON.stringify(l.slice(0, 16))); } catch (e) {}
+		try { localStorage.setItem('emojis1740', JSON.stringify(l.slice(0, 24))); } catch (e) {}
+	}
+	function boutonEmoji(e, nom) {
+		if (e.indexOf('img:') === 0) {
+			return '<button type="button" class="emoji-1740 smiley-1740" data-e="' + echapper(e) + '" title="' + echapper(nom || '') + '"><img src="' + echapper(e.slice(4)) + '" alt="' + echapper(nom || '') + '" loading="lazy"></button>';
+		}
+		return '<button type="button" class="emoji-1740" data-e="' + e + '">' + e + '</button>';
 	}
 	function remplirEmojis(pop) {
 		var rec = lireEmojisRecents();
 		var html = '';
 		if (rec.length) {
 			html += '<div class="emojis-titre-1740">Récents</div><div class="emojis-grille-1740">'
-				+ rec.map(function (e) { return '<button type="button" class="emoji-1740" data-e="' + e + '">' + e + '</button>'; }).join('') + '</div>';
+				+ rec.map(function (e) { return boutonEmoji(e); }).join('') + '</div>';
 		}
+		html += '<div class="emojis-titre-1740">Smileys du forum</div><div class="emojis-grille-1740">'
+			+ SMILEYS_1740.map(function (sm) { return boutonEmoji('img:' + sm[1], sm[0]); }).join('') + '</div>';
 		EMOJIS_1740.forEach(function (g) {
 			html += '<div class="emojis-titre-1740">' + g[0] + '</div><div class="emojis-grille-1740">'
-				+ g[1].split(' ').map(function (e) { return '<button type="button" class="emoji-1740" data-e="' + e + '">' + e + '</button>'; }).join('') + '</div>';
+				+ g[1].split(' ').map(function (e) { return boutonEmoji(e); }).join('') + '</div>';
 		});
 		pop.innerHTML = html;
 	}
