@@ -1802,7 +1802,7 @@
 		var zone = $('#main-content');
 		if (!zone || $('.page-tete-1740', zone)) { return; }
 		// Recherche : « 6 résultats trouvés pour … »
-		var sous = $('.sub-header', zone);
+		var sous = /^\/search/.test(location.pathname) ? $('.sub-header', zone) : null;
 		var h1 = sous && $('h1.page-title', sous);
 		if (h1) {
 			var texte = h1.textContent.trim();

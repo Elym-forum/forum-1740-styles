@@ -69,3 +69,173 @@ body#modernbb #main-content .panel .content > p { font-size: 16px; }
 html body#modernbb #main-content table.table1 td .usr_grp_clr strong,
 html body#modernbb #main-content table.table1 td a .usr_grp_clr { color: inherit; }
 html body#modernbb #main-content table.table1 td a:has(.usr_grp_clr) { color: inherit !important; }
+
+/* ==========================================================================
+   BLOCS DANS LES MESSAGES : citation, code, spoiler, texte caché
+   ========================================================================== */
+body#modernbb #main-content .postbody .content blockquote,
+body#modernbb #main-content .post-1740 blockquote {
+	position: relative;
+	margin: 12px 0 !important;
+	padding: 12px 18px !important;
+	border: none !important;
+	border-left: 2px solid var(--accent) !important;
+	border-radius: 0 !important;
+	background: rgba(14, 13, 10, 0.5) !important;
+	box-shadow: none !important;
+	font-size: 16px;
+	color: var(--texte) !important;
+}
+body#modernbb #main-content .postbody .content blockquote::before,
+body#modernbb #main-content .postbody .content blockquote::after { display: none !important; content: none !important; }
+body#modernbb #main-content .postbody .content blockquote blockquote { background: rgba(14, 13, 10, 0.4) !important; }
+body#modernbb #main-content .postbody .content blockquote cite {
+	display: block;
+	margin: 0 0 6px !important;
+	padding: 0 !important;
+	border: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 14px !important;
+	font-style: normal !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.1em;
+	color: var(--accent-clair) !important;
+}
+body#modernbb #main-content .postbody .content blockquote cite::before,
+body#modernbb #main-content .postbody .content blockquote cite::after { display: none !important; }
+body#modernbb #main-content .postbody .content blockquote cite a { color: inherit !important; }
+
+/* Code, spoiler et texte caché (même boîte) */
+body#modernbb #main-content .postbody .content dl.codebox {
+	margin: 12px 0 !important;
+	padding: 0 !important;
+	border: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: rgba(14, 13, 10, 0.55) !important;
+	box-shadow: none !important;
+	color: var(--texte) !important;
+}
+body#modernbb #main-content .postbody .content dl.codebox::before,
+body#modernbb #main-content .postbody .content dl.codebox::after,
+body#modernbb #main-content .postbody .content dl.codebox dt::before,
+body#modernbb #main-content .postbody .content dl.codebox dt::after { display: none !important; content: none !important; }
+body#modernbb #main-content .postbody .content dl.codebox dt {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 !important;
+	padding: 7px 14px !important;
+	border: none !important;
+	border-bottom: 1px dotted var(--ligne) !important;
+	background: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 14px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.1em;
+	text-transform: none !important;
+	color: var(--accent-clair) !important;
+}
+body#modernbb #main-content .postbody .content dl.codebox dt :is(button, img, svg, i, span[class*="copy"]) { display: none !important; }
+body#modernbb #main-content .postbody .content dl.codebox dd {
+	margin: 0 !important;
+	padding: 10px 14px !important;
+	border: none !important;
+	background: none !important;
+	font-size: 16px;
+	color: var(--texte) !important;
+}
+body#modernbb #main-content .postbody .content dl.codebox code {
+	display: block;
+	max-height: 320px;
+	overflow: auto;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
+	font-family: 'Courier Prime', 'Courier New', monospace !important;
+	font-size: 14px !important;
+	line-height: 1.5;
+	white-space: pre-wrap;
+	color: var(--texte) !important;
+}
+body#modernbb #main-content .postbody .content dl.codebox code * { color: inherit !important; }
+/* Spoiler : en-tête cliquable avec un repère */
+body#modernbb #main-content .postbody .content dl.spoiler dt.spoiler_title { cursor: pointer; }
+body#modernbb #main-content .postbody .content dl.spoiler dt.spoiler_title::before {
+	display: inline !important;
+	content: "▸" !important;
+	font-family: 'Alegreya', serif;
+	color: var(--accent);
+	transition: transform 0.3s;
+}
+body#modernbb #main-content .postbody .content dl.spoiler:has(.spoiler_content:not([hidden])) dt.spoiler_title::before { content: "▾" !important; }
+body#modernbb #main-content .postbody .content dl.spoiler:has(.spoiler_content[hidden]) dt.spoiler_title { border-bottom-color: transparent !important; }
+body#modernbb #main-content .postbody .content dl.spoiler:has(.spoiler_content[hidden]) dd { padding: 0 14px !important; }
+/* Texte caché : pas d'en-tête vide */
+body#modernbb #main-content .postbody .content dl.hidecode dt:empty { display: none !important; }
+body#modernbb #main-content .postbody .content dl.hidecode { border-style: dotted !important; }
+
+/* ==========================================================================
+   SONDAGES
+   ========================================================================== */
+body#modernbb #main-content form[action*="mode=vote"] .panel .h3,
+body#modernbb #main-content .panel:has(fieldset.polls) .h3 { float: none !important; width: auto !important; }
+body#modernbb #main-content .panel:has(fieldset.polls) .right-box { position: absolute; top: var(--esp); right: 20px; margin: 0 !important; }
+body#modernbb #main-content .panel:has(fieldset.polls) { position: relative; }
+body#modernbb #main-content .panel:has(fieldset.polls) .right-box img { width: 16px; height: auto; opacity: 0.6; filter: grayscale(1) sepia(0.4) brightness(1.4); }
+body#modernbb #main-content .panel:has(fieldset.polls) .right-box a:hover img { opacity: 1; }
+/* Choix : bouton puis texte, sur la même ligne */
+html body#modernbb #main-content fieldset.polls dl:has(input[type="radio"], input[type="checkbox"]) {
+	grid-template-columns: 20px minmax(0, 1fr) !important;
+	gap: 0 12px;
+	margin: 0 0 6px !important;
+	padding: 6px 0 !important;
+	border: none !important;
+	border-bottom: 1px dotted var(--ligne) !important;
+}
+html body#modernbb #main-content fieldset.polls dl:has(input[type="radio"], input[type="checkbox"]) dd { grid-column: 1 !important; grid-row: 1; display: flex; align-items: center; font-size: 0 !important; line-height: 0; }
+html body#modernbb #main-content fieldset.polls dl:has(input[type="radio"], input[type="checkbox"]) { align-items: center !important; }
+html body#modernbb #main-content fieldset.polls dl:has(input[type="radio"]) dt { margin: 0 !important; padding: 0 !important; }
+html body#modernbb #main-content fieldset.polls dl:has(input[type="radio"], input[type="checkbox"]) dt {
+	grid-column: 2 !important;
+	grid-row: 1;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 17px !important;
+	letter-spacing: 0 !important;
+	color: var(--texte) !important;
+}
+/* Lignes sans libellé : bouton, lien des résultats, durée */
+html body#modernbb #main-content fieldset.polls dl[style] { display: block !important; margin: 14px 0 0 !important; border: none !important; }
+html body#modernbb #main-content fieldset.polls dl[style] dt { display: none !important; }
+html body#modernbb #main-content fieldset.polls dl[style] dd { font-size: 15px; font-style: italic; color: var(--texte-doux) !important; }
+html body#modernbb #main-content fieldset.polls dl[style] dd b { font-style: normal; font-weight: 500; color: var(--texte); }
+html body#modernbb #main-content fieldset.polls dd strong { font-weight: 400 !important; }
+html body#modernbb #main-content fieldset.polls dd a { font-style: normal; font-size: 16px; color: var(--accent-lien) !important; text-decoration: underline; text-underline-offset: 3px; }
+/* Résultats : barres du thème */
+html body#modernbb #main-content fieldset.polls dl:not([style]):not(:has(input)) dt {
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 17px !important;
+	letter-spacing: 0 !important;
+	color: var(--texte) !important;
+}
+html body#modernbb #main-content fieldset.polls dd :is(div, span)[style*="width"],
+html body#modernbb #main-content fieldset.polls dd [class*="pollbar"],
+html body#modernbb #main-content fieldset.polls dd [class*="bar"]:not(dd) {
+	min-height: 22px;
+	border: none !important;
+	border-radius: 0 !important;
+	background: rgba(var(--accent-rgb), 0.35) !important;
+	box-shadow: inset 0 0 0 1px var(--accent) !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 15px !important;
+	line-height: 22px;
+	padding: 0 8px !important;
+	color: var(--texte-clair) !important;
+	white-space: nowrap;
+}
+html body#modernbb #main-content fieldset.polls dd:has(> [style*="width"]),
+html body#modernbb #main-content fieldset.polls dd:has(> [class*="bar"]) {
+	background: rgba(14, 13, 10, 0.55) !important;
+	border: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	padding: 2px !important;
+}
