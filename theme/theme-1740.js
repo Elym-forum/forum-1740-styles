@@ -1831,6 +1831,26 @@
 		});
 	}
 
+	/* ---------- Sondage : résultats en barres du thème ---------- */
+	function initSondage() {
+		$$('#main-content fieldset.polls dl').forEach(function (dl) {
+			var dd = $('dd', dl);
+			if (!dd || $('input', dl)) { return; }
+			var m = dd.textContent.match(/(\d+)\s*-\s*(\d+(?:[.,]\d+)?)\s*%/);
+			if (!m) { return; }
+			var pc = parseFloat(m[2].replace(',', '.'));
+			dl.classList.add('sondage-ligne-1740');
+			dd.className = 'sondage-res-1740';
+			dd.innerHTML = '<span class="sondage-jauge-1740"><span style="width:' + pc + '%"></span></span>'
+				+ '<span class="sondage-nb-1740">' + m[2] + ' %<small>' + m[1] + (m[1] === '1' ? ' vote' : ' votes') + '</small></span>';
+		});
+		// Lien « Clore ce sondage » : un mot plutôt qu'une corbeille
+		$$('#main-content .panel:has(fieldset.polls) .right-box a').forEach(function (a) {
+			var img = $('img', a);
+			if (img && !a.dataset.mot) { a.dataset.mot = '1'; a.title = img.title || img.alt || ''; a.textContent = /clore|close/i.test(a.title + a.href) ? 'Clore' : (img.alt || ''); a.classList.add('sondage-clore-1740'); }
+		});
+	}
+
 	function demarrer() {
 		document.documentElement.classList.add('theme-1740');
 		lireReglages();
@@ -1860,6 +1880,7 @@
 		retirerDates();
 		tetesSecondaires();
 		initRecherche();
+		initSondage();
 	}
 
 	if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', demarrer); }
