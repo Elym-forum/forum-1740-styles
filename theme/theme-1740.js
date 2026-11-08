@@ -2936,50 +2936,57 @@
 		var r = lireLecture();
 		appliquerLecture(r);
 
-		var zone = $('#entete-1740 .entete-reglages');
-		if (!zone) { return; }
-		var bouton = $('.lecture-1740', zone);
+		var barre = $('#barre-1740');
+		if (!barre) { return; }
+
+		// L'ancien bouton de la bannière, s'il est encore dans le template
+		$$('#entete-1740 .lecture-1740').forEach(function (b) { b.parentNode.removeChild(b); });
+
+		// Bouton dans la barre d'outils, juste sous la rosette
+		var bouton = $('[data-outil="accessibilite"]', barre);
 		if (!bouton) {
-			bouton = document.createElement('button');
-			bouton.type = 'button';
-			bouton.className = 'lecture-1740';
-			bouton.innerHTML = '<svg viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-				'<circle cx="10" cy="10" r="8.6"/><circle cx="10" cy="5.6" r="1.25" fill="currentColor" stroke="none"/>' +
-				'<path d="M5.4 8.1 10 9l4.6-.9M10 9v3.4M10 12.4l-2.3 3.8M10 12.4l2.3 3.8"/></svg>';
-			var pastille = $('.pastille-1740', zone);
-			if (pastille && pastille.nextSibling) { zone.insertBefore(bouton, pastille.nextSibling); }
-			else { zone.insertBefore(bouton, zone.firstChild); }
+			bouton = document.createElement('a');
+			bouton.href = '#';
+			bouton.className = 'outil outil-acces-1740';
+			bouton.setAttribute('data-outil', 'accessibilite');
+			bouton.innerHTML = '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">' +
+				'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="6.6" r="1.5" class="plein"/>' +
+				'<path d="M6.4 9.6 12 10.7l5.6-1.1M12 10.7v4M12 14.7l-2.8 4.4M12 14.7l2.8 4.4"/></svg>' +
+				'<span class="etiquette">Accessibilité</span>';
+			var rosette = $('.barre-rosette', barre);
+			if (rosette && rosette.nextSibling) { barre.insertBefore(bouton, rosette.nextSibling); }
+			else { barre.insertBefore(bouton, barre.firstChild); }
 		}
 		bouton.setAttribute('aria-label', 'Accessibilité : réglages de lecture');
-		bouton.title = 'Accessibilité';
-		bouton.setAttribute('aria-haspopup', 'dialog');
-		bouton.setAttribute('aria-expanded', 'false');
 
 		var pop = document.createElement('div');
-		pop.className = 'lecture-pop-1740';
-		pop.id = 'lecture-pop-1740';
+		pop.className = 'panneau-1740 panneau-acces-1740';
+		pop.id = 'panneau-acces-1740';
 		pop.hidden = true;
 		pop.setAttribute('role', 'dialog');
 		pop.setAttribute('aria-label', 'Accessibilité');
 		bouton.setAttribute('aria-controls', pop.id);
+		bouton.setAttribute('aria-haspopup', 'dialog');
+		bouton.setAttribute('aria-expanded', 'false');
 
-		var html = '<div class="lecture-corps-1740"><p class="lecture-titre-1740">Accessibilité</p>' +
-			'<svg class="lecture-orn-1740" viewBox="0 0 60 8" width="60" height="8" aria-hidden="true"><path d="M0 4h24M36 4h24" stroke="currentColor" stroke-width="1"/><path d="M30 0l4 4-4 4-4-4z" fill="currentColor"/></svg>';
+		var html = '<div class="pa-tete"><span class="pa-titre acces-titre-1740">Accessibilité</span>' +
+			'<button type="button" class="pa-fermer" aria-label="Fermer">×</button></div>' +
+			'<div class="acces-corps-1740">';
 		REGLAGES_LECTURE.forEach(function (g) {
-			html += '<div class="lecture-ligne-1740"><span class="lecture-nom-1740" id="lecture-nom-' + g.cle + '">' + g.nom + '</span>' +
-				'<div class="lecture-choix-1740" role="group" aria-labelledby="lecture-nom-' + g.cle + '" data-reglage="' + g.cle + '">';
+			html += '<div class="acces-ligne-1740"><span class="acces-nom-1740" id="acces-nom-' + g.cle + '">' + g.nom + '</span>' +
+				'<div class="acces-choix-1740" role="group" aria-labelledby="acces-nom-' + g.cle + '" data-reglage="' + g.cle + '">';
 			g.choix.forEach(function (c) {
 				html += '<button type="button" data-valeur="' + c[0] + '" aria-pressed="false">' + c[1] + '</button>';
 			});
-			html += '</div>' + (g.aide ? '<span class="lecture-aide-1740">' + g.aide + '</span>' : '') + '</div>';
+			html += '</div>' + (g.aide ? '<span class="acces-aide-1740">' + g.aide + '</span>' : '') + '</div>';
 		});
-		html += '<div class="lecture-pied-1740"><span>Gardé sur cet appareil</span><button type="button" class="lecture-retablir-1740">Rétablir</button></div></div>';
+		html += '</div><div class="acces-pied-1740"><span>Gardé sur cet appareil</span><button type="button" class="acces-retablir-1740">Tout rétablir</button></div>';
 		pop.innerHTML = html;
 		document.body.appendChild(pop);
 
 		function majBoutons() {
 			var actif = false;
-			$$('.lecture-choix-1740', pop).forEach(function (groupe) {
+			$$('.acces-choix-1740', pop).forEach(function (groupe) {
 				var cle = groupe.getAttribute('data-reglage');
 				var val = r[cle] || '';
 				if (val) { actif = true; }
@@ -2990,6 +2997,15 @@
 			bouton.classList.toggle('actif-1740', actif);
 		}
 
+		function placer() {
+			placerPanneau(pop, bouton);
+			// Panneau haut : s'il dépasse en haut de l'écran, on l'accroche à 12 px du haut
+			if (window.innerWidth > 1100 && pop.getBoundingClientRect().top < 12) {
+				pop.style.top = '12px';
+				pop.style.bottom = 'auto';
+			}
+		}
+
 		function enregistrer() {
 			ecrireStockage(CLE_LECTURE, JSON.stringify(r));
 			appliquerLecture(r);
@@ -2997,46 +3013,36 @@
 			placer();
 		}
 
-		function placer() {
-			var b = bouton.getBoundingClientRect();
-			var largeur = document.documentElement.clientWidth;
-			pop.style.top = (b.bottom + window.pageYOffset + 6) + 'px';
-			pop.style.right = Math.max(8, largeur - b.right) + 'px';
-			pop.style.left = 'auto';
-		}
-
 		function ouvrir() {
+			fermerAutresPanneaux(fermer);
 			pop.hidden = false;
-			placer();
 			bouton.setAttribute('aria-expanded', 'true');
-			requestAnimationFrame(function () { pop.classList.add('ouvert-1740'); });
-			var premier = $('button[aria-pressed="true"]', pop) || $('button', pop);
+			placer();
+			var premier = $('.acces-choix-1740 button[aria-pressed="true"]', pop) || $('button', pop);
 			if (premier) { premier.focus(); }
 		}
 
 		function fermer(rendreFocus) {
 			if (pop.hidden) { return; }
-			pop.classList.remove('ouvert-1740');
 			pop.hidden = true;
 			bouton.setAttribute('aria-expanded', 'false');
-			if (rendreFocus) { bouton.focus(); }
+			if (rendreFocus === true) { bouton.focus(); }
 		}
+		fermeturesPanneaux.push(fermer);
 
 		bouton.addEventListener('click', function (e) {
+			e.preventDefault();
 			e.stopPropagation();
-			if (pop.hidden) { ouvrir(); } else { fermer(false); }
+			if (pop.hidden) { ouvrir(); } else { fermer(); }
 		});
 
 		pop.addEventListener('click', function (e) {
 			e.stopPropagation();
 			var b = e.target.closest('button');
 			if (!b) { return; }
-			if (b.classList.contains('lecture-retablir-1740')) {
-				r = {};
-				enregistrer();
-				return;
-			}
-			var groupe = b.closest('.lecture-choix-1740');
+			if (b.classList.contains('pa-fermer')) { fermer(true); return; }
+			if (b.classList.contains('acces-retablir-1740')) { r = {}; enregistrer(); return; }
+			var groupe = b.closest('.acces-choix-1740');
 			if (!groupe) { return; }
 			var cle = groupe.getAttribute('data-reglage');
 			var val = b.getAttribute('data-valeur');
@@ -3044,9 +3050,7 @@
 			enregistrer();
 		});
 
-		document.addEventListener('click', function (e) {
-			if (!pop.hidden && !pop.contains(e.target) && e.target !== bouton) { fermer(false); }
-		});
+		document.addEventListener('click', function () { if (!pop.hidden) { fermer(); } });
 		document.addEventListener('keydown', function (e) {
 			if (e.key === 'Escape' && !pop.hidden) { fermer(true); }
 		});
