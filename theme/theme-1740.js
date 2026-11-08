@@ -1817,10 +1817,21 @@
 			sous.remove();
 			return;
 		}
-		// Recherche avancée : « Recherche avancée » posé seul en haut de page
-		if (/^\/search/.test(location.pathname)) {
-			var rt = $(':scope > h1.page-title', zone);
-			if (rt) { poserTete(rt, 'Fouiller les archives', 'Recherche'); rt.remove(); return; }
+		// Recherche avancée, résultats par messages, modération : titre posé seul
+		var seul = $$('h1.page-title', zone).filter(function (h) { return !h.closest('.panel, .page-tete-1740, .sujet-cadre-1740'); })[0];
+		if (seul && /^\/(search|modcp|merge)/.test(location.pathname)) {
+			var txt = seul.textContent.trim();
+			var nb = (txt.match(/^(\d+)\s+r[ée]sultats?/i) || [])[1];
+			if (nb) {
+				var quoi = (txt.split(/\spour\s*:?\s*/i)[1] || '').trim();
+				poserTete(seul, nb === '1' ? '1 résultat' : nb + ' résultats', quoi ? '« ' + quoi + ' »' : 'Recherche');
+			} else if (/^\/search/.test(location.pathname)) {
+				poserTete(seul, 'Fouiller les archives', 'Recherche');
+			} else {
+				poserTete(seul, 'Modération', txt);
+			}
+			seul.remove();
+			return;
 		}
 		// Page d'un groupe
 		if (/^\/g\d+/.test(location.pathname)) {

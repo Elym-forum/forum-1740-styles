@@ -326,3 +326,146 @@ body#modernbb #main-content form[name="searchform"] .panel:has(> .inner > fields
 	padding: 0 !important;
 }
 body#modernbb #main-content form[name="searchform"] fieldset.submit-buttons { display: flex; justify-content: center; margin: 0 !important; padding: 0 !important; }
+
+/* ==========================================================================
+   RÉSULTATS DE RECHERCHE PAR MESSAGES
+   ========================================================================== */
+html body#modernbb #main-content div.search.post {
+	display: grid !important;
+	grid-template-columns: 210px minmax(0, 1fr);
+	gap: 0 24px;
+	margin: 0 0 18px !important;
+	padding: var(--esp) 20px !important;
+	border: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: var(--surface) var(--img-grain) !important;
+	box-shadow: none !important;
+	color: var(--texte) !important;
+}
+html body#modernbb #main-content div.search.post::before,
+html body#modernbb #main-content div.search.post::after { display: none !important; }
+html body#modernbb #main-content div.search.post dl.postprofile {
+	float: none !important;
+	width: auto !important;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: 0 16px 0 0 !important;
+	border: none !important;
+	border-right: 1px solid var(--ligne) !important;
+	background: none !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 15px !important;
+	line-height: 1.6;
+	color: var(--texte-doux) !important;
+}
+html body#modernbb #main-content div.search.post dl.postprofile :is(dt, dd) { margin: 0 !important; padding: 0 !important; border: none !important; }
+html body#modernbb #main-content div.search.post dl.postprofile dd:first-of-type { font-style: italic; }
+html body#modernbb #main-content div.search.post dl.postprofile strong { font-weight: 500; color: var(--texte) !important; }
+html body#modernbb #main-content div.search.post dl.postprofile a.postdetails { color: var(--accent-lien) !important; }
+html body#modernbb #main-content div.search.post .postbody {
+	float: none !important;
+	width: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	line-height: 1.6;
+	color: var(--texte) !important;
+}
+html body#modernbb #main-content div.search.post .postbody h2.h3 { margin: 0 0 10px !important; font-size: 17px !important; color: var(--texte-clair) !important; }
+html body#modernbb #main-content div.search.post .postbody h2.h3 a { color: var(--texte-clair) !important; text-decoration: none; }
+html body#modernbb #main-content div.search.post .postbody h2.h3 a:hover { color: var(--accent-lien) !important; }
+/* Mot recherché surligné : à l'encre du thème plutôt qu'en rouge */
+html body#modernbb #main-content :is(div.search.post, .post-1740) span.coloradmin[style*="aa0000"],
+html body#modernbb #main-content :is(div.search.post, .post-1740) span.coloradmin[style*="aa0000"] b {
+	color: var(--texte-clair) !important;
+	font-weight: inherit !important;
+	background: rgba(var(--accent-rgb), 0.3);
+	box-shadow: 0 1px 0 var(--accent);
+}
+@media (max-width: 760px) {
+	html body#modernbb #main-content div.search.post { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+	html body#modernbb #main-content div.search.post dl.postprofile { border-right: none !important; border-bottom: 1px dotted var(--ligne) !important; padding: 0 0 10px !important; }
+}
+
+/* ==========================================================================
+   OUTILS DE MODÉRATION (déplacer, diviser, fusionner)
+   ========================================================================== */
+/* Fil d'Ariane */
+body#modernbb #main-content .topic-actions > p:has(a.nav) {
+	margin: 0 0 12px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.08em;
+	color: var(--texte-doux);
+}
+body#modernbb #main-content .topic-actions > p:has(a.nav) a { color: var(--texte-doux) !important; }
+/* Question et boutons de « Déplacer » */
+body#modernbb #main-content .panel p.center { margin: 18px 0 0; text-align: center; font-size: 16px; }
+body#modernbb #main-content .panel p.center input[type="submit"] { margin: 14px 5px 0; }
+/* Bouton principal en vert mousse */
+html body#modernbb #main-content :is(input[name="confirm"], input[name="submit"]).button2 {
+	border-color: var(--accent) !important;
+	background: rgba(var(--accent-rgb), 0.18) var(--img-grain) !important;
+	color: var(--texte-clair) !important;
+}
+/* Panneau qui ne contient que des boutons : pas de boîte */
+body#modernbb #main-content .panel:has(> .inner > fieldset.submit-buttons:only-of-type):not(:has(dl)) {
+	border: none !important;
+	background: none !important;
+	padding: 0 !important;
+}
+/* Fusionner : nom du sujet */
+html body#modernbb #main-content fieldset.fields3 dd strong {
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 17px !important;
+	font-weight: 500 !important;
+	text-shadow: none !important;
+	color: var(--texte-clair) !important;
+}
+html body#modernbb #main-content fieldset.fields3 dt .italic { display: block; margin-top: 4px; font-size: 15px !important; letter-spacing: 0; font-family: 'Alegreya', Georgia, serif !important; }
+/* Diviser : boîtes rendues aux panneaux */
+html body#modernbb #main-content #cp-main.mcp-main > br { display: none; }
+html body#modernbb #main-content #cp-main.mcp-main .panel {
+	margin: 0 0 18px !important;
+	padding: var(--esp) 20px !important;
+	border: 1px solid var(--ligne) !important;
+	background: var(--surface) var(--img-grain) !important;
+}
+html body#modernbb #main-content #cp-main.mcp-main fieldset.fields1 > p { margin: 0 0 16px; font-size: 16px; }
+html body#modernbb #main-content #cp-main.mcp-main fieldset.submit-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 0 0 18px !important; padding: 0 !important; }
+/* Diviser : messages du sujet */
+html body#modernbb #main-content #topicreview {
+	max-height: 460px;
+	overflow-y: auto;
+	padding: 0 8px 0 0;
+	background: none !important;
+	scrollbar-color: var(--ligne-forte) transparent;
+}
+html body#modernbb #main-content #topicreview .post {
+	margin: 0 !important;
+	padding: 14px 4px !important;
+	border: none !important;
+	border-bottom: 1px dotted var(--ligne) !important;
+	border-radius: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+	color: var(--texte) !important;
+}
+html body#modernbb #main-content #topicreview .post .inner { padding: 0 !important; background: none !important; }
+html body#modernbb #main-content #topicreview .postbody { float: none !important; width: auto !important; font-family: 'Alegreya', Georgia, serif !important; font-size: 16px; color: var(--texte) !important; }
+html body#modernbb #main-content #topicreview h3 {
+	margin: 0 0 2px !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 16px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.08em;
+	color: var(--texte-clair) !important;
+}
+html body#modernbb #main-content #topicreview p.author { margin: 0 0 10px !important; font-size: 15px !important; font-style: italic; color: var(--texte-doux) !important; }
+html body#modernbb #main-content #topicreview p.author img { display: none; }
+html body#modernbb #main-content #topicreview .content { font-size: 16px !important; color: var(--texte) !important; }
+html body#modernbb #main-content #topicreview .content * { color: inherit; }
+html body#modernbb #main-content #topicreview p.right-box { float: right; margin: 0 !important; }
+/* Boutons du bas : centrés et espacés partout */
+html body#modernbb #main-content fieldset.submit-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
