@@ -3,11 +3,11 @@
 Usage : python3 outils/assembler.py (depuis la racine du dépôt)."""
 import pathlib, re
 racine = pathlib.Path(__file__).resolve().parent.parent / 'theme'
-morceaux = ['themes.css', 'base.css', 'entete.css', 'index.css', 'sujet.css', 'liste.css', 'lettres.css', 'membres.css', 'formulaires.css', 'secondaires.css', 'codes.css']
+morceaux = ['themes.css', 'base.css', 'entete.css', 'index.css', 'sujet.css', 'liste.css', 'lettres.css', 'membres.css', 'formulaires.css', 'secondaires.css', 'codes.css', 'lecture.css']
 tete = """/* ==========================================================================
    THÈME 1740 (© Elym) — feuille assemblée
    Ne pas modifier directement : elle est générée par outils/assembler.py
-   à partir de themes.css, base.css, entete.css, index.css, sujet.css, liste.css, lettres.css, membres.css, formulaires.css, secondaires.css et codes.css.
+   à partir de themes.css, base.css, entete.css, index.css, sujet.css, liste.css, lettres.css, membres.css, formulaires.css, secondaires.css, codes.css et lecture.css.
    ========================================================================== */
 
 """

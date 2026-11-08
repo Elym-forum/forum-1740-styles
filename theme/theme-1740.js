@@ -733,14 +733,14 @@
 	function initRumeurs() {
 		var rumeurs = $$('#accueil-1740 .rumeur');
 		if (!rumeurs.length) { return; }
-		var reduit = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-		if (reduit || rumeurs.length === 1) {
+		if (mouvementReduit() || rumeurs.length === 1) {
 			rumeurs.forEach(function (r) { r.classList.add('visible'); });
 			return;
 		}
 		var i = 0;
 		var duree = (CONFIG.dureeRumeur || 6) * 1000;
 		function suivante() {
+			if (mouvementReduit()) { return; } // animations réduites en cours de route : on fige la rumeur
 			rumeurs.forEach(function (r, j) { r.classList.toggle('visible', j === i); });
 			i = (i + 1) % rumeurs.length;
 		}
@@ -2897,10 +2897,166 @@
 		});
 	}
 
+	/* ------------------------------------------------------------------
+	   Réglages de lecture : bouton « Aa » dans la bannière.
+	   Chaque choix est posé sur <html> (data-lecture-*) et gardé dans
+	   localStorage (lecture1740). Le CSS est dans lecture.css.
+	   ------------------------------------------------------------------ */
+	var CLE_LECTURE = 'lecture1740';
+	var REGLAGES_LECTURE = [
+		{ cle: 'taille', nom: 'Taille du texte', choix: [['', 'Normale'], ['2', 'Grande'], ['3', 'Très grande']] },
+		{ cle: 'police', nom: 'Police', choix: [['', 'Du thème'], ['lisible', 'Lisible'], ['dyslexie', 'Dyslexie']] },
+		{ cle: 'espace', nom: 'Espacement', choix: [['', 'Normal'], ['aere', 'Aéré']] },
+		{ cle: 'contraste', nom: 'Contraste', choix: [['', 'Normal'], ['fort', 'Renforcé']] },
+		{ cle: 'mouvement', nom: 'Animations', choix: [['', 'Oui'], ['reduit', 'Réduites']] },
+		{ cle: 'liens', nom: 'Liens', choix: [['', 'Normaux'], ['souligne', 'Soulignés']] }
+	];
+
+	function lireLecture() {
+		var v = null;
+		try { v = JSON.parse(lireStockage(CLE_LECTURE) || '{}'); } catch (e) { v = {}; }
+		return v && typeof v === 'object' ? v : {};
+	}
+
+	function appliquerLecture(r) {
+		var html = document.documentElement;
+		REGLAGES_LECTURE.forEach(function (g) {
+			if (r[g.cle]) { html.setAttribute('data-lecture-' + g.cle, r[g.cle]); }
+			else { html.removeAttribute('data-lecture-' + g.cle); }
+		});
+	}
+
+	function mouvementReduit() {
+		return document.documentElement.getAttribute('data-lecture-mouvement') === 'reduit' ||
+			!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+	}
+
+	function initLecture() {
+		var r = lireLecture();
+		appliquerLecture(r);
+
+		var zone = $('#entete-1740 .entete-reglages');
+		if (!zone) { return; }
+		var bouton = $('.lecture-1740', zone);
+		if (!bouton) {
+			bouton = document.createElement('button');
+			bouton.type = 'button';
+			bouton.className = 'lecture-1740';
+			bouton.textContent = 'Aa';
+			var pastille = $('.pastille-1740', zone);
+			if (pastille && pastille.nextSibling) { zone.insertBefore(bouton, pastille.nextSibling); }
+			else { zone.insertBefore(bouton, zone.firstChild); }
+		}
+		bouton.setAttribute('aria-label', 'Réglages de lecture');
+		bouton.title = 'Réglages de lecture';
+		bouton.setAttribute('aria-haspopup', 'dialog');
+		bouton.setAttribute('aria-expanded', 'false');
+
+		var pop = document.createElement('div');
+		pop.className = 'lecture-pop-1740';
+		pop.id = 'lecture-pop-1740';
+		pop.hidden = true;
+		pop.setAttribute('role', 'dialog');
+		pop.setAttribute('aria-label', 'Réglages de lecture');
+		bouton.setAttribute('aria-controls', pop.id);
+
+		var html = '<div class="lecture-corps-1740"><p class="lecture-titre-1740">Réglages de lecture</p>' +
+			'<svg class="lecture-orn-1740" viewBox="0 0 60 8" width="60" height="8" aria-hidden="true"><path d="M0 4h24M36 4h24" stroke="currentColor" stroke-width="1"/><path d="M30 0l4 4-4 4-4-4z" fill="currentColor"/></svg>';
+		REGLAGES_LECTURE.forEach(function (g) {
+			html += '<div class="lecture-ligne-1740"><span class="lecture-nom-1740" id="lecture-nom-' + g.cle + '">' + g.nom + '</span>' +
+				'<div class="lecture-choix-1740" role="group" aria-labelledby="lecture-nom-' + g.cle + '" data-reglage="' + g.cle + '">';
+			g.choix.forEach(function (c) {
+				html += '<button type="button" data-valeur="' + c[0] + '" aria-pressed="false">' + c[1] + '</button>';
+			});
+			html += '</div></div>';
+		});
+		html += '<div class="lecture-pied-1740"><span>Gardé sur cet appareil</span><button type="button" class="lecture-retablir-1740">Rétablir</button></div></div>';
+		pop.innerHTML = html;
+		document.body.appendChild(pop);
+
+		function majBoutons() {
+			var actif = false;
+			$$('.lecture-choix-1740', pop).forEach(function (groupe) {
+				var cle = groupe.getAttribute('data-reglage');
+				var val = r[cle] || '';
+				if (val) { actif = true; }
+				$$('button', groupe).forEach(function (b) {
+					b.setAttribute('aria-pressed', b.getAttribute('data-valeur') === val ? 'true' : 'false');
+				});
+			});
+			bouton.classList.toggle('actif-1740', actif);
+		}
+
+		function enregistrer() {
+			ecrireStockage(CLE_LECTURE, JSON.stringify(r));
+			appliquerLecture(r);
+			majBoutons();
+			placer();
+		}
+
+		function placer() {
+			var b = bouton.getBoundingClientRect();
+			var largeur = document.documentElement.clientWidth;
+			pop.style.top = (b.bottom + window.pageYOffset + 6) + 'px';
+			pop.style.right = Math.max(8, largeur - b.right) + 'px';
+			pop.style.left = 'auto';
+		}
+
+		function ouvrir() {
+			pop.hidden = false;
+			placer();
+			bouton.setAttribute('aria-expanded', 'true');
+			requestAnimationFrame(function () { pop.classList.add('ouvert-1740'); });
+			var premier = $('button[aria-pressed="true"]', pop) || $('button', pop);
+			if (premier) { premier.focus(); }
+		}
+
+		function fermer(rendreFocus) {
+			if (pop.hidden) { return; }
+			pop.classList.remove('ouvert-1740');
+			pop.hidden = true;
+			bouton.setAttribute('aria-expanded', 'false');
+			if (rendreFocus) { bouton.focus(); }
+		}
+
+		bouton.addEventListener('click', function (e) {
+			e.stopPropagation();
+			if (pop.hidden) { ouvrir(); } else { fermer(false); }
+		});
+
+		pop.addEventListener('click', function (e) {
+			e.stopPropagation();
+			var b = e.target.closest('button');
+			if (!b) { return; }
+			if (b.classList.contains('lecture-retablir-1740')) {
+				r = {};
+				enregistrer();
+				return;
+			}
+			var groupe = b.closest('.lecture-choix-1740');
+			if (!groupe) { return; }
+			var cle = groupe.getAttribute('data-reglage');
+			var val = b.getAttribute('data-valeur');
+			if (val) { r[cle] = val; } else { delete r[cle]; }
+			enregistrer();
+		});
+
+		document.addEventListener('click', function (e) {
+			if (!pop.hidden && !pop.contains(e.target) && e.target !== bouton) { fermer(false); }
+		});
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape' && !pop.hidden) { fermer(true); }
+		});
+		window.addEventListener('resize', function () { if (!pop.hidden) { placer(); } });
+
+		majBoutons();
+	}
+
 	function demarrer() {
 		document.documentElement.classList.add('theme-1740');
 		lireReglages();
 		initThemes();
+		initLecture();
 		initMembre();
 		initMusique();
 		initCourroux();
