@@ -1867,6 +1867,15 @@
 		});
 	}
 
+	/* ---------- « Dernière édition… » : sans le nombre d'éditions ---------- */
+	function nettoyerEditions() {
+		$$('.edited-message').forEach(function (el) {
+			var marche = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+			var n;
+			while ((n = marche.nextNode())) { n.nodeValue = n.nodeValue.replace(/,\s*édité\s+\d+\s+fois/i, ''); }
+		});
+	}
+
 	function demarrer() {
 		document.documentElement.classList.add('theme-1740');
 		lireReglages();
@@ -1897,6 +1906,7 @@
 		tetesSecondaires();
 		initRecherche();
 		initSondage();
+		nettoyerEditions();
 	}
 
 	if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', demarrer); }
