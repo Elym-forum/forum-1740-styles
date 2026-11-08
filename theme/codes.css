@@ -769,3 +769,12 @@ html body#modernbb :is(.postbody, #preview, .balises-1740) .content .avis-deces 
 .balises-1740 .puce-1740 .intertitre::after { width: 24px; flex: none; }
 .balises-1740 .puce-1740 .flou { filter: blur(3px); }
 .balises-1740 .astuce-1740 { margin: 12px 0 0; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+
+/* Couleurs : plus fortes que les styles de la page d'écriture */
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.mousse, .mousse *) { color: var(--accent-clair) !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.ocre, .ocre *) { color: var(--ocre-doux) !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.rouille, .rouille *) { color: #C48C78 !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.sang, .sang *) { color: #B5584A !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.cendre, .cendre *) { color: #9C978A !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.lune, .lune *) { color: #E6E2D3 !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.dialogue, .dialogue *) { color: var(--accent-vif) !important; }
