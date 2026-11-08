@@ -1,0 +1,281 @@
+/* ==========================================================================
+   CODES 1740 (© Elym) — balises de mise en page des messages
+   Les messages n'ont que des noms de classe courts ; tout le style vit ici.
+   Le JS (initCodes) prépare liste, champs, exergue, signature, titres
+   numérotés, et retire les sauts de ligne parasites.
+   Portée : le contenu des messages (sujets, aperçu, revue, recherche).
+   ========================================================================== */
+
+/* ---------- Page : l'enveloppe facultative ---------- */
+:is(.postbody, #preview) .content .page {
+	position: relative;
+	margin: 6px 6px 18px;
+	padding: 0 26px 22px;
+	border: 1px solid var(--ligne-forte);
+	outline: 1px solid var(--ligne);
+	outline-offset: 4px;
+	background: #17150F var(--img-grain);
+	text-align: left;
+}
+:is(.postbody, #preview) .content .page::before,
+:is(.postbody, #preview) .content .page::after,
+:is(.postbody, #preview) .content .page > .coins-1740::before,
+:is(.postbody, #preview) .content .page > .coins-1740::after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	width: 9px;
+	height: 9px;
+	transform: rotate(45deg);
+	border: 1px solid var(--accent);
+	background: var(--fond);
+}
+:is(.postbody, #preview) .content .page::before { top: -6px; left: -6px; }
+:is(.postbody, #preview) .content .page::after { top: -6px; right: -6px; }
+:is(.postbody, #preview) .content .page > .coins-1740::before { bottom: -6px; left: -6px; }
+:is(.postbody, #preview) .content .page > .coins-1740::after { bottom: -6px; right: -6px; }
+/* Une page sans bandeau garde de l'air en haut */
+:is(.postbody, #preview) .content .page > :first-child:not(.bandeau):not(.coins-1740),
+:is(.postbody, #preview) .content .page > .coins-1740:first-child + :not(.bandeau) { margin-top: 22px; }
+
+/* ---------- Bandeau : gravure assombrie derrière le titre ---------- */
+:is(.postbody, #preview) .content .bandeau {
+	position: relative;
+	margin: 0 0 20px;
+	padding: 30px 20px 24px;
+	text-align: center;
+	background: var(--fond-nuit) var(--img-bandeau) center / cover;
+	border-bottom: 3px double var(--ligne);
+}
+:is(.postbody, #preview) .content .page > .bandeau { margin: 0 -26px 20px; }
+:is(.postbody, #preview) .content .bandeau::before { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(14, 13, 10, 0.45), rgba(14, 13, 10, 0.82)); }
+:is(.postbody, #preview) .content .bandeau > * { position: relative; }
+:is(.postbody, #preview) .content .bandeau .grand-titre { text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6); }
+:is(.postbody, #preview) .content .bandeau .surtitre { color: var(--texte-murmure); }
+
+/* ---------- Titres ---------- */
+:is(.postbody, #preview) .content .surtitre {
+	display: block;
+	margin: 0 0 4px;
+	text-align: center;
+	font-size: 15px;
+	font-style: italic;
+	color: var(--texte-doux);
+}
+:is(.postbody, #preview) .content .grand-titre {
+	display: block;
+	margin: 0;
+	text-align: center;
+	font-family: 'Grenze Gotisch', serif;
+	font-size: 38px;
+	font-weight: 500;
+	line-height: 1.1;
+	color: var(--texte-clair);
+}
+:is(.postbody, #preview) .content .titre {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 26px 0 12px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 19px;
+	letter-spacing: 0.1em;
+	line-height: 1.3;
+	color: var(--texte-clair);
+}
+:is(.postbody, #preview) .content .titre::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--ligne-forte), transparent); }
+:is(.postbody, #preview) .content .titre .n-1740 {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: none;
+	width: 30px;
+	height: 30px;
+	font-size: 14px;
+	letter-spacing: 0;
+	color: var(--accent-vif);
+}
+:is(.postbody, #preview) .content .titre .n-1740::before {
+	content: "";
+	position: absolute;
+	inset: 5px;
+	transform: rotate(45deg);
+	border: 1px solid var(--accent);
+	background: rgba(var(--accent-rgb), 0.18);
+}
+:is(.postbody, #preview) .content .titre .n-1740 > span { position: relative; }
+
+/* ---------- Texte ---------- */
+:is(.postbody, #preview) .content .texte {
+	margin: 0 0 12px;
+	font-size: 16px;
+	line-height: 1.65;
+	text-align: justify;
+	hyphens: auto;
+}
+:is(.postbody, #preview) .content .lettrine { display: flow-root; }
+:is(.postbody, #preview) .content .lettrine::first-letter {
+	float: left;
+	margin: 4px 6px 0 0;
+	font-family: 'Grenze Gotisch', serif;
+	font-size: 58px;
+	line-height: 0.8;
+	color: var(--accent-clair);
+}
+:is(.postbody, #preview) .content .note { margin: 6px 0 12px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
+:is(.postbody, #preview) .content .note::before { content: "— "; }
+
+/* ---------- Liste à losanges (une ligne = un élément) ---------- */
+:is(.postbody, #preview) .content .liste { margin: 0 0 12px; padding: 0; list-style: none; }
+:is(.postbody, #preview) .content .liste > .li-1740 { position: relative; padding: 3px 0 3px 22px; font-size: 16px; line-height: 1.55; }
+:is(.postbody, #preview) .content .liste > .li-1740::before {
+	content: "";
+	position: absolute;
+	left: 4px;
+	top: 12px;
+	width: 7px;
+	height: 7px;
+	transform: rotate(45deg);
+	border: 1px solid var(--accent);
+	background: rgba(var(--accent-rgb), 0.25);
+}
+
+/* ---------- Exergue (« | » sépare la signature) ---------- */
+:is(.postbody, #preview) .content .exergue {
+	position: relative;
+	margin: 24px 10px;
+	padding: 18px 34px;
+	text-align: center;
+	font-size: 19px;
+	font-style: italic;
+	line-height: 1.5;
+	color: var(--texte-clair);
+}
+:is(.postbody, #preview) .content .exergue::before,
+:is(.postbody, #preview) .content .exergue::after { position: absolute; font-family: 'Grenze Gotisch', serif; font-size: 64px; font-style: normal; line-height: 1; color: var(--ligne-forte); }
+:is(.postbody, #preview) .content .exergue::before { content: "«"; left: 0; top: 4px; }
+:is(.postbody, #preview) .content .exergue::after { content: "»"; right: 0; bottom: -14px; }
+:is(.postbody, #preview) .content .exergue .source-1740 {
+	display: block;
+	margin-top: 8px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	font-style: normal;
+	letter-spacing: 0.1em;
+	color: var(--texte-doux);
+}
+
+/* ---------- Cadre et colonnes ---------- */
+:is(.postbody, #preview) .content .cadre { margin: 0 0 14px; border: 1px solid var(--ligne); background: rgba(14, 13, 10, 0.55); padding: 12px 16px; }
+/* Un titre en tête de cadre devient son bandeau */
+:is(.postbody, #preview) .content .cadre > .titre:first-child {
+	display: block;
+	margin: -12px -16px 12px;
+	padding: 8px 14px;
+	border-bottom: 1px solid var(--ligne);
+	background: rgba(var(--accent-rgb), 0.12);
+	text-align: center;
+	font-size: 16px;
+	letter-spacing: 0.12em;
+	color: var(--accent-vif);
+}
+:is(.postbody, #preview) .content .cadre > .titre:first-child::after { display: none; }
+:is(.postbody, #preview) .content .cadre > :last-child { margin-bottom: 0; }
+:is(.postbody, #preview) .content .colonnes { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 0 0 14px; }
+:is(.postbody, #preview) .content .colonnes > * { margin: 0; min-width: 0; }
+
+/* ---------- Champs « Libellé : valeur » ---------- */
+:is(.postbody, #preview) .content .champs { display: grid; grid-template-columns: minmax(110px, auto) 1fr; column-gap: 18px; margin: 0 0 12px; font-size: 16px; }
+:is(.postbody, #preview) .content .champs > span { padding: 6px 0; border-bottom: 1px dotted var(--ligne); }
+:is(.postbody, #preview) .content .champs > .l-1740 { font-family: 'Alegreya SC', serif; font-size: 15px; letter-spacing: 0.06em; color: var(--texte-doux); }
+
+/* ---------- Étiquette, image, filet, bouton, signature ---------- */
+:is(.postbody, #preview) .content .etiquette {
+	display: inline-block;
+	margin: 2px 2px;
+	padding: 2px 10px;
+	border: 1px solid var(--ligne-forte);
+	background: var(--fond-nuit);
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.08em;
+	color: var(--accent-vif);
+}
+:is(.postbody, #preview) .content .etiquette.ocre { color: var(--ocre-doux); border-color: #6A5A44; }
+:is(.postbody, #preview) .content img.image,
+:is(.postbody, #preview) .content .image img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin: 0 auto 14px;
+	padding: 4px;
+	border: 1px solid var(--ligne-forte);
+	outline: 1px solid var(--ligne);
+	outline-offset: 4px;
+	background: var(--fond-nuit);
+	box-sizing: border-box;
+}
+:is(.postbody, #preview) .content .filet {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	height: 14px;
+	margin: 22px 0;
+}
+:is(.postbody, #preview) .content .filet::before,
+:is(.postbody, #preview) .content .filet::after { content: ""; flex: 1; height: 1px; background: var(--ligne); }
+:is(.postbody, #preview) .content .filet > .l-1740 { width: 9px; height: 9px; transform: rotate(45deg); border: 1px solid var(--accent); }
+:is(.postbody, #preview) .content a.bouton {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 18px;
+	border: 1px solid var(--accent);
+	background: rgba(var(--accent-rgb), 0.18) var(--img-grain);
+	font-family: 'Alegreya SC', serif;
+	font-size: 15px;
+	letter-spacing: 0.1em;
+	color: var(--texte-clair) !important;
+	text-decoration: none !important;
+	transition: background-color 0.4s, border-color 0.4s;
+}
+:is(.postbody, #preview) .content a.bouton:hover { background-color: rgba(var(--accent-rgb), 0.32); border-color: var(--accent-clair); }
+:is(.postbody, #preview) .content .centre { text-align: center; }
+:is(.postbody, #preview) .content .signature {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 12px;
+	margin-top: 22px;
+	font-size: 16px;
+	font-style: italic;
+	color: var(--texte-doux);
+}
+:is(.postbody, #preview) .content .signature::before { content: "— "; margin-right: -8px; }
+:is(.postbody, #preview) .content .signature .sceau-1740 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	background: radial-gradient(circle at 40% 35%, #9A5444, #6E3A2E 70%);
+	box-shadow: 0 0 0 2px #4E2A22, inset 0 0 0 5px rgba(0, 0, 0, 0.18);
+	font-family: 'Grenze Gotisch', serif;
+	font-size: 18px;
+	font-style: normal;
+	color: #E8C9B8;
+}
+
+/* Les sauts de ligne n'abîment pas les blocs (le JS retire les autres) */
+:is(.postbody, #preview) .content :is(.page, .bandeau, .colonnes, .cadre, .champs, .liste, .filet) > br { display: none; }
+
+/* ---------- Petits écrans ---------- */
+@media (max-width: 640px) {
+	:is(.postbody, #preview) .content .page { padding: 0 16px 18px; }
+	:is(.postbody, #preview) .content .page > .bandeau { margin: 0 -16px 18px; }
+	:is(.postbody, #preview) .content .grand-titre { font-size: 30px; }
+	:is(.postbody, #preview) .content .champs { grid-template-columns: 1fr; }
+	:is(.postbody, #preview) .content .champs > .l-1740 { border-bottom: none; padding-bottom: 0; }
+}
