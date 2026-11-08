@@ -1220,7 +1220,7 @@ body#modernbb .panel.introduction .h3 { font-family: 'Grenze Gotisch', serif; fo
 .forum-titre { margin: 0; font-family: 'Grenze Gotisch', serif; font-weight: 400; font-size: 26px; line-height: 1.05; border: none; padding: 0; }
 .forum-titre a { color: var(--texte-clair) !important; transition: color 0.4s ease; }
 .forum-1740:hover .forum-titre a { color: var(--accent-vif) !important; text-decoration: none !important; }
-.forum-desc { font-size: 15px; color: var(--texte-doux); font-style: italic; }
+.forum-desc { font-size: 14px; color: var(--texte-doux); font-style: italic; }
 .forum-sous { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 0; font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.04em; }
 .forum-sous a + a::before { content: "·"; display: inline-block; margin: 0 9px; color: var(--accent); }
 .forum-sous:empty { display: none; }
