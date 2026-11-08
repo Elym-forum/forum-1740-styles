@@ -527,3 +527,6 @@ html body#modernbb :is(.postbody, #preview) .content :is(.mention, .mentions, [c
 	color: var(--accent-lien) !important;
 }
 html body#modernbb :is(.postbody, #preview) .content :is(.mention, .mentions, [class*="mention"], a[data-mention]):hover { color: var(--texte-clair) !important; text-decoration: underline; text-underline-offset: 3px; }
+/* Paragraphes des messages : la police du message, pas le Roboto de ModernBB */
+html body#modernbb :is(.postbody, #preview) .content p { font-family: inherit; }
+html body#modernbb :is(.postbody, #preview) .content .avis-deces .msg-1740 { font-family: 'Alegreya', Georgia, serif !important; font-size: 16px !important; }
