@@ -5640,7 +5640,7 @@ html body#modernbb .sceditor-toolbar .groupe-1740 .icone-1740 {
 }
 html body#modernbb .sceditor-toolbar .groupe-1740 svg { display: block; flex: none; }
 .couleurs-pop-1740 {
-	position: absolute;
+	position: fixed;
 	z-index: 30;
 	min-width: 240px;
 	padding: 12px 14px;
@@ -5727,7 +5727,8 @@ html body#modernbb .sceditor-toolbar :is(
 	.sceditor-button-font,
 	.sceditor-button-removeformat,
 	.sceditor-button-emoticon,
-	.sceditor-button-source
+	.sceditor-button-source,
+	.sceditor-button-twemojifa
 ) { display: none !important; }
 /* Un groupe vidé ne laisse pas de séparateur orphelin */
 html body#modernbb .sceditor-toolbar .sceditor-group:not(:has(.sceditor-button:not([style*="display: none"]):not(.sceditor-button-servimg, .sceditor-button-embed, .sceditor-button-youtube, .sceditor-button-headers, .sceditor-button-font, .sceditor-button-removeformat, .sceditor-button-emoticon, .sceditor-button-source, .sceditor-button-color))) { display: none !important; }
@@ -5755,7 +5756,7 @@ html body#modernbb :is(.postbody, #preview) .content dl.codebox dt button.copier
 /* ---------- Emojis ---------- */
 html body#modernbb .sceditor-toolbar .groupe-1740 .emoji-icone-1740 { font-size: 15px !important; line-height: 1; }
 html body#modernbb .emojis-pop-1740 {
-	position: absolute;
+	position: fixed;
 	z-index: 30;
 	box-sizing: border-box;
 	width: 320px;

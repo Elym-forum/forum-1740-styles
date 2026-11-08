@@ -2327,14 +2327,6 @@
 	}
 
 	/* ---------- Emojis : une sélection dans l'esprit du forum, et les récents ---------- */
-	var EMOJIS_1740 = [
-		['Visages', '\ud83d\ude00 \ud83d\ude0a \ud83d\ude42 \ud83d\ude09 \ud83d\ude04 \ud83d\ude02 \ud83e\udd72 \ud83d\ude05 \ud83d\ude0d \ud83e\udd70 \ud83d\ude18 \ud83d\ude0f \ud83d\ude0c \ud83e\udd14 \ud83d\ude44 \ud83d\ude10 \ud83d\ude36 \ud83d\ude2c \ud83d\ude33 \ud83e\udd7a \ud83d\ude22 \ud83d\ude2d \ud83d\ude31 \ud83d\ude28 \ud83d\ude30 \ud83d\ude21 \ud83d\ude24 \ud83d\ude34 \ud83e\udd2b \ud83e\udd2d \ud83d\ude08 \ud83d\udc80 \ud83d\udc7b'],
-		['Gestes', '\ud83d\udc4b \ud83d\udc4d \ud83d\udc4e \ud83d\udc4f \ud83d\ude4c \ud83e\udd1d \ud83d\ude4f \u270b \ud83e\udd1e \ud83d\udcaa \ud83e\udec2'],
-		['Nature', '\ud83c\udf32 \ud83c\udf33 \ud83c\udf3f \ud83c\udf43 \ud83c\udf42 \ud83c\udf41 \ud83c\udf3e \ud83c\udf44 \ud83c\udf38 \ud83e\udd40 \ud83c\udf19 \ud83c\udf11 \ud83c\udf15 \u2b50 \u2728 \u2600\ufe0f \ud83c\udf2b\ufe0f \ud83c\udf27\ufe0f \u26c8\ufe0f \u2744\ufe0f \ud83d\udd25 \ud83d\udca7 \ud83c\udf0a \ud83e\udea8'],
-		['Créatures', '\ud83d\udc3a \ud83e\udd89 \ud83d\udc26\u200d\u2b1b \ud83e\udd87 \ud83d\udc0d \ud83d\udd77\ufe0f \ud83d\udc08\u200d\u2b1b \ud83d\udc00 \ud83e\udd8c \ud83d\udc17 \ud83d\udc10 \ud83d\udc11 \ud83d\udc34 \ud83d\udc13 \ud83e\udd8b \ud83e\udeb2 \ud83d\udc0c \ud83d\udc1f'],
-		['Objets', '\ud83d\udd6f\ufe0f \ud83d\udddd\ufe0f \ud83d\udcdc \ud83e\udeb6 \u2709\ufe0f \ud83d\udcd6 \u26b1\ufe0f \ud83e\ude93 \ud83d\udd2a \ud83e\udeb5 \u26d3\ufe0f \ud83d\udd14 \ud83e\uddea \ud83e\uded6 \ud83c\udf77 \ud83c\udf7a \ud83c\udf5e \ud83e\uddc0 \ud83c\udf4e \ud83e\uddf6 \ud83e\udea1'],
-		['Signes', '\u2764\ufe0f \ud83d\udda4 \ud83e\udd0d \ud83d\udc94 \u2763\ufe0f \ud83d\udca4 \u2757 \u2753 \u2714\ufe0f \u2716\ufe0f \u27a1\ufe0f \u23f3']
-	];
 	/* Smileys du forum (images) : [nom, adresse] */
 	var SMILEYS_1740 = [
 		["eyes", "https://2img.net/u/4411/70/16/94/smiles/3177531898.png"],
@@ -2518,21 +2510,51 @@
 		return '<button type="button" class="emoji-1740" data-e="' + e + '">' + e + '</button>';
 	}
 	function remplirEmojis(pop) {
-		var rec = lireEmojisRecents();
+		var rec = lireEmojisRecents().filter(function (e) { return e.indexOf('img:') === 0; });
 		var html = '';
 		if (rec.length) {
 			html += '<div class="emojis-titre-1740">Récents</div><div class="emojis-grille-1740">'
 				+ rec.map(function (e) { return boutonEmoji(e); }).join('') + '</div>';
 		}
-		html += '<div class="emojis-titre-1740">Smileys du forum</div><div class="emojis-grille-1740">'
+		html += '<div class="emojis-titre-1740">Smileys</div><div class="emojis-grille-1740">'
 			+ SMILEYS_1740.map(function (sm) { return boutonEmoji('img:' + sm[1], sm[0]); }).join('') + '</div>';
-		EMOJIS_1740.forEach(function (g) {
-			html += '<div class="emojis-titre-1740">' + g[0] + '</div><div class="emojis-grille-1740">'
-				+ g[1].split(' ').map(function (e) { return boutonEmoji(e); }).join('') + '</div>';
-		});
 		pop.innerHTML = html;
 	}
+	/* Les fenêtres de la barre d'outils emportent leur style de base : elles restent en place même si le CSS du thème tarde */
+	function styleFenetres1740() {
+		if (document.getElementById('fenetres-1740')) { return; }
+		var st = document.createElement('style');
+		st.id = 'fenetres-1740';
+		st.textContent =
+			'.emojis-pop-1740,.couleurs-pop-1740{position:fixed;z-index:9999;box-sizing:border-box;padding:10px 12px 12px;border:1px solid #4A4536;background:#1F1C16;box-shadow:0 8px 24px rgba(0,0,0,.55);color:#DDD6C6;font-family:Alegreya,Georgia,serif;text-align:left}' +
+			'.emojis-pop-1740[hidden],.couleurs-pop-1740[hidden]{display:none}' +
+			'.emojis-pop-1740{width:340px;max-height:340px;overflow-y:auto}' +
+			'.emojis-pop-1740 .emojis-grille-1740{display:grid;grid-template-columns:repeat(8,1fr);gap:2px}' +
+			'.emojis-pop-1740 .emoji-1740{display:flex;align-items:center;justify-content:center;height:36px;padding:0;border:1px solid transparent;background:none;cursor:pointer}' +
+			'.emojis-pop-1740 .emoji-1740 img{display:block;max-width:30px;max-height:30px}' +
+			'.emojis-pop-1740 .emojis-titre-1740{margin:8px 0 4px;font-size:13px;letter-spacing:.12em;color:#7C8466;font-variant:small-caps}' +
+			'.couleurs-pop-1740{width:270px}';
+		document.head.appendChild(st);
+	}
+
+	/* Place une fenêtre juste sous son bouton (position fixe, suit le défilement) */
+	function placerSous(pop, bouton, largeur) {
+		function maj() {
+			var r = bouton.getBoundingClientRect();
+			pop.style.position = 'fixed';
+			pop.style.left = Math.max(8, Math.min(r.left, document.documentElement.clientWidth - largeur)) + 'px';
+			pop.style.top = (r.bottom + 6) + 'px';
+		}
+		maj();
+		if (!pop.dataset.suit) {
+			pop.dataset.suit = '1';
+			window.addEventListener('scroll', function () { if (!pop.hidden) { maj(); } }, { passive: true });
+			window.addEventListener('resize', function () { if (!pop.hidden) { maj(); } });
+		}
+	}
+
 	function creerPopEmojis(ta) {
+		styleFenetres1740();
 		var pop = document.createElement('div');
 		pop.className = 'emojis-pop-1740';
 		pop.hidden = true;
@@ -2583,7 +2605,9 @@
 		groupe.className = 'sceditor-group groupe-1740';
 		var bB = boutonBarre('bouton-balises-1740', 'Balises de mise en page', '', 'Balises');
 		var bC = boutonBarre('bouton-couleur-1740', 'Couleur du texte', ICONE_COULEUR_1740, 'Couleur');
-		var bE = boutonBarre('bouton-emojis-1740', 'Emojis', '<span class="emoji-icone-1740" aria-hidden="true">\u263a</span>', 'Emojis');
+		var bE = boutonBarre('bouton-emojis-1740', 'Smileys', '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="9" cy="10" r="0.9" fill="currentColor"></circle><circle cx="15" cy="10" r="0.9" fill="currentColor"></circle><path d="M8.5 14.5c1.8 2 5.2 2 7 0"></path></svg>', '');
+		// Le bouton Twemoji de Forumactif fait double emploi
+		$$('.sceditor-button-twemojifa, .sceditor-button-emoticon', barreOutils).forEach(function (x) { x.style.display = 'none'; });
 		groupe.appendChild(bB);
 		groupe.appendChild(bC);
 		groupe.appendChild(bE);
@@ -2612,9 +2636,8 @@
 			bB.addEventListener(t, function (e) { activer(e, function () { basculer(boite, bB); }); });
 			bC.addEventListener(t, function (e) {
 				activer(e, function () {
-					var r = bC.getBoundingClientRect();
-					pop.style.left = Math.max(8, Math.min(r.left + window.scrollX, window.scrollX + document.documentElement.clientWidth - 280)) + 'px';
-					pop.style.top = (r.bottom + window.scrollY + 6) + 'px';
+					if (!popE.hidden) { popE.hidden = true; bE.classList.remove('active'); }
+					placerSous(pop, bC, 280);
 					afficherRecentes(pop);
 					basculer(pop, bC);
 				});
@@ -2623,9 +2646,7 @@
 		['click', 'keydown'].forEach(function (t) {
 			bE.addEventListener(t, function (e) {
 				activer(e, function () {
-					var r = bE.getBoundingClientRect();
-					popE.style.left = Math.max(8, Math.min(r.left + window.scrollX, window.scrollX + document.documentElement.clientWidth - 330)) + 'px';
-					popE.style.top = (r.bottom + window.scrollY + 6) + 'px';
+					placerSous(popE, bE, 350);
 					if (popE.hidden) { remplirEmojis(popE); }
 					if (!pop.hidden) { pop.hidden = true; bC.classList.remove('active'); }
 					basculer(popE, bE);
