@@ -1,7 +1,7 @@
 /* ==========================================================================
    THÈME 1740 (© Elym) — feuille assemblée
    Ne pas modifier directement : elle est générée par outils/assembler.py
-   à partir de themes.css, base.css, entete.css, index.css, sujet.css, liste.css, lettres.css, membres.css et formulaires.css.
+   à partir de themes.css, base.css, entete.css, index.css, sujet.css, liste.css, lettres.css, membres.css, formulaires.css et secondaires.css.
    ========================================================================== */
 
 /* ---------- themes.css ---------- */
@@ -4297,4 +4297,477 @@ html body#modernbb #main-content #cp-main dd a[onclick] {
 @media (max-width: 760px) {
 	body#modernbb #main-content fieldset dl { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ---------- secondaires.css ---------- */
+/* ==========================================================================
+   PAGES SECONDAIRES 1740 (© Elym) — recherche, groupes, confirmations,
+   modération. Les têtes de page sont posées par le JS (tetesSecondaires).
+   ========================================================================== */
+
+/* Tête posée par le JS : le nom d'un groupe garde la couleur du thème */
+body#modernbb .page-tete-1740 h1.page-title .usr_grp_clr { color: inherit !important; }
+
+/* ---------- Résultats de recherche ---------- */
+body#modernbb .recherche-1740 { margin: 0 0 18px; padding: 0; }
+body#modernbb .recherche-1740 .sujet-prefixe-1740 { margin-bottom: 0; }
+body#modernbb #main-content p.pagination:empty { display: none; }
+
+/* ---------- Tableaux de Forumactif (groupes, etc.) ---------- */
+body#modernbb #main-content .forumbg-table {
+	margin: 0 0 18px !important;
+	padding: 16px 20px !important;
+	border: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: var(--surface) var(--img-grain) !important;
+	box-shadow: none !important;
+}
+body#modernbb #main-content .forumbg-table > .inner { padding: 0 !important; background: none !important; border: none !important; }
+html body#modernbb #main-content table.table1 tr.row3 td {
+	padding: 16px 10px 6px !important;
+	border-bottom: 1px solid var(--ligne) !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 15px !important;
+	letter-spacing: 0.12em;
+	color: var(--accent-clair) !important;
+}
+html body#modernbb #main-content table.table1 tbody tr.row3:hover td { background: none !important; }
+html body#modernbb #main-content table.table1 td p.center { margin: 0; text-align: center; font-size: 15px; font-style: italic; color: var(--texte-doux); }
+html body#modernbb #main-content table.table1 td .mobile-visible { display: none; }
+html body#modernbb #main-content table.table1 th.pm,
+html body#modernbb #main-content table.table1 th.website,
+html body#modernbb #main-content table.table1 th.posts { text-align: center; }
+html body#modernbb #main-content .forumbg-table table.table1 td:not(:nth-child(2)) { text-align: center !important; }
+html body#modernbb #main-content .forumbg-table table.table1 td[colspan] { text-align: left !important; }
+
+/* ---------- Listes déroulantes hors formulaires habillés (modération…) ---------- */
+html body#modernbb #main-content select {
+	min-height: 36px;
+	padding: 4px 8px !important;
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: var(--fond-nuit) !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	color: var(--texte) !important;
+}
+
+/* ---------- Pages de confirmation et de modération ---------- */
+/* Fil d'Ariane laissé par Forumactif au-dessus des panneaux */
+body#modernbb #main-content > p:has(> a.nav) {
+	margin: 0 0 12px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.08em;
+	color: var(--texte-doux);
+}
+body#modernbb #main-content > p:has(> a.nav) a { color: var(--texte-doux) !important; }
+body#modernbb #main-content .panel fieldset > p,
+body#modernbb #main-content .panel .inner > p,
+body#modernbb #main-content .panel .content > p { font-size: 16px; }
+
+/* Noms colorés par groupe : la couleur du groupe l'emporte */
+html body#modernbb #main-content table.table1 td .usr_grp_clr strong,
+html body#modernbb #main-content table.table1 td a .usr_grp_clr { color: inherit; }
+html body#modernbb #main-content table.table1 td a:has(.usr_grp_clr) { color: inherit !important; }
+
+/* ==========================================================================
+   BLOCS DANS LES MESSAGES : citation, code, spoiler, texte caché
+   ========================================================================== */
+body#modernbb #main-content .postbody .content blockquote,
+body#modernbb #main-content .post-1740 blockquote {
+	position: relative;
+	margin: 12px 0 !important;
+	padding: 12px 18px !important;
+	border: none !important;
+	border-left: 2px solid var(--accent) !important;
+	border-radius: 0 !important;
+	background: rgba(14, 13, 10, 0.5) !important;
+	box-shadow: none !important;
+	font-size: 16px;
+	color: var(--texte) !important;
+}
+body#modernbb #main-content .postbody .content blockquote::before,
+body#modernbb #main-content .postbody .content blockquote::after { display: none !important; content: none !important; }
+body#modernbb #main-content .postbody .content blockquote blockquote { background: rgba(14, 13, 10, 0.4) !important; }
+body#modernbb #main-content .postbody .content blockquote cite {
+	display: block;
+	margin: 0 0 6px !important;
+	padding: 0 !important;
+	border: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 14px !important;
+	font-style: normal !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.1em;
+	color: var(--accent-clair) !important;
+}
+body#modernbb #main-content .postbody .content blockquote cite::before,
+body#modernbb #main-content .postbody .content blockquote cite::after { display: none !important; }
+body#modernbb #main-content .postbody .content blockquote cite a { color: inherit !important; }
+
+/* Code, spoiler et texte caché (même boîte) */
+body#modernbb #main-content .postbody .content dl.codebox {
+	margin: 12px 0 !important;
+	padding: 0 !important;
+	border: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: rgba(14, 13, 10, 0.55) !important;
+	box-shadow: none !important;
+	color: var(--texte) !important;
+}
+body#modernbb #main-content .postbody .content dl.codebox::before,
+body#modernbb #main-content .postbody .content dl.codebox::after,
+body#modernbb #main-content .postbody .content dl.codebox dt::before,
+body#modernbb #main-content .postbody .content dl.codebox dt::after { display: none !important; content: none !important; }
+body#modernbb #main-content .postbody .content dl.codebox dt {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 !important;
+	padding: 7px 14px !important;
+	border: none !important;
+	border-bottom: 1px dotted var(--ligne) !important;
+	background: none !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 14px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.1em;
+	text-transform: none !important;
+	color: var(--accent-clair) !important;
+}
+body#modernbb #main-content .postbody .content dl.codebox dt :is(button, img, svg, i, span[class*="copy"]) { display: none !important; }
+body#modernbb #main-content .postbody .content dl.codebox dd {
+	margin: 0 !important;
+	padding: 10px 14px !important;
+	border: none !important;
+	background: none !important;
+	font-size: 16px;
+	color: var(--texte) !important;
+}
+body#modernbb #main-content .postbody .content dl.codebox code {
+	display: block;
+	max-height: 320px;
+	overflow: auto;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
+	font-family: 'Courier Prime', 'Courier New', monospace !important;
+	font-size: 14px !important;
+	line-height: 1.5;
+	white-space: pre-wrap;
+	color: var(--texte) !important;
+}
+body#modernbb #main-content .postbody .content dl.codebox code * { color: inherit !important; }
+/* Spoiler : en-tête cliquable avec un repère */
+body#modernbb #main-content .postbody .content dl.spoiler dt.spoiler_title { cursor: pointer; }
+body#modernbb #main-content .postbody .content dl.spoiler dt.spoiler_title::before {
+	display: inline !important;
+	content: "▸" !important;
+	font-family: 'Alegreya', serif;
+	color: var(--accent);
+	transition: transform 0.3s;
+}
+body#modernbb #main-content .postbody .content dl.spoiler:has(.spoiler_content:not([hidden])) dt.spoiler_title::before { content: "▾" !important; }
+body#modernbb #main-content .postbody .content dl.spoiler:has(.spoiler_content[hidden]) dt.spoiler_title { border-bottom-color: transparent !important; }
+body#modernbb #main-content .postbody .content dl.spoiler:has(.spoiler_content[hidden]) dd { padding: 0 14px !important; }
+/* Texte caché : pas d'en-tête vide */
+body#modernbb #main-content .postbody .content dl.hidecode dt:empty { display: none !important; }
+body#modernbb #main-content .postbody .content dl.hidecode { border-style: dotted !important; }
+
+/* ==========================================================================
+   SONDAGES
+   ========================================================================== */
+body#modernbb #main-content form[action*="mode=vote"] .panel .h3,
+body#modernbb #main-content .panel:has(fieldset.polls) .h3 { float: none !important; width: auto !important; }
+body#modernbb #main-content .panel:has(fieldset.polls) .right-box { position: absolute; top: var(--esp); right: 20px; margin: 0 !important; }
+body#modernbb #main-content .panel:has(fieldset.polls) { position: relative; }
+body#modernbb #main-content .panel:has(fieldset.polls) .right-box img { width: 16px; height: auto; opacity: 0.6; filter: grayscale(1) sepia(0.4) brightness(1.4); }
+body#modernbb #main-content .panel:has(fieldset.polls) .right-box a:hover img { opacity: 1; }
+/* Choix : bouton puis texte, sur la même ligne */
+html body#modernbb #main-content fieldset.polls dl:has(input[type="radio"], input[type="checkbox"]) {
+	grid-template-columns: 20px minmax(0, 1fr) !important;
+	gap: 0 12px;
+	margin: 0 0 6px !important;
+	padding: 6px 0 !important;
+	border: none !important;
+	border-bottom: 1px dotted var(--ligne) !important;
+}
+html body#modernbb #main-content fieldset.polls dl:has(input[type="radio"], input[type="checkbox"]) dd { grid-column: 1 !important; grid-row: 1; display: flex; align-items: center; font-size: 0 !important; line-height: 0; }
+html body#modernbb #main-content fieldset.polls dl:has(input[type="radio"], input[type="checkbox"]) { align-items: center !important; }
+html body#modernbb #main-content fieldset.polls dl:has(input[type="radio"]) dt { margin: 0 !important; padding: 0 !important; }
+html body#modernbb #main-content fieldset.polls dl:has(input[type="radio"], input[type="checkbox"]) dt {
+	grid-column: 2 !important;
+	grid-row: 1;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 17px !important;
+	letter-spacing: 0 !important;
+	color: var(--texte) !important;
+}
+/* Lignes sans libellé : bouton, lien des résultats, durée */
+html body#modernbb #main-content fieldset.polls dl[style] { display: block !important; margin: 14px 0 0 !important; border: none !important; }
+html body#modernbb #main-content fieldset.polls dl[style] dt { display: none !important; }
+html body#modernbb #main-content fieldset.polls dl[style] dd { font-size: 15px; font-style: italic; color: var(--texte-doux) !important; }
+html body#modernbb #main-content fieldset.polls dl[style] dd b { font-style: normal; font-weight: 500; color: var(--texte); }
+html body#modernbb #main-content fieldset.polls dd strong { font-weight: 400 !important; }
+html body#modernbb #main-content fieldset.polls dd a { font-style: normal; font-size: 16px; color: var(--accent-lien) !important; text-decoration: underline; text-underline-offset: 3px; }
+/* Résultats : barres du thème */
+html body#modernbb #main-content fieldset.polls dl:not([style]):not(:has(input)) dt {
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 17px !important;
+	letter-spacing: 0 !important;
+	color: var(--texte) !important;
+}
+/* (barres : reconstruites par le JS, voir plus bas) */
+
+/* Code : un peu plus grand et aéré */
+html body#modernbb #main-content .postbody .content dl.codebox dd { padding: 12px 14px !important; }
+html body#modernbb #main-content .postbody .content dl.codebox code { margin: 0 !important; font-size: 15px !important; line-height: 1.6 !important; }
+
+/* Sondage : « Clore » en mot gravé */
+body#modernbb #main-content .sondage-clore-1740 {
+	display: inline-block;
+	padding: 3px 10px;
+	border: 1px solid var(--ligne-forte);
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.1em;
+	color: var(--texte-doux) !important;
+	text-decoration: none !important;
+	font-style: normal;
+	background: var(--fond-nuit);
+	transition: color 0.3s, border-color 0.3s;
+}
+body#modernbb #main-content .sondage-clore-1740:hover { color: var(--texte-clair) !important; border-color: var(--accent); }
+body#modernbb #main-content .panel:has(fieldset.polls) .h3 { padding-right: 90px !important; }
+/* Textes du bas (total, durée, retour) */
+html body#modernbb #main-content fieldset.polls dd { font-size: 15px !important; color: var(--texte-doux) !important; }
+html body#modernbb #main-content fieldset.polls dd :is(strong, b) { font-weight: 500 !important; color: var(--texte) !important; font-style: normal; }
+html body#modernbb #main-content fieldset.polls dd a { font-weight: 400 !important; }
+/* Résultats reconstruits par le JS */
+html body#modernbb #main-content fieldset.polls dl.sondage-ligne-1740 { grid-template-columns: 200px minmax(0, 1fr) !important; align-items: center !important; margin: 0 0 10px !important; }
+html body#modernbb #main-content fieldset.polls dl.sondage-ligne-1740 dt {
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 17px !important;
+	letter-spacing: 0 !important;
+	color: var(--texte) !important;
+}
+html body#modernbb #main-content fieldset.polls dd.sondage-res-1740 {
+	display: flex !important;
+	align-items: center;
+	gap: 14px;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
+}
+.sondage-jauge-1740 {
+	flex: 1;
+	height: 14px;
+	border: 1px solid var(--ligne-forte);
+	background: rgba(14, 13, 10, 0.6);
+}
+.sondage-jauge-1740 > span {
+	display: block;
+	height: 100%;
+	min-width: 0;
+	background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.55), var(--accent-clair));
+	transition: width 0.8s ease;
+}
+.sondage-nb-1740 {
+	min-width: 90px;
+	text-align: right;
+	font-family: 'Alegreya', Georgia, serif;
+	font-size: 17px;
+	font-style: normal;
+	font-variant-numeric: oldstyle-nums;
+	color: var(--texte-clair);
+}
+.sondage-nb-1740 small { display: block; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+
+/* ==========================================================================
+   AVIS ET CONFIRMATIONS (message_body, confirm_body)
+   ========================================================================== */
+html body#modernbb .sujet-cadre-1740.avis-1740 {
+	margin: 0 0 18px !important;
+	padding: 28px 32px !important;
+	text-align: center;
+}
+body#modernbb .avis-1740 .ornement-1740 { margin-bottom: 18px; }
+body#modernbb .avis-texte-1740 {
+	font-family: 'Alegreya', Georgia, serif;
+	font-size: 17px;
+	line-height: 1.6;
+	color: var(--texte);
+	text-align: center;
+}
+body#modernbb .avis-texte-1740 a { color: var(--accent-lien) !important; text-decoration: underline; text-underline-offset: 3px; }
+body#modernbb .avis-texte-1740 a:hover { color: var(--texte-clair) !important; }
+body#modernbb .avis-texte-1740 br + br { display: none; }
+body#modernbb .avis-1740 form { margin: 0; text-align: center; }
+body#modernbb .avis-1740 form fieldset:not(.avis-boutons-1740) { margin: 16px auto 0; text-align: left; max-width: 480px; }
+body#modernbb .avis-1740 .avis-boutons-1740 {
+	display: flex;
+	justify-content: center;
+	gap: 12px;
+	margin: 22px 0 0 !important;
+	padding: 0 !important;
+	border: none !important;
+}
+body#modernbb .avis-1740 .avis-boutons-1740 input { min-width: 90px; }
+
+/* ==========================================================================
+   RECHERCHE AVANCÉE
+   ========================================================================== */
+body#modernbb #main-content form[name="searchform"] input[type="button"][onclick*="google"] { display: none !important; }
+body#modernbb #main-content form[name="searchform"] hr.dashed { margin: 4px 0 14px; border: none; border-top: 1px dotted var(--ligne); background: none; height: 0; }
+body#modernbb #main-content form[name="searchform"] dd label { margin-right: 22px; }
+body#modernbb #main-content form[name="searchform"] .panel:has(> .inner > fieldset.submit-buttons:only-of-type) {
+	border: none !important;
+	background: none !important;
+	padding: 0 !important;
+}
+body#modernbb #main-content form[name="searchform"] fieldset.submit-buttons { display: flex; justify-content: center; margin: 0 !important; padding: 0 !important; }
+
+/* ==========================================================================
+   RÉSULTATS DE RECHERCHE PAR MESSAGES
+   ========================================================================== */
+html body#modernbb #main-content div.search.post {
+	display: grid !important;
+	grid-template-columns: 210px minmax(0, 1fr);
+	gap: 0 24px;
+	margin: 0 0 18px !important;
+	padding: var(--esp) 20px !important;
+	border: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: var(--surface) var(--img-grain) !important;
+	box-shadow: none !important;
+	color: var(--texte) !important;
+}
+html body#modernbb #main-content div.search.post::before,
+html body#modernbb #main-content div.search.post::after { display: none !important; }
+html body#modernbb #main-content div.search.post dl.postprofile {
+	float: none !important;
+	width: auto !important;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: 0 16px 0 0 !important;
+	border: none !important;
+	border-right: 1px solid var(--ligne) !important;
+	background: none !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 15px !important;
+	line-height: 1.6;
+	color: var(--texte-doux) !important;
+}
+html body#modernbb #main-content div.search.post dl.postprofile :is(dt, dd) { margin: 0 !important; padding: 0 !important; border: none !important; }
+html body#modernbb #main-content div.search.post dl.postprofile dd:first-of-type { font-style: italic; }
+html body#modernbb #main-content div.search.post dl.postprofile strong { font-weight: 500; color: var(--texte) !important; }
+html body#modernbb #main-content div.search.post dl.postprofile a.postdetails { color: var(--accent-lien) !important; }
+html body#modernbb #main-content div.search.post .postbody {
+	float: none !important;
+	width: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	line-height: 1.6;
+	color: var(--texte) !important;
+}
+html body#modernbb #main-content div.search.post .postbody h2.h3 { margin: 0 0 10px !important; font-size: 17px !important; color: var(--texte-clair) !important; }
+html body#modernbb #main-content div.search.post .postbody h2.h3 a { color: var(--texte-clair) !important; text-decoration: none; }
+html body#modernbb #main-content div.search.post .postbody h2.h3 a:hover { color: var(--accent-lien) !important; }
+/* Mot recherché surligné : à l'encre du thème plutôt qu'en rouge */
+html body#modernbb #main-content :is(div.search.post, .post-1740) span.coloradmin[style*="aa0000"],
+html body#modernbb #main-content :is(div.search.post, .post-1740) span.coloradmin[style*="aa0000"] b {
+	color: var(--texte-clair) !important;
+	font-weight: inherit !important;
+	background: rgba(var(--accent-rgb), 0.3);
+	box-shadow: 0 1px 0 var(--accent);
+}
+@media (max-width: 760px) {
+	html body#modernbb #main-content div.search.post { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+	html body#modernbb #main-content div.search.post dl.postprofile { border-right: none !important; border-bottom: 1px dotted var(--ligne) !important; padding: 0 0 10px !important; }
+}
+
+/* ==========================================================================
+   OUTILS DE MODÉRATION (déplacer, diviser, fusionner)
+   ========================================================================== */
+/* Fil d'Ariane */
+body#modernbb #main-content .topic-actions > p:has(a.nav) {
+	margin: 0 0 12px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.08em;
+	color: var(--texte-doux);
+}
+body#modernbb #main-content .topic-actions > p:has(a.nav) a { color: var(--texte-doux) !important; }
+/* Question et boutons de « Déplacer » */
+body#modernbb #main-content .panel p.center { margin: 18px 0 0; text-align: center; font-size: 16px; }
+body#modernbb #main-content .panel p.center input[type="submit"] { margin: 14px 5px 0; }
+/* Bouton principal en vert mousse */
+html body#modernbb #main-content :is(input[name="confirm"], input[name="submit"]).button2 {
+	border-color: var(--accent) !important;
+	background: rgba(var(--accent-rgb), 0.18) var(--img-grain) !important;
+	color: var(--texte-clair) !important;
+}
+/* Panneau qui ne contient que des boutons : pas de boîte */
+body#modernbb #main-content .panel:has(> .inner > fieldset.submit-buttons:only-of-type):not(:has(dl)) {
+	border: none !important;
+	background: none !important;
+	padding: 0 !important;
+}
+/* Fusionner : nom du sujet */
+html body#modernbb #main-content fieldset.fields3 dd strong {
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 17px !important;
+	font-weight: 500 !important;
+	text-shadow: none !important;
+	color: var(--texte-clair) !important;
+}
+html body#modernbb #main-content fieldset.fields3 dt .italic { display: block; margin-top: 4px; font-size: 15px !important; letter-spacing: 0; font-family: 'Alegreya', Georgia, serif !important; }
+/* Diviser : boîtes rendues aux panneaux */
+html body#modernbb #main-content #cp-main.mcp-main > br { display: none; }
+html body#modernbb #main-content #cp-main.mcp-main .panel {
+	margin: 0 0 18px !important;
+	padding: var(--esp) 20px !important;
+	border: 1px solid var(--ligne) !important;
+	background: var(--surface) var(--img-grain) !important;
+}
+html body#modernbb #main-content #cp-main.mcp-main fieldset.fields1 > p { margin: 0 0 16px; font-size: 16px; }
+html body#modernbb #main-content #cp-main.mcp-main fieldset.submit-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 0 0 18px !important; padding: 0 !important; }
+/* Diviser : messages du sujet */
+html body#modernbb #main-content #topicreview {
+	max-height: 460px;
+	overflow-y: auto;
+	padding: 0 8px 0 0;
+	background: none !important;
+	scrollbar-color: var(--ligne-forte) transparent;
+}
+html body#modernbb #main-content #topicreview .post {
+	margin: 0 !important;
+	padding: 14px 4px !important;
+	border: none !important;
+	border-bottom: 1px dotted var(--ligne) !important;
+	border-radius: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+	color: var(--texte) !important;
+}
+html body#modernbb #main-content #topicreview .post .inner { padding: 0 !important; background: none !important; }
+html body#modernbb #main-content #topicreview .postbody { float: none !important; width: auto !important; font-family: 'Alegreya', Georgia, serif !important; font-size: 16px; color: var(--texte) !important; }
+html body#modernbb #main-content #topicreview h3 {
+	margin: 0 0 2px !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 16px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.08em;
+	color: var(--texte-clair) !important;
+}
+html body#modernbb #main-content #topicreview p.author { margin: 0 0 10px !important; font-size: 15px !important; font-style: italic; color: var(--texte-doux) !important; }
+html body#modernbb #main-content #topicreview p.author img { display: none; }
+html body#modernbb #main-content #topicreview .content { font-size: 16px !important; color: var(--texte) !important; }
+html body#modernbb #main-content #topicreview .content * { color: inherit; }
+html body#modernbb #main-content #topicreview p.right-box { float: right; margin: 0 !important; }
+/* Boutons du bas : centrés et espacés partout */
+html body#modernbb #main-content fieldset.submit-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 
