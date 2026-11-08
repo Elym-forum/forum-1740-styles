@@ -355,7 +355,7 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 	background: rgba(14, 13, 10, 0.55);
 }
 :is(.postbody, #preview) .content .page > .rp-infos:last-child { margin: 22px -26px -22px; border: none; border-top: 3px double var(--ligne); }
-:is(.postbody, #preview) .content .rp-infos > .case-1740 { min-width: 0; padding: 10px 12px; text-align: center; font-size: 15px; color: var(--texte-clair); overflow-wrap: anywhere; }
+:is(.postbody, #preview) .content .rp-infos > .case-1740 { min-width: 0; padding: 10px 12px; text-align: center; font-size: 13px; color: var(--texte-clair); overflow-wrap: anywhere; }
 :is(.postbody, #preview) .content .rp-infos > .case-1740 + .case-1740 { border-left: 1px solid var(--ligne); }
 :is(.postbody, #preview) .content .rp-infos .l-1740 { display: block; font-family: 'Alegreya SC', serif; font-size: 13px; letter-spacing: 0.12em; color: var(--accent); }
 :is(.postbody, #preview) .content .rp-infos a { color: var(--accent-lien) !important; }
