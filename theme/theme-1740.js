@@ -1873,7 +1873,7 @@
 	}
 
 	/* ---------- Codes de messages : liste, champs, exergue, signature, titres\u2026 ---------- */
-	var BLOCS_1740 = ['page', 'bandeau', 'surtitre', 'grand-titre', 'titre', 'texte', 'note', 'liste', 'exergue', 'cadre', 'colonnes', 'champs', 'filet', 'signature', 'centre', 'image', 'medaillons', 'rp-infos', 'registre', 'avis-deces', 'pleine-largeur', 'lettre', 'journal', 'avis', 'livre', 'remede', 'comptine', 'incantation', 't1', 't2', 't3', 'sous-titre', 'intertitre', 'date', 'sign', 'jour', 'entete', 'titre-avis', 'par', 'chap', 'chap-titre', 'folio', 'r-titre', 'r-sous', 'c-titre', 'demande', 'types-demandes'];
+	var BLOCS_1740 = ['page', 'bandeau', 'surtitre', 'grand-titre', 'titre', 'texte', 'note', 'liste', 'exergue', 'cadre', 'colonnes', 'champs', 'filet', 'signature', 'centre', 'image', 'medaillons', 'rp-infos', 'registre', 'avis-deces', 'pleine-largeur', 'lettre', 'journal', 'avis', 'livre', 'remede', 'comptine', 'incantation', 't1', 't2', 't3', 'sous-titre', 'intertitre', 'date', 'sign', 'jour', 'entete', 'titre-avis', 'par', 'chap', 'chap-titre', 'folio', 'r-titre', 'r-sous', 'c-titre', 'demande', 'types-demandes', 'carnet', 'carnet-ame', 'songe', 'songe-recu'];
 	function estBloc(n) {
 		return n && n.nodeType === 1 && BLOCS_1740.some(function (c) { return n.classList.contains(c); });
 	}
@@ -2056,10 +2056,208 @@
 			if (quand) { $('.quand-1740', av).textContent = quand; }
 		});
 		// Message en pleine largeur : sans la fiche du personnage
-		if ($('.registre, .pleine-largeur', zone)) {
+		if ($('.registre, .pleine-largeur, .carnet', zone)) {
 			var post = zone.closest('.post-1740');
 			if (post) { post.classList.add('pleine-1740'); }
 		}
+	}
+
+	/* ---------- Carnet des rêves : carnet d'une âme (1er message) et songes du Veilleur ---------- */
+	var ICONES_SONGE_1740 = {
+		reve: '<path d="M15 3a8 8 0 1 0 6 11A7 7 0 0 1 15 3z"></path><path d="M7 13c1.5 1.2 3.5 1.2 5 0"></path><path d="M8 14.5l-.5 1.3M10.5 14.5l.5 1.3"></path>',
+		presage: '<path d="M3 12c2.6-4 5.6-6 9-6s6.4 2 9 6c-2.6 4-5.6 6-9 6s-6.4-2-9-6z"></path><circle cx="12" cy="12" r="2.6"></circle><path d="M12 3v1.5M5.5 5.5l1 1M18.5 5.5l-1 1"></path>',
+		indice: '<circle cx="8" cy="8" r="4"></circle><circle cx="8" cy="8" r="1.4"></circle><path d="M11 11l8 8M16 16l2-2M18 18l2-2"></path>'
+	};
+	function iconeSonge(k, taille) {
+		return '<svg width="' + taille + '" height="' + taille + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONES_SONGE_1740[k] + '</svg>';
+	}
+	function typeSonge(t) { return /pr[eé]sage|signe|augure/i.test(t || '') ? 'presage' : 'reve'; }
+
+	/* Lit « Clé : valeur » ; une ligne sans clé connue continue le champ précédent
+	   (pour un récit en plusieurs paragraphes). Les clés répétées (Indice) s'accumulent. */
+	var CLES_SONGE_1740 = ['type', 'pour', 'moment', 'quand', 'titre', 'recit', 'resume', 'indice', 'indices', 'lien'];
+	function lireSonge(el) {
+		var res = { _ordre: [] }, cur = null;
+		lignes(el).forEach(function (ln) {
+			var premier = ln[0];
+			var m = premier && premier.nodeType === 3 ? premier.nodeValue.match(/^\s*([^:]{1,24}?)\s*:\s*([\s\S]*)$/) : null;
+			var cle = m ? cleChamp(m[1]) : '';
+			if (m && CLES_SONGE_1740.indexOf(cle) !== -1) {
+				if (cle === 'quand') { cle = 'moment'; }
+				if (cle === 'indices') { cle = 'indice'; }
+				premier.nodeValue = m[2];
+				cur = { cle: cle, nom: m[1], lignes: [] };
+				(res[cle] = res[cle] || []).push(cur);
+				res._ordre.push(cur);
+			} else if (!cur) {
+				return;
+			}
+			var frag = document.createDocumentFragment();
+			ln.forEach(function (n) { frag.appendChild(n); });
+			if (frag.textContent.trim() || frag.querySelector && frag.querySelector('img, a')) { cur.lignes.push(frag); }
+		});
+		return res;
+	}
+	function texteSonge(s, cle) { return s[cle] ? s[cle][0].lignes.map(function (f) { return f.textContent; }).join(' ').trim() : ''; }
+	/* Les lignes d'un champ, en paragraphes */
+	function paragraphesSonge(champ, classe) {
+		var box = document.createElement('div');
+		if (classe) { box.className = classe; }
+		champ.lignes.forEach(function (f) {
+			var p = document.createElement('p');
+			p.appendChild(f.cloneNode(true));
+			box.appendChild(p);
+		});
+		return box;
+	}
+	function blocIndices(s) {
+		var frag = document.createDocumentFragment();
+		(s.indice || []).forEach(function (ind) {
+			if (!ind.lignes.length) { return; }
+			var d = document.createElement('div');
+			d.className = 'indice-1740';
+			d.innerHTML = '<span class="ind-tete-1740">' + iconeSonge('indice', 15) + '<span>Indice</span></span>';
+			ind.lignes.forEach(function (f) { var p = document.createElement('p'); p.appendChild(f.cloneNode(true)); d.appendChild(p); });
+			frag.appendChild(d);
+		});
+		return frag;
+	}
+
+	function initCarnet(zone) {
+		/* Un songe posté par le Veilleur */
+		$$('.songe-recu', zone).forEach(function (el) {
+			if (el.dataset.fait) { return; }
+			el.dataset.fait = '1';
+			var s = lireSonge(el);
+			var type = typeSonge(texteSonge(s, 'type'));
+			el.innerHTML = '';
+			el.classList.add('songe-' + type + '-1740');
+
+			var tete = document.createElement('div');
+			tete.className = 'sr-tete-1740';
+			tete.innerHTML = '<span class="sceau-songe-1740">' + iconeSonge(type, 24) + '</span>' +
+				'<div><span class="qui-1740">Le Veilleur</span><span class="quoi-1740"></span></div><span class="quand-1740"></span>';
+			var quoi = $('.quoi-1740', tete);
+			quoi.appendChild(document.createTextNode(type === 'presage' ? 'Un présage pour ' : 'Un rêve pour '));
+			if (s.pour && s.pour[0].lignes[0]) { quoi.appendChild(s.pour[0].lignes[0].cloneNode(true)); }
+			else { quoi.textContent = type === 'presage' ? 'Un présage' : 'Un rêve'; }
+			$('.quand-1740', tete).textContent = texteSonge(s, 'moment');
+			el.appendChild(tete);
+
+			if (texteSonge(s, 'titre')) {
+				var t = document.createElement('div');
+				t.className = 'sr-titre-1740';
+				t.textContent = texteSonge(s, 'titre');
+				el.appendChild(t);
+			}
+			var recit = (s.recit || s.resume || [])[0];
+			if (recit && recit.lignes.length) { el.appendChild(paragraphesSonge(recit, 'sr-recit-1740')); }
+			var ind = blocIndices(s);
+			if (ind.childNodes.length) {
+				var orn = document.createElement('div');
+				orn.className = 'sr-orn-1740';
+				orn.setAttribute('aria-hidden', 'true');
+				el.appendChild(orn);
+				el.appendChild(ind);
+			}
+		});
+
+		/* Le carnet d'une âme : le premier message du sujet */
+		$$('.carnet', zone).forEach(function (carnet) {
+			if (carnet.dataset.fait) { return; }
+			carnet.dataset.fait = '1';
+			var ameEl = $(':scope > .carnet-ame', carnet);
+			var ame = ameEl ? lireChamps(ameEl) : { _ordre: [] };
+			var songes = $$(':scope > .songe', carnet).map(lireSonge);
+			carnet.innerHTML = '';
+
+			// Tête : médaillon, nom, autres champs, décompte
+			var nom = texteDe(ame.nom);
+			var portrait = texteDe(ame.portrait);
+			var tete = document.createElement('div');
+			tete.className = 'carnet-tete-1740';
+			tete.innerHTML = '<span class="medaillon-1740"><span>' + (portrait ? '<img src="' + echapper(portrait) + '" alt="" loading="lazy" />' : '') + '</span></span>' +
+				'<div class="ct-infos-1740"><span class="ct-sur-1740">Carnet des rêves</span><p class="ct-nom-1740"></p><div class="ch-1740"></div><p class="ct-compte-1740"></p></div>';
+			$('.ct-nom-1740', tete).textContent = nom || 'Âme sans nom';
+			var ch = $('.ch-1740', tete);
+			ame._ordre.forEach(function (o) {
+				var cle = o[0];
+				if (cle === 'nom' || cle === 'portrait' || !texteDe(ame[cle])) { return; }
+				var l = document.createElement('span'); l.className = 'l-1740'; l.textContent = o[1];
+				var v = document.createElement('span'); v.appendChild(valeurNoeud(ame[cle]));
+				ch.appendChild(l); ch.appendChild(v);
+			});
+			var nbR = 0, nbP = 0, nbI = 0;
+			songes.forEach(function (s) {
+				if (typeSonge(texteSonge(s, 'type')) === 'presage') { nbP++; } else { nbR++; }
+				nbI += (s.indice || []).filter(function (i) { return i.lignes.length; }).length;
+			});
+			function pl(n, un, plusieurs) { return n + ' ' + (n > 1 ? plusieurs : un); }
+			$('.ct-compte-1740', tete).textContent = pl(nbR, 'rêve', 'rêves') + ' · ' + pl(nbP, 'présage', 'présages') + ' · ' + pl(nbI, 'indice', 'indices');
+			carnet.appendChild(tete);
+
+			// Filtres
+			var filtres = document.createElement('div');
+			filtres.className = 'carnet-filtres-1740';
+			filtres.setAttribute('role', 'group');
+			filtres.setAttribute('aria-label', 'Afficher');
+			[['tout', 'Tout'], ['reve', 'Rêves'], ['presage', 'Présages'], ['indice', 'Avec indice']].forEach(function (f, i) {
+				var b = document.createElement('button');
+				b.type = 'button';
+				b.setAttribute('data-filtre', f[0]);
+				b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+				b.textContent = f[1];
+				filtres.appendChild(b);
+			});
+			carnet.appendChild(filtres);
+
+			// Chronique des songes
+			var liste = document.createElement('ol');
+			liste.className = 'carnet-liste-1740';
+			songes.forEach(function (s) {
+				var type = typeSonge(texteSonge(s, 'type'));
+				var li = document.createElement('li');
+				li.className = 'entree-1740 ' + type;
+				li.setAttribute('data-type', type);
+				li.setAttribute('data-indice', (s.indice || []).some(function (i) { return i.lignes.length; }) ? '1' : '0');
+				li.innerHTML = '<span class="pastille-songe-1740">' + iconeSonge(type, 18) + '</span>' +
+					'<div class="e-corps-1740"><span class="e-meta-1740"><span class="e-type-1740"></span><span class="e-quand-1740"></span></span><p class="e-titre-1740"></p></div>';
+				$('.e-type-1740', li).textContent = type === 'presage' ? 'Présage' : 'Rêve';
+				var quand = texteSonge(s, 'moment');
+				if (quand) { $('.e-quand-1740', li).textContent = quand; } else { $('.e-quand-1740', li).remove(); }
+				var titre = texteSonge(s, 'titre') || (type === 'presage' ? 'Présage sans titre' : 'Rêve sans titre');
+				var lien = texteSonge(s, 'lien');
+				var pt = $('.e-titre-1740', li);
+				if (/^(https?:\/\/|\/)/.test(lien)) {
+					var a = document.createElement('a'); a.href = lien; a.textContent = titre; pt.appendChild(a);
+				} else { pt.textContent = titre; }
+				var corps = $('.e-corps-1740', li);
+				var resume = (s.resume || s.recit || [])[0];
+				if (resume && resume.lignes.length) { corps.appendChild(paragraphesSonge(resume, 'e-resume-1740')); }
+				corps.appendChild(blocIndices(s));
+				liste.appendChild(li);
+			});
+			var vide = document.createElement('li');
+			vide.className = 'vide-1740';
+			vide.textContent = songes.length ? 'Rien à afficher avec ce filtre.' : 'Aucun songe pour l\u2019instant. Le Veilleur écrira ici.';
+			vide.hidden = songes.length > 0;
+			liste.appendChild(vide);
+			carnet.appendChild(liste);
+
+			filtres.addEventListener('click', function (e) {
+				var b = e.target.closest('button');
+				if (!b) { return; }
+				var f = b.getAttribute('data-filtre');
+				$$('button', filtres).forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+				var n = 0;
+				$$('.entree-1740', liste).forEach(function (li) {
+					var ok = f === 'tout' || (f === 'indice' ? li.getAttribute('data-indice') === '1' : li.getAttribute('data-type') === f);
+					li.hidden = !ok;
+					if (ok) { n++; }
+				});
+				vide.hidden = n > 0;
+			});
+		});
 	}
 
 	/* ---------- Demandes : types (message du staff) et fiches de demande ---------- */
@@ -2248,6 +2446,7 @@
 			});
 			initRegistre(zone);
 			initDemandes(zone);
+			initCarnet(zone);
 			// Lettre : « Nom|I » donne la signature et la lettre du cachet
 			$$('.lettre .sign', zone).forEach(function (sg) {
 				var t = sg.textContent.split('|');

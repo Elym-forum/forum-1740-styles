@@ -1069,3 +1069,211 @@ html body#modernbb .emojis-pop-1740 .smiley-1740 { height: 36px; }
 	:is(.postbody, #preview) .content .d-ch-1740 > .l-1740 { border-bottom: none; padding-bottom: 0; }
 	:is(.postbody, #preview) .content .statut-1740 { position: static; display: inline-block; margin: 12px 18px 0; }
 }
+
+/* ==========================================================================
+   CARNET DES RÊVES
+   - .carnet (premier message, pleine largeur) : .carnet-ame + des .songe
+   - .songe-recu : un songe posté par le Veilleur
+   ========================================================================== */
+:is(.postbody, #preview, .balises-1740) .content .carnet { margin: 0 0 14px; }
+:is(.postbody, #preview, .balises-1740) .content .carnet > :is(.carnet-ame, .songe) { display: none; } /* données brutes, remplacées par le JS */
+
+/* Tête du carnet : médaillon et infos de l'âme */
+:is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 {
+	position: relative;
+	display: grid;
+	grid-template-columns: 150px minmax(0, 1fr);
+	align-items: center;
+	gap: 24px;
+	padding: 20px 24px;
+	border: 1px solid var(--ligne);
+	outline: 1px solid var(--ligne);
+	outline-offset: 3px;
+	background: #15130F var(--img-grain);
+}
+:is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ct-sur-1740 { display: block; font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.16em; color: var(--accent-clair); }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ct-nom-1740 {
+	margin: 2px 0 10px !important;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
+	font-family: 'Grenze Gotisch', serif !important;
+	font-size: 34px;
+	font-weight: 500;
+	line-height: 1.05;
+	color: var(--texte-clair);
+}
+:is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ch-1740 { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; max-width: 460px; font-size: 15px; }
+:is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ch-1740 > span { padding: 3px 0; border-bottom: 1px dotted var(--ligne); }
+:is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ch-1740 > .l-1740 { font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.06em; color: var(--texte-doux); }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ct-compte-1740 { margin: 12px 0 0 !important; font-family: 'Alegreya SC', serif !important; font-size: 15px; letter-spacing: 0.08em; color: var(--ocre-doux); }
+
+/* Filtres */
+:is(.postbody, #preview, .balises-1740) .content .carnet-filtres-1740 {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 6px;
+	margin: 22px 0 6px;
+}
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .carnet-filtres-1740 button {
+	min-height: 34px;
+	padding: 3px 14px !important;
+	border: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: rgba(14, 13, 10, 0.55) !important;
+	box-shadow: none !important;
+	color: var(--texte-doux) !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 15px !important;
+	letter-spacing: 0.06em;
+	cursor: pointer;
+}
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .carnet-filtres-1740 button:hover { border-color: var(--accent) !important; color: var(--texte-clair) !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .carnet-filtres-1740 button[aria-pressed="true"] { border-color: var(--accent) !important; background: rgba(var(--accent-rgb), 0.22) !important; color: var(--texte-clair) !important; }
+
+/* Chronique : un fil vertical, une pastille par songe */
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .carnet-liste-1740 {
+	position: relative;
+	margin: 16px 0 0 !important;
+	padding: 0 !important;
+	list-style: none !important;
+}
+:is(.postbody, #preview, .balises-1740) .content .carnet-liste-1740::before {
+	content: "";
+	position: absolute;
+	top: 8px;
+	bottom: 8px;
+	left: 21px;
+	width: 1px;
+	background: linear-gradient(transparent, var(--ligne-forte) 4%, var(--ligne-forte) 96%, transparent);
+}
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .carnet-liste-1740 > li {
+	position: relative;
+	display: grid;
+	grid-template-columns: 44px minmax(0, 1fr);
+	gap: 18px;
+	margin: 0 !important;
+	padding: 12px 0 !important;
+	list-style: none !important;
+}
+:is(.postbody, #preview, .balises-1740) .content .carnet-liste-1740 > li[hidden] { display: none !important; }
+:is(.postbody, #preview, .balises-1740) .content .carnet-liste-1740 > .vide-1740:not([hidden]) { display: block; padding: 20px 0 20px 62px !important; font-style: italic; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .pastille-songe-1740 {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	border: 1px solid var(--accent);
+	background: #15130F;
+	box-shadow: 0 0 0 4px var(--surface-pleine);
+	color: var(--accent-clair);
+}
+:is(.postbody, #preview, .balises-1740) .content .entree-1740.presage .pastille-songe-1740 { border-color: #6A5A44; color: var(--ocre-doux); }
+:is(.postbody, #preview, .balises-1740) .content .e-corps-1740 {
+	padding: 14px 18px;
+	border: 1px solid var(--ligne);
+	background: #15130F;
+}
+:is(.postbody, #preview, .balises-1740) .content .e-meta-1740 { display: flex; flex-wrap: wrap; gap: 4px 12px; font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.1em; color: var(--accent-clair); }
+:is(.postbody, #preview, .balises-1740) .content .entree-1740.presage .e-meta-1740 { color: var(--ocre-doux); }
+:is(.postbody, #preview, .balises-1740) .content .e-quand-1740 { color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .e-quand-1740::before { content: "\25C6"; margin-right: 12px; font-size: 9px; vertical-align: 2px; color: var(--ligne-douce); }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .e-titre-1740 { margin: 4px 0 6px !important; font-family: 'Alegreya', Georgia, serif !important; font-size: 20px; font-weight: 500; line-height: 1.25; color: var(--texte-clair); }
+:is(.postbody, #preview, .balises-1740) .content .e-titre-1740 a { color: var(--texte-clair); text-decoration: none; }
+:is(.postbody, #preview, .balises-1740) .content .e-titre-1740 a::after { content: " \2192"; color: var(--accent-lien); }
+:is(.postbody, #preview, .balises-1740) .content .e-titre-1740 a:hover { color: var(--accent-vif); }
+:is(.postbody, #preview, .balises-1740) .content .e-resume-1740 { font-size: 16px; line-height: 1.6; color: var(--texte); }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.e-resume-1740, .sr-recit-1740, .indice-1740) p { margin: 0 0 6px !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.e-resume-1740, .sr-recit-1740, .indice-1740) p:last-child { margin-bottom: 0 !important; }
+
+/* Indice : encart ocre, avec la clé */
+:is(.postbody, #preview, .balises-1740) .content .indice-1740 {
+	margin: 12px 0 0;
+	padding: 10px 14px;
+	border: 1px solid #4E4434;
+	border-left: 3px solid #8A7452;
+	background: rgba(60, 48, 30, 0.22);
+	font-size: 16px;
+	line-height: 1.55;
+	color: var(--texte);
+}
+:is(.postbody, #preview, .balises-1740) .content .ind-tete-1740 { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.12em; color: var(--ocre-doux); }
+
+/* Songe posté par le Veilleur */
+:is(.postbody, #preview, .balises-1740) .content .songe-recu {
+	position: relative;
+	margin: 6px 0 14px;
+	padding: 22px 28px 24px;
+	border: 1px solid var(--ligne);
+	outline: 1px solid var(--ligne);
+	outline-offset: 3px;
+	background: radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb), 0.12), transparent 65%), #15130F;
+}
+:is(.postbody, #preview, .balises-1740) .content .songe-recu.songe-presage-1740 { background: radial-gradient(ellipse at 50% 0%, rgba(168, 139, 90, 0.13), transparent 65%), #15130F; }
+:is(.postbody, #preview, .balises-1740) .content .sr-tete-1740 {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 14px;
+	padding-bottom: 14px;
+	border-bottom: 1px solid var(--ligne);
+}
+:is(.postbody, #preview, .balises-1740) .content .sceau-songe-1740 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 46px;
+	height: 46px;
+	border-radius: 50%;
+	border: 1px solid var(--accent);
+	background: var(--fond-nuit);
+	box-shadow: 0 0 0 3px #15130F, 0 0 0 4px var(--ligne);
+	color: var(--accent-clair);
+}
+:is(.postbody, #preview, .balises-1740) .content .songe-presage-1740 .sceau-songe-1740 { border-color: #8A7452; color: var(--ocre-doux); }
+:is(.postbody, #preview, .balises-1740) .content .sr-tete-1740 .qui-1740 { display: block; font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.14em; color: var(--accent-clair); }
+:is(.postbody, #preview, .balises-1740) .content .songe-presage-1740 .sr-tete-1740 .qui-1740 { color: var(--ocre-doux); }
+:is(.postbody, #preview, .balises-1740) .content .sr-tete-1740 .quoi-1740 { display: block; font-size: 17px; color: var(--texte-clair); }
+:is(.postbody, #preview, .balises-1740) .content .sr-tete-1740 .quand-1740 { font-family: 'Alegreya SC', serif; font-size: 15px; letter-spacing: 0.08em; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .sr-titre-1740 {
+	margin: 18px 0 10px;
+	font-family: 'Grenze Gotisch', serif;
+	font-size: 30px;
+	line-height: 1.1;
+	text-align: center;
+	color: var(--texte-clair);
+}
+:is(.postbody, #preview, .balises-1740) .content .sr-recit-1740 { max-width: 640px; margin: 0 auto; font-size: 17px; line-height: 1.7; color: var(--texte); }
+:is(.postbody, #preview, .balises-1740) .content .sr-orn-1740 {
+	width: 120px;
+	height: 9px;
+	margin: 20px auto 6px;
+	background:
+		linear-gradient(var(--ligne-forte), var(--ligne-forte)) left center / 48px 1px no-repeat,
+		linear-gradient(var(--ligne-forte), var(--ligne-forte)) right center / 48px 1px no-repeat;
+	position: relative;
+}
+:is(.postbody, #preview, .balises-1740) .content .sr-orn-1740::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 7px;
+	height: 7px;
+	transform: translate(-50%, -50%) rotate(45deg);
+	background: var(--accent);
+}
+:is(.postbody, #preview, .balises-1740) .content .songe-recu .indice-1740 { max-width: 640px; margin-left: auto; margin-right: auto; }
+
+@media (max-width: 640px) {
+	:is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+	:is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ch-1740 { text-align: left; }
+	:is(.postbody, #preview, .balises-1740) .content .songe-recu { padding: 18px 16px; }
+	:is(.postbody, #preview, .balises-1740) .content .sr-tete-1740 { grid-template-columns: auto minmax(0, 1fr); }
+	:is(.postbody, #preview, .balises-1740) .content .sr-tete-1740 .quand-1740 { grid-column: 2; }
+}
