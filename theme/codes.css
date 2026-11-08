@@ -1103,9 +1103,9 @@ html body#modernbb :is(.postbody, #preview, .balises-1740) .content .carnet-tete
 	line-height: 1.05;
 	color: var(--texte-clair);
 }
-:is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ch-1740 { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; max-width: 460px; font-size: 14px; }
+:is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ch-1740 { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; max-width: 460px; font-size: 16px; }
 :is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ch-1740 > span { padding: 3px 0; border-bottom: 1px dotted var(--ligne); }
-:is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ch-1740 > .l-1740 { font-family: 'Alegreya SC', serif; font-size: 13px; letter-spacing: 0.06em; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ch-1740 > .l-1740 { font-family: 'Alegreya SC', serif; font-size: 15px; letter-spacing: 0.06em; color: var(--texte-doux); }
 html body#modernbb :is(.postbody, #preview, .balises-1740) .content .carnet-tete-1740 .ct-compte-1740 { margin: 12px 0 0 !important; font-family: 'Alegreya SC', serif !important; font-size: 14px; letter-spacing: 0.08em; color: var(--ocre-doux); }
 
 /* Filtres */
