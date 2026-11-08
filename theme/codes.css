@@ -7,7 +7,7 @@
    ========================================================================== */
 
 /* ---------- Page : l'enveloppe facultative ---------- */
-:is(.postbody, #preview) .content .page {
+:is(.postbody, #preview, .balises-1740) .content .page {
 	position: relative;
 	margin: 6px 6px 18px;
 	padding: 0 26px 22px;
@@ -17,10 +17,10 @@
 	background: #17150F var(--img-grain);
 	text-align: left;
 }
-:is(.postbody, #preview) .content .page::before,
-:is(.postbody, #preview) .content .page::after,
-:is(.postbody, #preview) .content .page > .coins-1740::before,
-:is(.postbody, #preview) .content .page > .coins-1740::after {
+:is(.postbody, #preview, .balises-1740) .content .page::before,
+:is(.postbody, #preview, .balises-1740) .content .page::after,
+:is(.postbody, #preview, .balises-1740) .content .page > .coins-1740::before,
+:is(.postbody, #preview, .balises-1740) .content .page > .coins-1740::after {
 	content: "";
 	position: absolute;
 	z-index: 1;
@@ -30,16 +30,16 @@
 	border: 1px solid var(--accent);
 	background: var(--fond);
 }
-:is(.postbody, #preview) .content .page::before { top: -6px; left: -6px; }
-:is(.postbody, #preview) .content .page::after { top: -6px; right: -6px; }
-:is(.postbody, #preview) .content .page > .coins-1740::before { bottom: -6px; left: -6px; }
-:is(.postbody, #preview) .content .page > .coins-1740::after { bottom: -6px; right: -6px; }
+:is(.postbody, #preview, .balises-1740) .content .page::before { top: -6px; left: -6px; }
+:is(.postbody, #preview, .balises-1740) .content .page::after { top: -6px; right: -6px; }
+:is(.postbody, #preview, .balises-1740) .content .page > .coins-1740::before { bottom: -6px; left: -6px; }
+:is(.postbody, #preview, .balises-1740) .content .page > .coins-1740::after { bottom: -6px; right: -6px; }
 /* Une page sans bandeau garde de l'air en haut */
-:is(.postbody, #preview) .content .page > :first-child:not(.bandeau):not(.coins-1740),
-:is(.postbody, #preview) .content .page > .coins-1740:first-child + :not(.bandeau) { margin-top: 22px; }
+:is(.postbody, #preview, .balises-1740) .content .page > :first-child:not(.bandeau):not(.coins-1740),
+:is(.postbody, #preview, .balises-1740) .content .page > .coins-1740:first-child + :not(.bandeau) { margin-top: 22px; }
 
 /* ---------- Bandeau : gravure assombrie derrière le titre ---------- */
-:is(.postbody, #preview) .content .bandeau {
+:is(.postbody, #preview, .balises-1740) .content .bandeau {
 	position: relative;
 	margin: 0 0 20px;
 	padding: 30px 20px 24px;
@@ -47,14 +47,14 @@
 	background: var(--fond-nuit) var(--img-bandeau) center / cover;
 	border-bottom: 3px double var(--ligne);
 }
-:is(.postbody, #preview) .content .page > .bandeau { margin: 0 -26px 20px; }
-:is(.postbody, #preview) .content .bandeau::before { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(14, 13, 10, 0.45), rgba(14, 13, 10, 0.82)); }
-:is(.postbody, #preview) .content .bandeau > * { position: relative; }
-:is(.postbody, #preview) .content .bandeau .grand-titre { text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6); }
-:is(.postbody, #preview) .content .bandeau .surtitre { color: var(--texte-murmure); }
+:is(.postbody, #preview, .balises-1740) .content .page > .bandeau { margin: 0 -26px 20px; }
+:is(.postbody, #preview, .balises-1740) .content .bandeau::before { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(14, 13, 10, 0.45), rgba(14, 13, 10, 0.82)); }
+:is(.postbody, #preview, .balises-1740) .content .bandeau > * { position: relative; }
+:is(.postbody, #preview, .balises-1740) .content .bandeau .grand-titre { text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6); }
+:is(.postbody, #preview, .balises-1740) .content .bandeau .surtitre { color: var(--texte-murmure); }
 
 /* ---------- Titres ---------- */
-:is(.postbody, #preview) .content .surtitre {
+:is(.postbody, #preview, .balises-1740) .content .surtitre {
 	display: block;
 	margin: 0 0 4px;
 	text-align: center;
@@ -62,7 +62,7 @@
 	font-style: italic;
 	color: var(--texte-doux);
 }
-:is(.postbody, #preview) .content .grand-titre {
+:is(.postbody, #preview, .balises-1740) .content .grand-titre {
 	display: block;
 	margin: 0;
 	text-align: center;
@@ -72,7 +72,7 @@
 	line-height: 1.1;
 	color: var(--texte-clair);
 }
-:is(.postbody, #preview) .content .titre {
+:is(.postbody, #preview, .balises-1740) .content .titre {
 	display: flex;
 	align-items: center;
 	gap: 12px;
@@ -83,8 +83,8 @@
 	line-height: 1.3;
 	color: var(--texte-clair);
 }
-:is(.postbody, #preview) .content .titre::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--ligne-forte), transparent); }
-:is(.postbody, #preview) .content .titre .n-1740 {
+:is(.postbody, #preview, .balises-1740) .content .titre::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--ligne-forte), transparent); }
+:is(.postbody, #preview, .balises-1740) .content .titre .n-1740 {
 	position: relative;
 	display: inline-grid;
 	place-items: center;
@@ -95,7 +95,7 @@
 	letter-spacing: 0;
 	color: var(--accent-vif);
 }
-:is(.postbody, #preview) .content .titre .n-1740::before {
+:is(.postbody, #preview, .balises-1740) .content .titre .n-1740::before {
 	content: "";
 	position: absolute;
 	inset: 5px;
@@ -103,31 +103,31 @@
 	border: 1px solid var(--accent);
 	background: rgba(var(--accent-rgb), 0.18);
 }
-:is(.postbody, #preview) .content .titre .n-1740 > span { position: relative; display: block; line-height: 1; letter-spacing: 0; text-indent: 0; padding-top: 1px; }
+:is(.postbody, #preview, .balises-1740) .content .titre .n-1740 > span { position: relative; display: block; line-height: 1; letter-spacing: 0; text-indent: 0; padding-top: 1px; }
 
 /* ---------- Texte ---------- */
-:is(.postbody, #preview) .content .texte {
+:is(.postbody, #preview, .balises-1740) .content .texte {
 	margin: 0 0 12px;
 	font-size: 16px;
 	line-height: 1.65;
 	text-align: justify;
 	hyphens: auto;
 }
-html body#modernbb :is(.postbody, #preview) .content .lettrine { font-family: 'Alegreya', Georgia, serif !important; font-weight: 400 !important; }
-html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .lettrine { font-family: 'Alegreya', Georgia, serif !important; font-weight: 400 !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .lettrine::first-letter {
 	font-family: 'Grenze Gotisch', serif !important;
 	font-size: 2.9em;
 	line-height: 0.9;
 	margin-right: 2px;
 	color: var(--accent-clair);
 }
-:is(.postbody, #preview) .content .note { margin: 6px 0 12px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
-:is(.postbody, #preview) .content .note::before { content: "— "; }
+:is(.postbody, #preview, .balises-1740) .content .note { margin: 6px 0 12px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .note::before { content: "— "; }
 
 /* ---------- Liste à losanges (une ligne = un élément) ---------- */
-:is(.postbody, #preview) .content .liste { margin: 0 0 12px; padding: 0; list-style: none; }
-:is(.postbody, #preview) .content .liste > .li-1740 { position: relative; padding: 3px 0 3px 22px; font-size: 16px; line-height: 1.55; }
-:is(.postbody, #preview) .content .liste > .li-1740::before {
+:is(.postbody, #preview, .balises-1740) .content .liste { margin: 0 0 12px; padding: 0; list-style: none; }
+:is(.postbody, #preview, .balises-1740) .content .liste > .li-1740 { position: relative; padding: 3px 0 3px 22px; font-size: 16px; line-height: 1.55; }
+:is(.postbody, #preview, .balises-1740) .content .liste > .li-1740::before {
 	content: "";
 	position: absolute;
 	left: 4px;
@@ -140,7 +140,7 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 }
 
 /* ---------- Exergue (« | » sépare la signature) ---------- */
-:is(.postbody, #preview) .content .exergue {
+:is(.postbody, #preview, .balises-1740) .content .exergue {
 	position: relative;
 	margin: 24px 10px;
 	padding: 18px 34px;
@@ -150,11 +150,11 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 	line-height: 1.5;
 	color: var(--texte-clair);
 }
-:is(.postbody, #preview) .content .exergue::before,
-:is(.postbody, #preview) .content .exergue::after { position: absolute; font-family: 'Grenze Gotisch', serif; font-size: 64px; font-style: normal; line-height: 1; color: var(--ligne-forte); }
-:is(.postbody, #preview) .content .exergue::before { content: "«"; left: 0; top: 50%; transform: translateY(-50%); }
-:is(.postbody, #preview) .content .exergue::after { content: "»"; right: 0; top: 50%; transform: translateY(-50%); }
-:is(.postbody, #preview) .content .exergue .source-1740 {
+:is(.postbody, #preview, .balises-1740) .content .exergue::before,
+:is(.postbody, #preview, .balises-1740) .content .exergue::after { position: absolute; font-family: 'Grenze Gotisch', serif; font-size: 64px; font-style: normal; line-height: 1; color: var(--ligne-forte); }
+:is(.postbody, #preview, .balises-1740) .content .exergue::before { content: "«"; left: 0; top: 50%; transform: translateY(-50%); }
+:is(.postbody, #preview, .balises-1740) .content .exergue::after { content: "»"; right: 0; top: 50%; transform: translateY(-50%); }
+:is(.postbody, #preview, .balises-1740) .content .exergue .source-1740 {
 	display: block;
 	margin-top: 8px;
 	font-family: 'Alegreya SC', serif;
@@ -165,9 +165,9 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 }
 
 /* ---------- Cadre et colonnes ---------- */
-:is(.postbody, #preview) .content .cadre { margin: 0 0 14px; border: 1px solid var(--ligne); background: rgba(14, 13, 10, 0.55); padding: 12px 16px; }
+:is(.postbody, #preview, .balises-1740) .content .cadre { margin: 0 0 14px; border: 1px solid var(--ligne); background: rgba(14, 13, 10, 0.55); padding: 12px 16px; }
 /* Un titre en tête de cadre devient son bandeau */
-:is(.postbody, #preview) .content .cadre > .titre:first-child {
+:is(.postbody, #preview, .balises-1740) .content .cadre > .titre:first-child {
 	display: block;
 	margin: -12px -16px 12px;
 	padding: 8px 14px;
@@ -178,18 +178,18 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 	letter-spacing: 0.12em;
 	color: var(--accent-vif);
 }
-:is(.postbody, #preview) .content .cadre > .titre:first-child::after { display: none; }
-:is(.postbody, #preview) .content .cadre > :last-child { margin-bottom: 0; }
-:is(.postbody, #preview) .content .colonnes { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 0 0 14px; }
-:is(.postbody, #preview) .content .colonnes > * { margin: 0; min-width: 0; }
+:is(.postbody, #preview, .balises-1740) .content .cadre > .titre:first-child::after { display: none; }
+:is(.postbody, #preview, .balises-1740) .content .cadre > :last-child { margin-bottom: 0; }
+:is(.postbody, #preview, .balises-1740) .content .colonnes { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 0 0 14px; }
+:is(.postbody, #preview, .balises-1740) .content .colonnes > * { margin: 0; min-width: 0; }
 
 /* ---------- Champs « Libellé : valeur » ---------- */
-:is(.postbody, #preview) .content .champs { display: grid; grid-template-columns: minmax(110px, auto) 1fr; column-gap: 18px; margin: 0 0 12px; font-size: 16px; }
-:is(.postbody, #preview) .content .champs > span { padding: 6px 0; border-bottom: 1px dotted var(--ligne); }
-:is(.postbody, #preview) .content .champs > .l-1740 { font-family: 'Alegreya SC', serif; font-size: 15px; letter-spacing: 0.06em; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .champs { display: grid; grid-template-columns: minmax(110px, auto) 1fr; column-gap: 18px; margin: 0 0 12px; font-size: 16px; }
+:is(.postbody, #preview, .balises-1740) .content .champs > span { padding: 6px 0; border-bottom: 1px dotted var(--ligne); }
+:is(.postbody, #preview, .balises-1740) .content .champs > .l-1740 { font-family: 'Alegreya SC', serif; font-size: 15px; letter-spacing: 0.06em; color: var(--texte-doux); }
 
 /* ---------- Étiquette, image, filet, bouton, signature ---------- */
-:is(.postbody, #preview) .content .etiquette {
+:is(.postbody, #preview, .balises-1740) .content .etiquette {
 	display: inline-block;
 	margin: 2px 2px;
 	padding: 2px 10px;
@@ -200,9 +200,9 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 	letter-spacing: 0.08em;
 	color: var(--accent-vif);
 }
-:is(.postbody, #preview) .content .etiquette.ocre { color: var(--ocre-doux); border-color: #6A5A44; }
-:is(.postbody, #preview) .content img.image,
-:is(.postbody, #preview) .content .image img {
+:is(.postbody, #preview, .balises-1740) .content .etiquette.ocre { color: var(--ocre-doux); border-color: #6A5A44; }
+:is(.postbody, #preview, .balises-1740) .content img.image,
+:is(.postbody, #preview, .balises-1740) .content .image img {
 	display: block;
 	width: 100%;
 	max-width: 100%;
@@ -217,17 +217,17 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 	background: var(--fond-nuit);
 	box-sizing: border-box;
 }
-:is(.postbody, #preview) .content .filet {
+:is(.postbody, #preview, .balises-1740) .content .filet {
 	display: flex;
 	align-items: center;
 	gap: 10px;
 	height: 14px;
 	margin: 22px 0;
 }
-:is(.postbody, #preview) .content .filet::before,
-:is(.postbody, #preview) .content .filet::after { content: ""; flex: 1; height: 1px; background: var(--ligne); }
-:is(.postbody, #preview) .content .filet > .l-1740 { width: 9px; height: 9px; transform: rotate(45deg); border: 1px solid var(--accent); }
-:is(.postbody, #preview) .content a.bouton {
+:is(.postbody, #preview, .balises-1740) .content .filet::before,
+:is(.postbody, #preview, .balises-1740) .content .filet::after { content: ""; flex: 1; height: 1px; background: var(--ligne); }
+:is(.postbody, #preview, .balises-1740) .content .filet > .l-1740 { width: 9px; height: 9px; transform: rotate(45deg); border: 1px solid var(--accent); }
+:is(.postbody, #preview, .balises-1740) .content a.bouton {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
@@ -241,9 +241,9 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 	text-decoration: none !important;
 	transition: background-color 0.4s, border-color 0.4s;
 }
-:is(.postbody, #preview) .content a.bouton:hover { background-color: rgba(var(--accent-rgb), 0.32); border-color: var(--accent-clair); }
-:is(.postbody, #preview) .content .centre { text-align: center; }
-:is(.postbody, #preview) .content .signature {
+:is(.postbody, #preview, .balises-1740) .content a.bouton:hover { background-color: rgba(var(--accent-rgb), 0.32); border-color: var(--accent-clair); }
+:is(.postbody, #preview, .balises-1740) .content .centre { text-align: center; }
+:is(.postbody, #preview, .balises-1740) .content .signature {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
@@ -257,8 +257,8 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 	font-style: italic;
 	color: var(--texte-doux);
 }
-:is(.postbody, #preview) .content .signature::before { content: "— "; margin-right: -8px; }
-:is(.postbody, #preview) .content .signature .sceau-1740 {
+:is(.postbody, #preview, .balises-1740) .content .signature::before { content: "— "; margin-right: -8px; }
+:is(.postbody, #preview, .balises-1740) .content .signature .sceau-1740 {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -274,22 +274,22 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 }
 
 /* Les sauts de ligne n'abîment pas les blocs (le JS retire les autres) */
-:is(.postbody, #preview) .content :is(.page, .bandeau, .colonnes, .cadre, .champs, .liste, .filet, .medaillons, .rp-infos, .registre) > br { display: none; }
+:is(.postbody, #preview, .balises-1740) .content :is(.page, .bandeau, .colonnes, .cadre, .champs, .liste, .filet, .medaillons, .rp-infos, .registre) > br { display: none; }
 
 /* ---------- Petits écrans ---------- */
 @media (max-width: 640px) {
-	:is(.postbody, #preview) .content .page { padding: 0 16px 18px; }
-	:is(.postbody, #preview) .content .page > .bandeau { margin: 0 -16px 18px; }
-	:is(.postbody, #preview) .content .grand-titre { font-size: 30px; }
-	:is(.postbody, #preview) .content .champs { grid-template-columns: 1fr; }
-	:is(.postbody, #preview) .content .champs > .l-1740 { border-bottom: none; padding-bottom: 0; }
+	:is(.postbody, #preview, .balises-1740) .content .page { padding: 0 16px 18px; }
+	:is(.postbody, #preview, .balises-1740) .content .page > .bandeau { margin: 0 -16px 18px; }
+	:is(.postbody, #preview, .balises-1740) .content .grand-titre { font-size: 30px; }
+	:is(.postbody, #preview, .balises-1740) .content .champs { grid-template-columns: 1fr; }
+	:is(.postbody, #preview, .balises-1740) .content .champs > .l-1740 { border-bottom: none; padding-bottom: 0; }
 }
 
 /* ==========================================================================
-   GABARIT DE R:is(.postbody, #preview) .content : bannière (image ou gif facultatif), musique, médaillons,
+   GABARIT DE R:is(.postbody, #preview, .balises-1740) .content : bannière (image ou gif facultatif), musique, médaillons,
    pied « Lieu | Période | Avec »
    ========================================================================== */
-:is(.postbody, #preview) .content .bandeau > img.fond {
+:is(.postbody, #preview, .balises-1740) .content .bandeau > img.fond {
 	position: absolute;
 	z-index: 0;
 	inset: 0;
@@ -301,10 +301,10 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 	padding: 0;
 	border: none;
 }
-:is(.postbody, #preview) .content .bandeau::before { z-index: 1; }
-:is(.postbody, #preview) .content .bandeau > :not(img.fond) { z-index: 2; }
-:is(.postbody, #preview) .content .bandeau:has(> .musique) { padding-left: 52px; padding-right: 52px; }
-:is(.postbody, #preview) .content .bandeau > a.musique {
+:is(.postbody, #preview, .balises-1740) .content .bandeau::before { z-index: 1; }
+:is(.postbody, #preview, .balises-1740) .content .bandeau > :not(img.fond) { z-index: 2; }
+:is(.postbody, #preview, .balises-1740) .content .bandeau:has(> .musique) { padding-left: 52px; padding-right: 52px; }
+:is(.postbody, #preview, .balises-1740) .content .bandeau > a.musique {
 	position: absolute;
 	top: 12px;
 	right: 12px;
@@ -320,11 +320,11 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 	text-decoration: none !important;
 	transition: background-color 0.4s, color 0.4s;
 }
-:is(.postbody, #preview) .content .bandeau > a.musique:hover { background: rgba(var(--accent-rgb), 0.35); color: var(--texte-clair) !important; }
-:is(.postbody, #preview) .content a.musique svg { display: block; width: 13px; height: 13px; }
+:is(.postbody, #preview, .balises-1740) .content .bandeau > a.musique:hover { background: rgba(var(--accent-rgb), 0.35); color: var(--texte-clair) !important; }
+:is(.postbody, #preview, .balises-1740) .content a.musique svg { display: block; width: 13px; height: 13px; }
 
 /* Médaillons de personnages, à cheval sur le bas de la bannière */
-:is(.postbody, #preview) .content .medaillons {
+:is(.postbody, #preview, .balises-1740) .content .medaillons {
 	position: relative;
 	z-index: 3;
 	display: flex;
@@ -332,8 +332,8 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 	gap: 18px;
 	margin: -46px 0 16px;
 }
-:is(.postbody, #preview) .content .bandeau + .medaillons { margin-top: -46px; }
-:is(.postbody, #preview) .content .medaillons img {
+:is(.postbody, #preview, .balises-1740) .content .bandeau + .medaillons { margin-top: -46px; }
+:is(.postbody, #preview, .balises-1740) .content .medaillons img {
 	width: 76px;
 	height: 96px;
 	padding: 3px;
@@ -347,24 +347,24 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 }
 
 /* Pied : trois cases égales */
-:is(.postbody, #preview) .content .rp-infos {
+:is(.postbody, #preview, .balises-1740) .content .rp-infos {
 	display: grid;
 	grid-template-columns: repeat(var(--cases, 3), minmax(0, 1fr));
 	margin: 22px 0 0;
 	border: 1px solid var(--ligne);
 	background: rgba(14, 13, 10, 0.55);
 }
-:is(.postbody, #preview) .content .page > .rp-infos:last-child { margin: 22px -26px -22px; border: none; border-top: 3px double var(--ligne); }
-:is(.postbody, #preview) .content .rp-infos > .case-1740 { min-width: 0; padding: 10px 12px; text-align: center; font-size: 13px; color: var(--texte-clair); overflow-wrap: anywhere; }
-:is(.postbody, #preview) .content .rp-infos > .case-1740 + .case-1740 { border-left: 1px solid var(--ligne); }
-:is(.postbody, #preview) .content .rp-infos .l-1740 { display: block; font-family: 'Alegreya SC', serif; font-size: 13px; letter-spacing: 0.12em; color: var(--accent); }
-:is(.postbody, #preview) .content .rp-infos a { color: var(--accent-lien) !important; }
-:is(.postbody, #preview) .content .dialogue { color: var(--accent-vif); }
+:is(.postbody, #preview, .balises-1740) .content .page > .rp-infos:last-child { margin: 22px -26px -22px; border: none; border-top: 3px double var(--ligne); }
+:is(.postbody, #preview, .balises-1740) .content .rp-infos > .case-1740 { min-width: 0; padding: 10px 12px; text-align: center; font-size: 13px; color: var(--texte-clair); overflow-wrap: anywhere; }
+:is(.postbody, #preview, .balises-1740) .content .rp-infos > .case-1740 + .case-1740 { border-left: 1px solid var(--ligne); }
+:is(.postbody, #preview, .balises-1740) .content .rp-infos .l-1740 { display: block; font-family: 'Alegreya SC', serif; font-size: 13px; letter-spacing: 0.12em; color: var(--accent); }
+:is(.postbody, #preview, .balises-1740) .content .rp-infos a { color: var(--accent-lien) !important; }
+:is(.postbody, #preview, .balises-1740) .content .dialogue { color: var(--accent-vif); }
 
 @media (max-width: 640px) {
-	:is(.postbody, #preview) .content .rp-infos { grid-template-columns: 1fr; }
-	:is(.postbody, #preview) .content .rp-infos > .case-1740 + .case-1740 { border-left: none; border-top: 1px solid var(--ligne); }
-	:is(.postbody, #preview) .content .page > .rp-infos:last-child { margin: 18px -16px -18px; }
+	:is(.postbody, #preview, .balises-1740) .content .rp-infos { grid-template-columns: 1fr; }
+	:is(.postbody, #preview, .balises-1740) .content .rp-infos > .case-1740 + .case-1740 { border-left: none; border-top: 1px solid var(--ligne); }
+	:is(.postbody, #preview, .balises-1740) .content .page > .rp-infos:last-child { margin: 18px -16px -18px; }
 }
 
 /* ==========================================================================
@@ -377,9 +377,9 @@ body#modernbb .post-1740.pleine-1740 .postprofile.fiche-1740 { display: none !im
 /* ==========================================================================
    REGISTRE DES ÂMES
    ========================================================================== */
-:is(.postbody, #preview) .content .registre { margin: 0 0 14px; }
-:is(.postbody, #preview) .content .registre > .ame { display: none; }  /* données brutes, remplacées par le JS */
-:is(.postbody, #preview) .content .filtres-1740 {
+:is(.postbody, #preview, .balises-1740) .content .registre { margin: 0 0 14px; }
+:is(.postbody, #preview, .balises-1740) .content .registre > .ame { display: none; }  /* données brutes, remplacées par le JS */
+:is(.postbody, #preview, .balises-1740) .content .filtres-1740 {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-end;
@@ -389,14 +389,14 @@ body#modernbb .post-1740.pleine-1740 .postprofile.fiche-1740 { display: none !im
 	border: 1px solid var(--ligne);
 	background: rgba(14, 13, 10, 0.55);
 }
-:is(.postbody, #preview) .content .filtre-1740 { display: flex; flex-direction: column; gap: 4px; }
-:is(.postbody, #preview) .content .filtre-1740 label { font-family: 'Alegreya SC', serif; font-size: 13px; letter-spacing: 0.12em; color: var(--accent); }
-html body#modernbb :is(.postbody, #preview) .content .filtre-1740 select { min-height: 34px; padding: 3px 8px !important; font-size: 15px !important; }
-:is(.postbody, #preview) .content .compte-1740 { margin-left: auto; align-self: center; font-size: 15px; font-style: italic; color: var(--texte-doux); }
-:is(.postbody, #preview) .content .ames-1740 { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 16px; }
-:is(.postbody, #preview) .content .ames-1740 > [hidden] { display: none !important; }
-:is(.postbody, #preview) .content .ames-1740 .vide-1740 { grid-column: 1 / -1; padding: 20px; text-align: center; font-style: italic; color: var(--texte-doux); }
-:is(.postbody, #preview) .content .fiche-ame-1740 {
+:is(.postbody, #preview, .balises-1740) .content .filtre-1740 { display: flex; flex-direction: column; gap: 4px; }
+:is(.postbody, #preview, .balises-1740) .content .filtre-1740 label { font-family: 'Alegreya SC', serif; font-size: 13px; letter-spacing: 0.12em; color: var(--accent); }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .filtre-1740 select { min-height: 34px; padding: 3px 8px !important; font-size: 15px !important; }
+:is(.postbody, #preview, .balises-1740) .content .compte-1740 { margin-left: auto; align-self: center; font-size: 15px; font-style: italic; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .ames-1740 { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 16px; }
+:is(.postbody, #preview, .balises-1740) .content .ames-1740 > [hidden] { display: none !important; }
+:is(.postbody, #preview, .balises-1740) .content .ames-1740 .vide-1740 { grid-column: 1 / -1; padding: 20px; text-align: center; font-style: italic; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 {
 	position: relative;
 	display: grid;
 	grid-template-columns: 132px minmax(0, 1fr);
@@ -405,7 +405,7 @@ html body#modernbb :is(.postbody, #preview) .content .filtre-1740 select { min-h
 	border: 1px solid var(--ligne);
 	background: #15130F;
 }
-:is(.postbody, #preview) .content .fiche-ame-1740::before {
+:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740::before {
 	content: "";
 	position: absolute;
 	top: -5px;
@@ -418,7 +418,7 @@ html body#modernbb :is(.postbody, #preview) .content .filtre-1740 select { min-h
 	background: #17150F;
 }
 /* Médaillon : celui de la liste des membres */
-:is(.postbody, #preview) .content .medaillon-1740 {
+:is(.postbody, #preview, .balises-1740) .content .medaillon-1740 {
 	position: relative;
 	align-self: center;
 	justify-self: center;
@@ -432,8 +432,8 @@ html body#modernbb :is(.postbody, #preview) .content .filtre-1740 select { min-h
 	background: var(--fond-nuit);
 	box-shadow: 0 0 0 4px #15130F, 0 0 0 5px var(--ligne-forte), 0 0 0 9px #15130F, 0 0 0 10px var(--ligne);
 }
-:is(.postbody, #preview) .content .medaillon-1740::before,
-:is(.postbody, #preview) .content .medaillon-1740::after {
+:is(.postbody, #preview, .balises-1740) .content .medaillon-1740::before,
+:is(.postbody, #preview, .balises-1740) .content .medaillon-1740::after {
 	content: "";
 	position: absolute;
 	left: 50%;
@@ -444,10 +444,10 @@ html body#modernbb :is(.postbody, #preview) .content .filtre-1740 select { min-h
 	border: 1px solid var(--accent);
 	transform: translateX(-50%) rotate(45deg);
 }
-:is(.postbody, #preview) .content .medaillon-1740::before { top: -14px; }
-:is(.postbody, #preview) .content .medaillon-1740::after { bottom: -14px; }
-:is(.postbody, #preview) .content .medaillon-1740 span { display: block; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; }
-html body#modernbb :is(.postbody, #preview) .content .medaillon-1740 img {
+:is(.postbody, #preview, .balises-1740) .content .medaillon-1740::before { top: -14px; }
+:is(.postbody, #preview, .balises-1740) .content .medaillon-1740::after { bottom: -14px; }
+:is(.postbody, #preview, .balises-1740) .content .medaillon-1740 span { display: block; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .medaillon-1740 img {
 	display: block;
 	width: 100% !important;
 	height: 100% !important;
@@ -458,12 +458,12 @@ html body#modernbb :is(.postbody, #preview) .content .medaillon-1740 img {
 	border: none !important;
 	filter: brightness(0.88) saturate(0.85) sepia(0.1);
 }
-:is(.postbody, #preview) .content .fiche-ame-1740 .nom-1740 { margin: 0; font-family: 'Grenze Gotisch', serif; font-size: 24px; font-weight: 500; line-height: 1.05; color: var(--texte-clair); }
-:is(.postbody, #preview) .content .fiche-ame-1740 .fc-1740 { margin: 2px 0 8px; font-size: 14px; font-style: italic; color: var(--texte-doux); }
-:is(.postbody, #preview) .content .fiche-ame-1740 .ch-1740 { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; font-size: 14px; }
-:is(.postbody, #preview) .content .fiche-ame-1740 .ch-1740 > span { padding: 3px 0; border-bottom: 1px dotted var(--ligne); }
-:is(.postbody, #preview) .content .fiche-ame-1740 .ch-1740 > .l-1740 { font-family: 'Alegreya SC', serif; font-size: 13px; letter-spacing: 0.06em; color: var(--texte-doux); }
-:is(.postbody, #preview) .content .fiche-ame-1740 .pacte-1740 {
+:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 .nom-1740 { margin: 0; font-family: 'Grenze Gotisch', serif; font-size: 24px; font-weight: 500; line-height: 1.05; color: var(--texte-clair); }
+:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 .fc-1740 { margin: 2px 0 8px; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 .ch-1740 { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; font-size: 14px; }
+:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 .ch-1740 > span { padding: 3px 0; border-bottom: 1px dotted var(--ligne); }
+:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 .ch-1740 > .l-1740 { font-family: 'Alegreya SC', serif; font-size: 13px; letter-spacing: 0.06em; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 .pacte-1740 {
 	display: inline-block;
 	margin-top: 8px;
 	padding: 1px 9px;
@@ -474,13 +474,13 @@ html body#modernbb :is(.postbody, #preview) .content .medaillon-1740 img {
 	letter-spacing: 0.08em;
 	color: var(--ocre-doux);
 }
-:is(.postbody, #preview) .content .fiche-ame-1740 .pacte-1740.sans { color: var(--texte-doux); border-color: var(--ligne); }
-:is(.postbody, #preview) .content .fiche-ame-1740 .mort-1740 { margin-top: 6px; font-size: 14px; font-style: italic; color: var(--ocre-doux); }
-:is(.postbody, #preview) .content .fiche-ame-1740.defunte { opacity: 0.72; }
-:is(.postbody, #preview) .content .fiche-ame-1740.defunte .medaillon-1740 img { filter: grayscale(1) brightness(0.8); }
+:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 .pacte-1740.sans { color: var(--texte-doux); border-color: var(--ligne); }
+:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 .mort-1740 { margin-top: 6px; font-size: 14px; font-style: italic; color: var(--ocre-doux); }
+:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740.defunte { opacity: 0.72; }
+:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740.defunte .medaillon-1740 img { filter: grayscale(1) brightness(0.8); }
 
 /* Avis de décès (Le Veilleur) */
-:is(.postbody, #preview) .content .avis-deces {
+:is(.postbody, #preview, .balises-1740) .content .avis-deces {
 	display: grid;
 	grid-template-columns: auto 1fr;
 	align-items: center;
@@ -490,7 +490,7 @@ html body#modernbb :is(.postbody, #preview) .content .medaillon-1740 img {
 	border: 1px solid #4E2A22;
 	background: rgba(40, 18, 14, 0.35);
 }
-:is(.postbody, #preview) .content .avis-deces .bougie-1740 {
+:is(.postbody, #preview, .balises-1740) .content .avis-deces .bougie-1740 {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -501,23 +501,23 @@ html body#modernbb :is(.postbody, #preview) .content .medaillon-1740 img {
 	box-shadow: 0 0 0 2px #4E2A22, inset 0 0 0 5px rgba(0, 0, 0, 0.18);
 	color: #E8C9B8;
 }
-:is(.postbody, #preview) .content .avis-deces .bougie-1740 svg { width: 24px; height: 24px; }
-:is(.postbody, #preview) .content .avis-deces .qui-1740 { display: block; font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.12em; color: #C48C78; }
-:is(.postbody, #preview) .content .avis-deces .msg-1740 { margin: 2px 0 0; font-size: 16px; line-height: 1.55; }
-:is(.postbody, #preview) .content .avis-deces .quand-1740 { display: block; margin-top: 4px; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .avis-deces .bougie-1740 svg { width: 24px; height: 24px; }
+:is(.postbody, #preview, .balises-1740) .content .avis-deces .qui-1740 { display: block; font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.12em; color: #C48C78; }
+:is(.postbody, #preview, .balises-1740) .content .avis-deces .msg-1740 { margin: 2px 0 0; font-size: 16px; line-height: 1.55; }
+:is(.postbody, #preview, .balises-1740) .content .avis-deces .quand-1740 { display: block; margin-top: 4px; font-size: 14px; font-style: italic; color: var(--texte-doux); }
 
 @media (max-width: 640px) {
-	:is(.postbody, #preview) .content .ames-1740 { grid-template-columns: 1fr; }
-	:is(.postbody, #preview) .content .fiche-ame-1740 { grid-template-columns: 1fr; justify-items: center; text-align: center; }
-	:is(.postbody, #preview) .content .fiche-ame-1740 .ch-1740 { text-align: left; }
-	:is(.postbody, #preview) .content .compte-1740 { margin-left: 0; }
+	:is(.postbody, #preview, .balises-1740) .content .ames-1740 { grid-template-columns: 1fr; }
+	:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+	:is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 .ch-1740 { text-align: left; }
+	:is(.postbody, #preview, .balises-1740) .content .compte-1740 { margin-left: 0; }
 }
 
 /* Registre : rien de ModernBB sur le nom ni le faceclaim */
-html body#modernbb :is(.postbody, #preview) .content .fiche-ame-1740 .nom-1740 { margin: 0 !important; padding: 0 !important; border: none !important; background: none !important; font-family: 'Grenze Gotisch', serif !important; }
-html body#modernbb :is(.postbody, #preview) .content .fiche-ame-1740 .fc-1740 { font-family: 'Alegreya', Georgia, serif !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 .nom-1740 { margin: 0 !important; padding: 0 !important; border: none !important; background: none !important; font-family: 'Grenze Gotisch', serif !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .fiche-ame-1740 .fc-1740 { font-family: 'Alegreya', Georgia, serif !important; }
 /* Mentions @ : à l'encre du thème plutôt que la pastille bleue de Forumactif */
-html body#modernbb :is(.postbody, #preview) .content :is(.mention, .mentions, [class*="mention"], a[data-mention]) {
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.mention, .mentions, [class*="mention"], a[data-mention]) {
 	padding: 0 !important;
 	border: none !important;
 	border-radius: 0 !important;
@@ -526,7 +526,246 @@ html body#modernbb :is(.postbody, #preview) .content :is(.mention, .mentions, [c
 	font: inherit !important;
 	color: var(--accent-lien) !important;
 }
-html body#modernbb :is(.postbody, #preview) .content :is(.mention, .mentions, [class*="mention"], a[data-mention]):hover { color: var(--texte-clair) !important; text-decoration: underline; text-underline-offset: 3px; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.mention, .mentions, [class*="mention"], a[data-mention]):hover { color: var(--texte-clair) !important; text-decoration: underline; text-underline-offset: 3px; }
 /* Paragraphes des messages : la police du message, pas le Roboto de ModernBB */
-html body#modernbb :is(.postbody, #preview) .content p { font-family: inherit; }
-html body#modernbb :is(.postbody, #preview) .content .avis-deces .msg-1740 { font-family: 'Alegreya', Georgia, serif !important; font-size: 16px !important; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content p { font-family: inherit; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .avis-deces .msg-1740 { font-family: 'Alegreya', Georgia, serif !important; font-size: 16px !important; }
+
+/* ==========================================================================
+   DOCUMENTS DANS LE JEU
+   ========================================================================== */
+/* Lettre : papier clair, signature et cachet */
+:is(.postbody, #preview, .balises-1740) .content .lettre {
+	position: relative;
+	margin: 14px 4px 30px;
+	padding: 30px 34px 30px;
+	background: #D8CCAE var(--img-grain);
+	background-blend-mode: multiply;
+	box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55), inset 0 0 60px rgba(90, 70, 40, 0.35);
+	transform: rotate(-0.4deg);
+	font-size: 17px;
+	font-style: italic;
+	line-height: 1.6;
+	color: #2E261A;
+}
+:is(.postbody, #preview, .balises-1740) .content .lettre a { color: #5A2418 !important; }
+:is(.postbody, #preview, .balises-1740) .content .lettre .date { margin: 0 0 14px; text-align: right; font-size: 15px; color: #5A4A33; }
+:is(.postbody, #preview, .balises-1740) .content .lettre .sign { margin: 16px 0 0; text-align: right; font-family: 'Pinyon Script', cursive; font-size: 30px; font-style: normal; line-height: 1.2; color: #3B2E1E; }
+:is(.postbody, #preview, .balises-1740) .content .lettre .cachet-1740 {
+	position: absolute;
+	left: 28px;
+	bottom: -16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background: radial-gradient(circle at 40% 35%, #9A5444, #6E3A2E 70%);
+	box-shadow: 0 0 0 2px #4E2A22, 0 3px 6px rgba(0, 0, 0, 0.5);
+	font-family: 'Grenze Gotisch', serif;
+	font-size: 20px;
+	font-style: normal;
+	color: #E8C9B8;
+}
+
+/* Page de journal : papier sombre réglé, marge rouge */
+:is(.postbody, #preview, .balises-1740) .content .journal {
+	margin: 14px 0;
+	padding: 0 26px 0 56px;
+	border: 1px solid var(--ligne);
+	background-color: #1B1912;
+	background-image: linear-gradient(90deg, transparent 40px, rgba(142, 74, 58, 0.45) 40px, rgba(142, 74, 58, 0.45) 41px, transparent 41px), repeating-linear-gradient(transparent 0 27px, rgba(90, 84, 68, 0.45) 27px 28px);
+	font-size: 17px;
+	font-style: italic;
+	line-height: 28px;
+	color: var(--texte);
+}
+:is(.postbody, #preview, .balises-1740) .content .journal .jour { font-family: 'Alegreya SC', serif; font-size: 15px; font-style: normal; letter-spacing: 0.1em; color: var(--ocre-doux); }
+
+/* Avis placardé : feuille clouée, gros titre */
+:is(.postbody, #preview, .balises-1740) .content .avis {
+	position: relative;
+	max-width: 440px;
+	margin: 18px auto;
+	padding: 30px 30px 26px;
+	text-align: center;
+	background: #CFC2A2 var(--img-grain);
+	background-blend-mode: multiply;
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 0 50px rgba(80, 60, 30, 0.4);
+	transform: rotate(0.6deg);
+	font-size: 16px;
+	line-height: 1.5;
+	color: #2A2218;
+}
+:is(.postbody, #preview, .balises-1740) .content .avis::before,
+:is(.postbody, #preview, .balises-1740) .content .avis::after { content: ""; position: absolute; top: 10px; width: 9px; height: 9px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #8A8270, #3A352B); box-shadow: 0 1px 2px #000; }
+:is(.postbody, #preview, .balises-1740) .content .avis::before { left: 12px; }
+:is(.postbody, #preview, .balises-1740) .content .avis::after { right: 12px; }
+:is(.postbody, #preview, .balises-1740) .content .avis .entete { font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.25em; }
+:is(.postbody, #preview, .balises-1740) .content .avis .titre-avis { margin: 6px 0 10px; font-family: 'Grenze Gotisch', serif; font-size: 42px; line-height: 1; color: #5A2418; }
+:is(.postbody, #preview, .balises-1740) .content .avis .par { margin-top: 14px; font-family: 'Alegreya SC', serif; font-size: 13px; letter-spacing: 0.14em; }
+
+/* Extrait de livre */
+:is(.postbody, #preview, .balises-1740) .content .livre { margin: 14px 0; padding: 24px 30px 16px; border: 1px solid var(--ligne-forte); outline: 1px solid var(--ligne); outline-offset: -7px; background: #1D1A13; font-size: 16px; line-height: 1.65; text-align: justify; }
+:is(.postbody, #preview, .balises-1740) .content .livre .chap { text-align: center; font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.2em; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .livre .chap-titre { margin: 2px 0 14px; text-align: center; font-family: 'Grenze Gotisch', serif; font-size: 26px; line-height: 1.15; color: var(--texte-clair); }
+:is(.postbody, #preview, .balises-1740) .content .livre .texte + .texte { text-indent: 1.5em; }
+:is(.postbody, #preview, .balises-1740) .content .livre .folio { margin-top: 10px; text-align: center; font-size: 14px; color: var(--accent); }
+:is(.postbody, #preview, .balises-1740) .content .livre .folio::before { content: "— "; }
+:is(.postbody, #preview, .balises-1740) .content .livre .folio::after { content: " —"; }
+
+/* Remède : papier clair, ingrédients (champs) et étapes (liste) */
+:is(.postbody, #preview, .balises-1740) .content .remede {
+	margin: 14px 4px;
+	padding: 22px 26px;
+	background: #D3C7A8 var(--img-grain);
+	background-blend-mode: multiply;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 0 50px rgba(80, 60, 30, 0.35);
+	font-size: 15.5px;
+	line-height: 1.55;
+	color: #2E261A;
+}
+:is(.postbody, #preview, .balises-1740) .content .remede .r-titre { text-align: center; font-family: 'Grenze Gotisch', serif; font-size: 30px; line-height: 1.1; color: #3E4A2A; }
+:is(.postbody, #preview, .balises-1740) .content .remede .r-sous { margin: 0 0 12px; text-align: center; font-size: 15px; font-style: italic; color: #5A4A33; }
+:is(.postbody, #preview, .balises-1740) .content .remede .champs { padding: 8px 0; border-top: 1px solid rgba(60, 45, 25, 0.35); border-bottom: 1px solid rgba(60, 45, 25, 0.35); font-size: 15px; }
+:is(.postbody, #preview, .balises-1740) .content .remede .champs > span { border-bottom-color: rgba(60, 45, 25, 0.2); }
+:is(.postbody, #preview, .balises-1740) .content .remede .champs > .l-1740 { color: #5A4A33; }
+:is(.postbody, #preview, .balises-1740) .content .remede .liste > .li-1740 { font-size: 15.5px; }
+:is(.postbody, #preview, .balises-1740) .content .remede .liste > .li-1740::before { border-color: #5A4A33; background: rgba(90, 74, 51, 0.2); }
+
+/* Comptine */
+:is(.postbody, #preview, .balises-1740) .content .comptine { margin: 14px 0; padding: 14px 20px; text-align: center; font-size: 17px; font-style: italic; line-height: 1.75; color: var(--texte-clair); }
+:is(.postbody, #preview, .balises-1740) .content .comptine .c-titre { margin-bottom: 8px; font-family: 'Alegreya SC', serif; font-size: 15px; font-style: normal; letter-spacing: 0.2em; color: var(--accent-clair); }
+:is(.postbody, #preview, .balises-1740) .content .comptine .refrain { color: var(--ocre-doux); }
+
+/* Incantation chuchotée */
+:is(.postbody, #preview, .balises-1740) .content .incantation {
+	margin: 14px 0;
+	padding: 18px 20px;
+	text-align: center;
+	background: radial-gradient(ellipse at center, rgba(var(--accent-rgb), 0.14), transparent 70%);
+	font-size: 18px;
+	font-style: italic;
+	line-height: 1.9;
+	letter-spacing: 0.12em;
+	color: var(--accent-vif);
+	text-shadow: 0 0 8px rgba(169, 176, 143, 0.55);
+}
+:is(.postbody, #preview, .balises-1740) .content .incantation::before,
+:is(.postbody, #preview, .balises-1740) .content .incantation::after { content: "ᚠ ᚢ ᚦ ᚨ ᚱ"; display: block; margin: 4px 0; font-size: 13px; font-style: normal; letter-spacing: 0.8em; color: var(--accent); text-shadow: none; }
+:is(.postbody, #preview, .balises-1740) .content .incantation::after { content: "ᚲ ᚷ ᚹ ᚺ ᚾ"; }
+:is(.postbody, #preview, .balises-1740) .content .incantation .eteint { opacity: 0.45; filter: blur(0.6px); }
+
+/* ==========================================================================
+   PETITES BALISES DE TEXTE
+   ========================================================================== */
+:is(.postbody, #preview, .balises-1740) .content .t1 { display: block; margin: 18px 0 8px; text-align: center; font-family: 'Grenze Gotisch', serif; font-size: 32px; line-height: 1.1; color: var(--texte-clair); }
+:is(.postbody, #preview, .balises-1740) .content .t2 { display: flex; align-items: center; gap: 12px; margin: 20px 0 10px; font-family: 'Alegreya SC', serif; font-size: 19px; letter-spacing: 0.1em; color: var(--texte-clair); }
+:is(.postbody, #preview, .balises-1740) .content .t2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--ligne-forte), transparent); }
+:is(.postbody, #preview, .balises-1740) .content .t3 { display: block; margin: 14px 0 6px; font-size: 17px; font-weight: 500; color: var(--accent-clair); }
+:is(.postbody, #preview, .balises-1740) .content .sous-titre { display: block; margin: 0 0 12px; text-align: center; font-size: 15px; font-style: italic; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .intertitre { display: flex; align-items: center; gap: 12px; margin: 22px 0; font-family: 'Alegreya SC', serif; font-size: 15px; letter-spacing: 0.18em; color: var(--accent-vif); }
+:is(.postbody, #preview, .balises-1740) .content .intertitre::before,
+:is(.postbody, #preview, .balises-1740) .content .intertitre::after { content: ""; flex: 1; height: 1px; background: var(--ligne); }
+
+:is(.postbody, #preview, .balises-1740) .content .mousse { color: var(--accent-clair); }
+:is(.postbody, #preview, .balises-1740) .content .ocre { color: var(--ocre-doux); }
+:is(.postbody, #preview, .balises-1740) .content .rouille { color: #C48C78; }
+:is(.postbody, #preview, .balises-1740) .content .sang { color: #B5584A; }
+:is(.postbody, #preview, .balises-1740) .content .cendre { color: #9C978A; }
+:is(.postbody, #preview, .balises-1740) .content .lune { color: #E6E2D3; }
+:is(.postbody, #preview, .balises-1740) .content .gras { font-weight: 700; color: var(--texte-clair); }
+:is(.postbody, #preview, .balises-1740) .content .murmure { font-size: 0.88em; font-style: italic; letter-spacing: 0.02em; color: var(--texte-doux); }
+:is(.postbody, #preview, .balises-1740) .content .cri { font-family: 'Alegreya SC', serif; font-size: 1.15em; font-weight: 500; letter-spacing: 0.06em; color: var(--texte-clair); }
+:is(.postbody, #preview, .balises-1740) .content .ancien { font-family: 'Grenze Gotisch', serif; font-size: 1.15em; color: var(--texte-clair); }
+:is(.postbody, #preview, .balises-1740) .content .marque { padding: 0 3px; background: linear-gradient(transparent 55%, rgba(var(--accent-rgb), 0.45) 55%); }
+:is(.postbody, #preview, .balises-1740) .content .pc { font-family: 'Alegreya SC', serif; letter-spacing: 0.06em; }
+:is(.postbody, #preview, .balises-1740) .content .espace { letter-spacing: 0.3em; }
+:is(.postbody, #preview, .balises-1740) .content .barre { text-decoration: line-through; text-decoration-color: #8E4A3A; }
+/* Flouté : révélé au clic, avec son avertissement */
+:is(.postbody, #preview, .balises-1740) .content .flou { filter: blur(5px); cursor: pointer; user-select: none; transition: filter 0.4s; }
+:is(.postbody, #preview, .balises-1740) .content .flou.vu-1740 { filter: none; cursor: auto; user-select: auto; }
+:is(.postbody, #preview, .balises-1740) .content .tw-1740 {
+	display: inline-block;
+	margin-right: 6px;
+	padding: 0 7px;
+	border: 1px solid #6A5A44;
+	font-family: 'Alegreya SC', serif;
+	font-size: 12px;
+	font-style: normal;
+	letter-spacing: 0.1em;
+	vertical-align: 1px;
+	color: var(--ocre-doux);
+	filter: none;
+}
+
+/* ==========================================================================
+   BOÎTE « BALISES » DANS L'ÉDITEUR
+   ========================================================================== */
+.balises-bouton-1740 {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 0 8px;
+	padding: 6px 14px;
+	border: 1px solid var(--ligne-forte);
+	background: rgba(14, 13, 10, 0.55);
+	font-family: 'Alegreya SC', serif;
+	font-size: 15px;
+	letter-spacing: 0.1em;
+	color: var(--texte);
+	cursor: pointer;
+	transition: border-color 0.3s, color 0.3s;
+}
+.balises-bouton-1740:hover,
+.balises-bouton-1740[aria-expanded="true"] { border-color: var(--accent); color: var(--texte-clair); }
+.balises-bouton-1740 .fl { font-size: 11px; transition: transform 0.3s; }
+.balises-bouton-1740[aria-expanded="true"] .fl { transform: rotate(180deg); }
+.balises-1740 {
+	margin: 0 0 12px;
+	padding: 14px 16px 16px;
+	border: 1px solid var(--ligne);
+	background: var(--surface) var(--img-grain);
+	max-height: 420px;
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: var(--ligne-forte) transparent;
+}
+.balises-1740[hidden] { display: none; }
+.balises-1740 .content { font-family: 'Alegreya', Georgia, serif; font-size: 16px; color: var(--texte); }
+.balises-1740 .groupe-b-1740 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 14px 0 8px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.14em;
+	color: var(--accent-clair);
+}
+.balises-1740 .groupe-b-1740:first-child { margin-top: 0; }
+.balises-1740 .groupe-b-1740::after { content: ""; flex: 1; height: 1px; background: var(--ligne); }
+.balises-1740 .puces-1740 { display: flex; flex-wrap: wrap; gap: 6px; }
+.balises-1740 .puce-1740 {
+	display: inline-flex;
+	align-items: center;
+	min-height: 34px;
+	padding: 4px 12px;
+	border: 1px solid var(--ligne);
+	background: var(--fond-nuit);
+	font: inherit;
+	color: var(--texte);
+	cursor: pointer;
+	transition: border-color 0.3s, background-color 0.3s;
+}
+.balises-1740 .puce-1740:hover,
+.balises-1740 .puce-1740:focus-visible { border-color: var(--accent); background: rgba(var(--accent-rgb), 0.12); }
+/* Les aperçus restent petits dans les puces */
+.balises-1740 .puce-1740 > * { margin: 0 !important; pointer-events: none; }
+.balises-1740 .puce-1740 .t1 { font-size: 22px; }
+.balises-1740 .puce-1740 .t2::after,
+.balises-1740 .puce-1740 .intertitre::before,
+.balises-1740 .puce-1740 .intertitre::after { width: 24px; flex: none; }
+.balises-1740 .puce-1740 .flou { filter: blur(3px); }
+.balises-1740 .astuce-1740 { margin: 12px 0 0; font-size: 14px; font-style: italic; color: var(--texte-doux); }

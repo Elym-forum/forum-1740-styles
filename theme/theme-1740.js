@@ -1873,7 +1873,7 @@
 	}
 
 	/* ---------- Codes de messages : liste, champs, exergue, signature, titres… ---------- */
-	var BLOCS_1740 = ['page', 'bandeau', 'surtitre', 'grand-titre', 'titre', 'texte', 'note', 'liste', 'exergue', 'cadre', 'colonnes', 'champs', 'filet', 'signature', 'centre', 'image', 'medaillons', 'rp-infos', 'registre', 'avis-deces', 'pleine-largeur'];
+	var BLOCS_1740 = ['page', 'bandeau', 'surtitre', 'grand-titre', 'titre', 'texte', 'note', 'liste', 'exergue', 'cadre', 'colonnes', 'champs', 'filet', 'signature', 'centre', 'image', 'medaillons', 'rp-infos', 'registre', 'avis-deces', 'pleine-largeur', 'lettre', 'journal', 'avis', 'livre', 'remede', 'comptine', 'incantation', 't1', 't2', 't3', 'sous-titre', 'intertitre', 'date', 'sign', 'jour', 'entete', 'titre-avis', 'par', 'chap', 'chap-titre', 'folio', 'r-titre', 'r-sous', 'c-titre'];
 	function estBloc(n) {
 		return n && n.nodeType === 1 && BLOCS_1740.some(function (c) { return n.classList.contains(c); });
 	}
@@ -2061,6 +2061,7 @@
 
 	function initCodes() {
 		$$('.postbody .content, #preview .content').forEach(function (zone) {
+			if ($('.lettre .sign', zone)) { policeLettre(); }
 			if (zone.dataset.codes1740) { return; }
 			zone.dataset.codes1740 = '1';
 			var blocs = $$('.' + BLOCS_1740.join(', .'), zone).filter(estBloc);
@@ -2175,6 +2176,158 @@
 				if (!$('.l-1740', f)) { f.innerHTML = '<span class="l-1740"></span>'; f.setAttribute('aria-hidden', 'true'); }
 			});
 			initRegistre(zone);
+			// Lettre : « Nom|I » donne la signature et la lettre du cachet
+			$$('.lettre .sign', zone).forEach(function (sg) {
+				var t = sg.textContent.split('|');
+				if (t.length < 2) { return; }
+				sg.textContent = t[0].trim();
+				var l = (t[1] || '').trim().charAt(0);
+				var lettre = sg.closest('.lettre');
+				if (l && lettre && !$('.cachet-1740', lettre)) {
+					var c = document.createElement('span');
+					c.className = 'cachet-1740'; c.setAttribute('aria-hidden', 'true'); c.textContent = l;
+					lettre.appendChild(c);
+				}
+			});
+			// Flouté : étiquette d'avertissement, révélé au clic
+			$$('.flou', zone).forEach(function (f) {
+				if (f.dataset.fait) { return; }
+				f.dataset.fait = '1';
+				f.setAttribute('tabindex', '0');
+				f.setAttribute('role', 'button');
+				f.setAttribute('aria-label', 'Passage masqué' + (f.title ? ' (' + f.title + ')' : '') + ' : cliquer pour révéler');
+				if (f.title) {
+					var tw = document.createElement('span');
+					tw.className = 'tw-1740';
+					tw.textContent = 'TW · ' + f.title;
+					f.parentNode.insertBefore(tw, f);
+					f.removeAttribute('title');
+				}
+				function voir() { f.classList.add('vu-1740'); f.removeAttribute('role'); f.removeAttribute('tabindex'); f.removeAttribute('aria-label'); }
+				f.addEventListener('click', voir);
+				f.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); voir(); } });
+			});
+		});
+	}
+
+	/* Police calligraphiée des signatures de lettre : chargée seulement si besoin */
+	function policeLettre() {
+		if (document.getElementById('police-lettre-1740')) { return; }
+		var l = document.createElement('link');
+		l.id = 'police-lettre-1740';
+		l.rel = 'stylesheet';
+		l.href = 'https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap';
+		document.head.appendChild(l);
+	}
+
+	/* ---------- Boîte « Balises » au-dessus de l'éditeur ---------- */
+	var BALISES_1740 = [
+		{ g: 'Titres', l: [
+			['<span class="t1">Titre 1</span>', '<div class="t1">', '</div>'],
+			['<span class="t2">Titre 2</span>', '<div class="t2">', '</div>'],
+			['<span class="t3">Titre 3</span>', '<div class="t3">', '</div>'],
+			['<span class="sous-titre">Sous-titre</span>', '<div class="sous-titre">', '</div>'],
+			['<span class="intertitre">Intertitre</span>', '<div class="intertitre">', '</div>']
+		] },
+		{ g: 'Mise en forme', l: [
+			['<span class="dialogue">« Paroles »</span>', '<span class="dialogue">', '</span>'],
+			['<span class="gras">Gras</span>', '<span class="gras">', '</span>'],
+			['<span class="murmure">Murmure</span>', '<span class="murmure">', '</span>'],
+			['<span class="cri">Cri</span>', '<span class="cri">', '</span>'],
+			['<span class="ancien">Ancien</span>', '<span class="ancien">', '</span>'],
+			['<span class="marque">Surligné</span>', '<span class="marque">', '</span>'],
+			['<span class="pc">Petites capitales</span>', '<span class="pc">', '</span>'],
+			['<span class="espace">Espacé</span>', '<span class="espace">', '</span>'],
+			['<span class="barre">Barré</span>', '<span class="barre">', '</span>'],
+			['<span class="tw-1740">TW</span><span class="flou">Flouté</span>', '<span class="flou" title="avertissement">', '</span>']
+		] },
+		{ g: 'Couleurs', l: [
+			['<span class="mousse">Mousse</span>', '<span class="mousse">', '</span>'],
+			['<span class="ocre">Ocre</span>', '<span class="ocre">', '</span>'],
+			['<span class="rouille">Rouille</span>', '<span class="rouille">', '</span>'],
+			['<span class="sang">Sang</span>', '<span class="sang">', '</span>'],
+			['<span class="cendre">Cendre</span>', '<span class="cendre">', '</span>'],
+			['<span class="lune">Lune</span>', '<span class="lune">', '</span>']
+		] },
+		{ g: 'Documents', l: [
+			['Lettre', '<div class="lettre">\n<div class="date">Lieu, saison et année</div>\n', '\n<div class="sign">Signature|I</div>\n</div>', 'Le corps de la lettre…'],
+			['Page de journal', '<div class="journal">\n<div class="jour">Jour, saison</div>\n', '\n</div>', 'Les pensées du personnage…'],
+			['Avis placardé', '<div class="avis">\n<div class="entete">Avis aux habitant·e·s</div>\n<div class="titre-avis">Titre de l\'avis</div>\n', '\n<div class="par">Par ordre de…</div>\n</div>', 'Ce que l\'on annonce…'],
+			['Extrait de livre', '<div class="livre">\n<div class="chap">Livre ou chapitre</div>\n<div class="chap-titre">Titre du chapitre</div>\n<div class="texte lettrine">', '</div>\n<div class="folio">112</div>\n</div>', 'Le texte de l\'extrait…'],
+			['Remède', '<div class="remede">\n<div class="r-titre">Nom du remède</div>\n<div class="r-sous">Pour quel mal</div>\n<div class="champs">\nPlante : quantité\nPlante : quantité\n</div>\n<div class="liste">\n', '\n</div>\n</div>', 'Première étape\nDeuxième étape'],
+			['Comptine', '<div class="comptine">\n<div class="c-titre">Titre de la comptine</div>\n', '\n<span class="refrain">Le refrain</span>\n</div>', 'Premier vers\nDeuxième vers'],
+			['Incantation', '<div class="incantation">\n', '\n</div>', 'Premier vers\nDeuxième vers, <span class="eteint">qui s\'éteint</span>']
+		] },
+		{ g: 'Gabarits de RP', l: [
+			['Bannière gravée', '<div class="page">\n<div class="bandeau">\n<a class="musique" href="LIEN DE LA MUSIQUE"></a>\n<div class="surtitre">Une phrase d\'ambiance</div>\n<div class="grand-titre">Titre du RP</div>\n</div>\n<div class="texte lettrine">', '</div>\n<div class="rp-infos">Lieu|Saison, moment|@"Nom"</div>\n</div>', 'Le texte du RP…'],
+			['Bannière avec image', '<div class="page">\n<div class="bandeau">\n<img class="fond" src="ADRESSE DE L\'IMAGE" alt="" />\n<a class="musique" href="LIEN DE LA MUSIQUE"></a>\n<div class="surtitre">Une phrase d\'ambiance</div>\n<div class="grand-titre">Titre du RP</div>\n</div>\n<div class="texte lettrine">', '</div>\n<div class="rp-infos">Lieu|Saison, moment|@"Nom"</div>\n</div>', 'Le texte du RP…'],
+			['Avec médaillons', '<div class="page">\n<div class="bandeau">\n<img class="fond" src="ADRESSE DE L\'IMAGE" alt="" />\n<a class="musique" href="LIEN DE LA MUSIQUE"></a>\n<div class="surtitre">Une phrase d\'ambiance</div>\n<div class="grand-titre">Titre du RP</div>\n</div>\n<div class="medaillons"><img src="GIF 1" alt="" /><img src="GIF 2" alt="" /></div>\n<div class="texte lettrine">', '</div>\n<div class="rp-infos">Lieu|Saison, moment|@"Nom"</div>\n</div>', 'Le texte du RP…']
+		] }
+	];
+	function insererBalise(zoneTexte, avant, apres, defaut) {
+		var inst = null;
+		try { if (window.jQuery && jQuery(zoneTexte).sceditor) { inst = jQuery(zoneTexte).sceditor('instance'); } } catch (e) { inst = null; }
+		if (inst && inst.insertText) {
+			try { if (!inst.sourceMode()) { inst.sourceMode(true); } } catch (e2) {}
+			var sel = '';
+			try { var ta = $('.sceditor-container textarea', zoneTexte.parentNode) || zoneTexte; sel = ta.value.substring(ta.selectionStart, ta.selectionEnd); } catch (e3) {}
+			if (!sel && defaut) { inst.insertText(avant + defaut + apres); }
+			else { inst.insertText(avant, apres); }
+			inst.focus();
+			return;
+		}
+		// Zone de texte simple
+		var d = zoneTexte.selectionStart, f = zoneTexte.selectionEnd, v = zoneTexte.value;
+		var milieu = v.substring(d, f) || defaut || '';
+		zoneTexte.value = v.substring(0, d) + avant + milieu + apres + v.substring(f);
+		zoneTexte.focus();
+		zoneTexte.selectionStart = d + avant.length;
+		zoneTexte.selectionEnd = d + avant.length + milieu.length;
+	}
+	function initBalisesEditeur() {
+		$$('textarea#text_editor_textarea, textarea[name="message"]').forEach(function (ta) {
+			if (ta.dataset.balises1740) { return; }
+			ta.dataset.balises1740 = '1';
+			var bouton = document.createElement('button');
+			bouton.type = 'button';
+			bouton.className = 'balises-bouton-1740';
+			bouton.setAttribute('aria-expanded', 'false');
+			bouton.innerHTML = 'Balises <span class="fl" aria-hidden="true">▾</span>';
+			var boite = document.createElement('div');
+			boite.className = 'balises-1740';
+			boite.hidden = true;
+			var html = '<div class="content">';
+			BALISES_1740.forEach(function (grp, gi) {
+				html += '<div class="groupe-b-1740">' + grp.g + '</div><div class="puces-1740">';
+				grp.l.forEach(function (b, bi) {
+					html += '<button type="button" class="puce-1740" data-g="' + gi + '" data-b="' + bi + '" title="Ajouter">' + (/^</.test(b[0]) ? b[0] : '<span>' + b[0] + '</span>') + '</button>';
+				});
+				html += '</div>';
+			});
+			html += '<p class="astuce-1740">Sélectionne du texte avant de cliquer pour l\'envelopper dans la balise. La boîte passe l\'éditeur en mode source, où les balises restent lisibles.</p></div>';
+			boite.innerHTML = html;
+			bouton.addEventListener('click', function () {
+				boite.hidden = !boite.hidden;
+				bouton.setAttribute('aria-expanded', String(!boite.hidden));
+			});
+			boite.addEventListener('click', function (e) {
+				var p = e.target.closest('.puce-1740');
+				if (!p) { return; }
+				var b = BALISES_1740[p.dataset.g].l[p.dataset.b];
+				insererBalise(ta, b[1], b[2], b[3]);
+			});
+			// SCEditor place son cadre à côté de la zone de texte, parfois après nous : on se range juste avant lui
+			function placer() {
+				var cadre = $('.sceditor-container', ta.parentNode) || ta;
+				if (boite.nextSibling !== cadre) {
+					cadre.parentNode.insertBefore(bouton, cadre);
+					cadre.parentNode.insertBefore(boite, cadre);
+				}
+				return cadre !== ta;
+			}
+			placer();
+			var essais = 0;
+			var veille = setInterval(function () { if (placer() || ++essais > 20) { clearInterval(veille); } }, 300);
 		});
 	}
 
@@ -2210,6 +2363,7 @@
 		initSondage();
 		nettoyerEditions();
 		initCodes();
+		initBalisesEditeur();
 	}
 
 	if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', demarrer); }
