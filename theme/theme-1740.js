@@ -1867,13 +1867,9 @@
 		});
 	}
 
-	/* ---------- « Dernière édition… » : sans le nombre d'éditions ---------- */
+	/* ---------- « Dernière édition… » : retirée des messages ---------- */
 	function nettoyerEditions() {
-		$$('.edited-message').forEach(function (el) {
-			var marche = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-			var n;
-			while ((n = marche.nextNode())) { n.nodeValue = n.nodeValue.replace(/,\s*édité\s+\d+\s+fois/i, ''); }
-		});
+		$$('.edited-message').forEach(function (el) { el.remove(); });
 	}
 
 	function demarrer() {

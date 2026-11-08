@@ -1154,3 +1154,6 @@ body#modernbb #preview.post,
 body#modernbb .post.revue-msg-1740 {
 	background: var(--surface) var(--img-grain) !important;
 }
+
+/* Mention « Dernière édition par… » : retirée */
+body#modernbb .edited-message { display: none !important; }
