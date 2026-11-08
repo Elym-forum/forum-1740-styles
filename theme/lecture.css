@@ -63,6 +63,10 @@
 }
 
 /* --- Bouton de la barre d'outils, sous la rosette --- */
+/* Rosette agrandie : même diamètre que le cercle de l'icône d'accessibilité (≈ 22 px) */
+#barre-1740 .barre-rosette { width: 32px; height: 32px; margin-bottom: 0; }
+#barre-1740 .barre-rosette > circle { stroke-width: 0.85; }
+#barre-1740 .barre-rosette g circle { stroke-width: 0.6; }
 #barre-1740 .outil-acces-1740 { margin-bottom: 2px; color: var(--texte-clair); }
 #barre-1740 .outil-acces-1740 svg .plein { fill: currentColor; stroke: none; }
 #barre-1740 .outil-acces-1740[aria-expanded="true"] { border-color: var(--accent); background: rgba(var(--accent-rgb), 0.2); }
