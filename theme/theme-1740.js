@@ -2909,7 +2909,8 @@
 		{ cle: 'espace', nom: 'Espacement', choix: [['', 'Normal'], ['aere', 'Aéré']] },
 		{ cle: 'contraste', nom: 'Contraste', choix: [['', 'Normal'], ['fort', 'Renforcé']] },
 		{ cle: 'mouvement', nom: 'Animations', choix: [['', 'Oui'], ['reduit', 'Réduites']] },
-		{ cle: 'liens', nom: 'Liens', choix: [['', 'Normaux'], ['souligne', 'Soulignés']] }
+		{ cle: 'liens', nom: 'Liens', choix: [['', 'Normaux'], ['souligne', 'Soulignés']] },
+		{ cle: 'couleurs', nom: 'Couleurs (daltonisme)', aide: 'Change les couleurs qui ont un sens : courroux, statuts, couleurs de texte.', choix: [['', 'Normales'], ['rv', 'Rouge-vert'], ['bj', 'Bleu-jaune'], ['gris', 'En gris']] }
 	];
 
 	function lireLecture() {
@@ -2942,13 +2943,15 @@
 			bouton = document.createElement('button');
 			bouton.type = 'button';
 			bouton.className = 'lecture-1740';
-			bouton.textContent = 'Aa';
+			bouton.innerHTML = '<svg viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+				'<circle cx="10" cy="10" r="8.6"/><circle cx="10" cy="5.6" r="1.25" fill="currentColor" stroke="none"/>' +
+				'<path d="M5.4 8.1 10 9l4.6-.9M10 9v3.4M10 12.4l-2.3 3.8M10 12.4l2.3 3.8"/></svg>';
 			var pastille = $('.pastille-1740', zone);
 			if (pastille && pastille.nextSibling) { zone.insertBefore(bouton, pastille.nextSibling); }
 			else { zone.insertBefore(bouton, zone.firstChild); }
 		}
-		bouton.setAttribute('aria-label', 'Réglages de lecture');
-		bouton.title = 'Réglages de lecture';
+		bouton.setAttribute('aria-label', 'Accessibilité : réglages de lecture');
+		bouton.title = 'Accessibilité';
 		bouton.setAttribute('aria-haspopup', 'dialog');
 		bouton.setAttribute('aria-expanded', 'false');
 
@@ -2957,10 +2960,10 @@
 		pop.id = 'lecture-pop-1740';
 		pop.hidden = true;
 		pop.setAttribute('role', 'dialog');
-		pop.setAttribute('aria-label', 'Réglages de lecture');
+		pop.setAttribute('aria-label', 'Accessibilité');
 		bouton.setAttribute('aria-controls', pop.id);
 
-		var html = '<div class="lecture-corps-1740"><p class="lecture-titre-1740">Réglages de lecture</p>' +
+		var html = '<div class="lecture-corps-1740"><p class="lecture-titre-1740">Accessibilité</p>' +
 			'<svg class="lecture-orn-1740" viewBox="0 0 60 8" width="60" height="8" aria-hidden="true"><path d="M0 4h24M36 4h24" stroke="currentColor" stroke-width="1"/><path d="M30 0l4 4-4 4-4-4z" fill="currentColor"/></svg>';
 		REGLAGES_LECTURE.forEach(function (g) {
 			html += '<div class="lecture-ligne-1740"><span class="lecture-nom-1740" id="lecture-nom-' + g.cle + '">' + g.nom + '</span>' +
@@ -2968,7 +2971,7 @@
 			g.choix.forEach(function (c) {
 				html += '<button type="button" data-valeur="' + c[0] + '" aria-pressed="false">' + c[1] + '</button>';
 			});
-			html += '</div></div>';
+			html += '</div>' + (g.aide ? '<span class="lecture-aide-1740">' + g.aide + '</span>' : '') + '</div>';
 		});
 		html += '<div class="lecture-pied-1740"><span>Gardé sur cet appareil</span><button type="button" class="lecture-retablir-1740">Rétablir</button></div></div>';
 		pop.innerHTML = html;

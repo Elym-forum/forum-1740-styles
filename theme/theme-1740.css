@@ -5862,6 +5862,7 @@ html body#modernbb .emojis-pop-1740 .smiley-1740 { height: 36px; }
      data-lecture-contraste   = "fort"
      data-lecture-mouvement   = "reduit"
      data-lecture-liens       = "souligne"
+     data-lecture-couleurs    = "rv" | "bj" | "gris"   (daltonisme)
    Les choix sont gardés dans le navigateur (localStorage « lecture1740 »).
    ========================================================================== */
 
@@ -5927,12 +5928,9 @@ html body#modernbb .emojis-pop-1740 .smiley-1740 { height: 36px; }
 	border: 1px solid var(--ligne);
 	background: transparent;
 	color: var(--texte-doux);
-	font-family: 'Alegreya', Georgia, serif !important;
-	font-size: 14px;
-	line-height: 1;
-	letter-spacing: 0.02em;
 	cursor: pointer;
 }
+.lecture-1740 svg { display: block; }
 .lecture-1740:hover, .lecture-1740:focus-visible { color: var(--texte-clair); border-color: var(--accent); }
 .lecture-1740[aria-expanded="true"] { color: var(--texte-clair); border-color: var(--accent); background: rgba(var(--accent-rgb), 0.16); }
 /* Petit point quand au moins un réglage est actif */
@@ -6022,6 +6020,10 @@ html body#modernbb .emojis-pop-1740 .smiley-1740 { height: 36px; }
 	background: rgba(var(--accent-rgb), 0.22);
 	color: var(--texte-clair);
 }
+/* Rangée des couleurs : quatre choix sur deux lignes */
+.lecture-pop-1740 [data-reglage="couleurs"] { grid-auto-flow: row; grid-template-columns: 1fr 1fr; }
+.lecture-pop-1740 .lecture-aide-1740 { display: block; margin-top: 5px; font-size: 13px; font-style: italic; color: var(--texte-doux); }
+
 /* Chaque choix de police s'affiche dans sa propre police */
 .lecture-pop-1740 button[data-valeur="lisible"] { font-family: "Atkinson 1740", Verdana, sans-serif !important; }
 .lecture-pop-1740 button[data-valeur="dyslexie"] { font-family: "OpenDyslexic 1740", Verdana, sans-serif !important; font-size: 14px; }
@@ -6112,4 +6114,35 @@ html[data-lecture-liens="souligne"] body#modernbb a:not(.entete-nav a):not(h1 a)
 	text-decoration-thickness: 1px !important;
 	text-underline-offset: 3px !important;
 }
+
+/* --- Couleurs adaptées (daltonisme) ---
+   Seules les couleurs qui portent un sens changent : jauge de courroux,
+   statuts des demandes, couleurs de texte des balises, cire des sujets scellés.
+   rv   = rouge-vert (protanopie, deutéranopie) : le vert devient bleu, le rouge devient orange
+   bj   = bleu-jaune (tritanopie) : le vert devient sarcelle, le rouge devient framboise
+   gris = niveaux de gris (achromatopsie) */
+html[data-lecture-couleurs="rv"] {
+	--courroux-1: #4A5F7A; --courroux-2: #50678A; --courroux-3: #5D7394; --courroux-4: #78809A;
+	--courroux-5: #9A8A78; --courroux-6: #B98552; --courroux-7: #C57D3C; --courroux-8: #CC7630;
+	--courroux-9: #D06E24; --courroux-10: #D2651A;
+	--couleur-bien-1740: #9DB8D6;
+	--couleur-mal-1740: #E3A35A;
+	--couleur-attente-1740: #DCD5C4;
+}
+html[data-lecture-couleurs="bj"] {
+	--courroux-1: #3F6E6C; --courroux-2: #457673; --courroux-3: #507D7A; --courroux-4: #6D7C7C;
+	--courroux-5: #8E6A72; --courroux-6: #A14F62; --courroux-7: #A8465B; --courroux-8: #AE3D55;
+	--courroux-9: #B2344E; --courroux-10: #B52B47;
+	--couleur-bien-1740: #8CC9C3;
+	--couleur-mal-1740: #E58A9C;
+	--couleur-attente-1740: #DCD5C4;
+}
+html[data-lecture-couleurs="gris"] { filter: grayscale(1); } /* sur <html> : garde la barre fixe en place */
+
+html[data-lecture-couleurs]:not([data-lecture-couleurs="gris"]) body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.mousse, .mousse *) { color: var(--couleur-bien-1740) !important; }
+html[data-lecture-couleurs]:not([data-lecture-couleurs="gris"]) body#modernbb :is(.postbody, #preview, .balises-1740) .content :is(.sang, .sang *, .rouille, .rouille *) { color: var(--couleur-mal-1740) !important; }
+html[data-lecture-couleurs]:not([data-lecture-couleurs="gris"]) body#modernbb :is(.postbody, #preview) .content .statut-1740.faite { color: var(--couleur-bien-1740) !important; }
+html[data-lecture-couleurs]:not([data-lecture-couleurs="gris"]) body#modernbb :is(.postbody, #preview) .content .statut-1740.refusee { color: var(--couleur-mal-1740) !important; }
+html[data-lecture-couleurs]:not([data-lecture-couleurs="gris"]) body#modernbb :is(.postbody, #preview) .content .statut-1740.attente { color: var(--couleur-attente-1740) !important; }
+html[data-lecture-couleurs]:not([data-lecture-couleurs="gris"]) body#modernbb :is(.rosette-scelle circle.cire, .etat-sujet-1740 .e-scelle .cire) { fill: #4A3A2A; stroke: var(--couleur-mal-1740); }
 
