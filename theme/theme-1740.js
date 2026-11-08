@@ -1873,7 +1873,7 @@
 	}
 
 	/* ---------- Codes de messages : liste, champs, exergue, signature, titres… ---------- */
-	var BLOCS_1740 = ['page', 'bandeau', 'surtitre', 'grand-titre', 'titre', 'texte', 'note', 'liste', 'exergue', 'cadre', 'colonnes', 'champs', 'filet', 'signature', 'centre', 'image', 'medaillons', 'rp-infos'];
+	var BLOCS_1740 = ['page', 'bandeau', 'surtitre', 'grand-titre', 'titre', 'texte', 'note', 'liste', 'exergue', 'cadre', 'colonnes', 'champs', 'filet', 'signature', 'centre', 'image', 'medaillons', 'rp-infos', 'registre', 'avis-deces', 'pleine-largeur'];
 	function estBloc(n) {
 		return n && n.nodeType === 1 && BLOCS_1740.some(function (c) { return n.classList.contains(c); });
 	}
@@ -1912,6 +1912,140 @@
 		while ((n = el.firstChild) && (n.nodeName === 'BR' || (n.nodeType === 3 && !n.nodeValue.trim()))) { el.removeChild(n); }
 		while ((n = el.lastChild) && (n.nodeName === 'BR' || (n.nodeType === 3 && !n.nodeValue.trim()))) { el.removeChild(n); }
 	}
+	/* ---------- Registre des âmes ----------
+	   Source actuelle : les <div class="ame"> écrits dans le message, une ligne « Champ : valeur » par champ.
+	   Plus tard : la même fonction recevra les lignes d'une feuille Google (mêmes noms de champs). */
+	var BOUGIE_1740 = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21h6"></path><path d="M10 21V11h4v10"></path><path d="M12 11V9"></path><path d="M12 7c-1-1-1-2 0-3s1-2 0-3"></path></svg>';
+	function cleChamp(t) {
+		return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '');
+	}
+	function lireAmesMessage(reg) {
+		return $$(':scope > .ame', reg).map(function (el) {
+			var ame = {};
+			lignes(el).forEach(function (ln) {
+				var premier = ln[0];
+				var m = premier && premier.nodeType === 3 ? premier.nodeValue.match(/^\s*([^:]+?)\s*:\s*([\s\S]*)$/) : null;
+				if (!m) { return; }
+				premier.nodeValue = m[2];
+				var frag = document.createDocumentFragment();
+				ln.forEach(function (n) { frag.appendChild(n); });
+				ame[cleChamp(m[1])] = frag;
+			});
+			return ame;
+		});
+	}
+	function texteDe(v) { return v ? (typeof v === 'string' ? v : v.textContent).trim() : ''; }
+	function valeurNoeud(v) {
+		if (!v) { return document.createTextNode(''); }
+		return typeof v === 'string' ? document.createTextNode(v) : v.cloneNode(true);
+	}
+	function bucketUnion(t) {
+		if (/veu[fv]/i.test(t)) { return 'Veuf·ve'; }
+		if (/mari|[ée]poux|[ée]pouse|fianc/i.test(t)) { return /fianc/i.test(t) ? 'Fiancé·e' : 'Marié·e'; }
+		if (/c[ée]libat/i.test(t) || !t) { return 'Célibataire'; }
+		return 'Autre';
+	}
+	function sansPacte(t) { return !t || /^(aucun|aucune|non|-|—|sans)\b/i.test(t); }
+	function construireRegistre(reg, ames) {
+		var donnees = ames.map(function (a) {
+			var union = texteDe(a.union);
+			return {
+				a: a,
+				genre: texteDe(a.genre) || 'Autre',
+				union: bucketUnion(union),
+				pacte: sansPacte(texteDe(a.pacte)) ? 'Sans pacte' : 'Avec pacte',
+				demeure: texteDe(a.demeure),
+				morte: !!texteDe(a.deces)
+			};
+		});
+		function options(cle, premier) {
+			var vus = [];
+			donnees.forEach(function (d) { if (d[cle] && vus.indexOf(d[cle]) < 0) { vus.push(d[cle]); } });
+			vus.sort(function (x, y) { return x.localeCompare(y, 'fr'); });
+			return '<option value="">' + premier + '</option>' + vus.map(function (v) { return '<option>' + echapper(v) + '</option>'; }).join('');
+		}
+		var id = 'reg' + Math.random().toString(36).slice(2, 7);
+		var barre = document.createElement('form');
+		barre.className = 'filtres-1740';
+		barre.setAttribute('onsubmit', 'return false');
+		barre.innerHTML =
+			'<div class="filtre-1740"><label for="' + id + 'g">Genre</label><select id="' + id + 'g" data-cle="genre">' + options('genre', 'Tous') + '</select></div>' +
+			'<div class="filtre-1740"><label for="' + id + 'u">Union</label><select id="' + id + 'u" data-cle="union">' + options('union', 'Toutes') + '</select></div>' +
+			'<div class="filtre-1740"><label for="' + id + 'p">Pacte</label><select id="' + id + 'p" data-cle="pacte"><option value="">Tous</option><option>Avec pacte</option><option>Sans pacte</option></select></div>' +
+			'<div class="filtre-1740"><label for="' + id + 'd">Demeure</label><select id="' + id + 'd" data-cle="demeure">' + options('demeure', 'Toutes') + '</select></div>' +
+			'<div class="filtre-1740"><label for="' + id + 'v">Âmes</label><select id="' + id + 'v" data-cle="vie"><option value="vivantes">Vivantes</option><option value="defuntes">Défuntes</option><option value="">Toutes</option></select></div>' +
+			'<span class="compte-1740" aria-live="polite"></span>';
+		var grille = document.createElement('div');
+		grille.className = 'ames-1740';
+		donnees.forEach(function (d) {
+			var a = d.a;
+			var f = document.createElement('article');
+			f.className = 'fiche-ame-1740' + (d.morte ? ' defunte' : '');
+			var portrait = texteDe(a.portrait);
+			f.innerHTML = '<span class="medaillon-1740"><span>' + (portrait ? '<img src="' + echapper(portrait) + '" alt="" loading="lazy" />' : '') + '</span></span><div class="infos-1740"></div>';
+			var infos = $('.infos-1740', f);
+			var nom = document.createElement('h3'); nom.className = 'nom-1740'; nom.appendChild(valeurNoeud(a.nom)); infos.appendChild(nom);
+			if (texteDe(a.faceclaim)) { var fc = document.createElement('p'); fc.className = 'fc-1740'; fc.appendChild(valeurNoeud(a.faceclaim)); infos.appendChild(fc); }
+			var ch = document.createElement('div'); ch.className = 'ch-1740';
+			[['naissance', 'Naissance'], ['occupation', 'Occupation'], ['demeure', 'Demeure'], ['union', 'Union'], ['enfants', 'Enfants']].forEach(function (c) {
+				if (!texteDe(a[c[0]])) { return; }
+				var l = document.createElement('span'); l.className = 'l-1740'; l.textContent = c[1];
+				var v = document.createElement('span'); v.appendChild(valeurNoeud(a[c[0]]));
+				ch.appendChild(l); ch.appendChild(v);
+			});
+			infos.appendChild(ch);
+			var p = document.createElement('span');
+			if (d.pacte === 'Sans pacte') { p.className = 'pacte-1740 sans'; p.textContent = 'Sans pacte'; }
+			else { p.className = 'pacte-1740'; p.appendChild(document.createTextNode('Pacte · ')); p.appendChild(valeurNoeud(a.pacte)); }
+			infos.appendChild(p);
+			if (d.morte) { var mo = document.createElement('div'); mo.className = 'mort-1740'; mo.appendChild(document.createTextNode('Décès : ')); mo.appendChild(valeurNoeud(a.deces)); infos.appendChild(mo); }
+			d.el = f;
+			grille.appendChild(f);
+		});
+		var vide = document.createElement('div'); vide.className = 'vide-1740'; vide.textContent = 'Aucune âme ne répond à ces critères.';
+		grille.appendChild(vide);
+		function filtrer() {
+			var crit = {};
+			$$('select', barre).forEach(function (s) { crit[s.dataset.cle] = s.value; });
+			var n = 0;
+			donnees.forEach(function (d) {
+				var ok = (!crit.genre || d.genre === crit.genre) && (!crit.union || d.union === crit.union) &&
+					(!crit.pacte || d.pacte === crit.pacte) && (!crit.demeure || d.demeure === crit.demeure) &&
+					(!crit.vie || (crit.vie === 'defuntes' ? d.morte : !d.morte));
+				d.el.hidden = !ok;
+				if (ok) { n++; }
+			});
+			vide.hidden = n > 0;
+			$('.compte-1740', barre).textContent = n + (n > 1 ? ' âmes' : ' âme');
+		}
+		barre.addEventListener('change', filtrer);
+		reg.innerHTML = '';
+		reg.appendChild(barre);
+		reg.appendChild(grille);
+		filtrer();
+	}
+	function initRegistre(zone) {
+		$$('.registre', zone).forEach(function (reg) {
+			if (reg.dataset.fait) { return; }
+			reg.dataset.fait = '1';
+			construireRegistre(reg, lireAmesMessage(reg));
+		});
+		$$('.avis-deces', zone).forEach(function (av) {
+			if (av.dataset.fait) { return; }
+			av.dataset.fait = '1';
+			var t = av.textContent.split('|');
+			var msg = t[0].trim(), quand = (t[1] || '').trim();
+			av.innerHTML = '<span class="bougie-1740" role="img" aria-label="Avis de décès">' + BOUGIE_1740 + '</span><div><span class="qui-1740">Le Veilleur</span><p class="msg-1740"></p>' + (quand ? '<span class="quand-1740"></span>' : '') + '</div>';
+			$('.msg-1740', av).textContent = msg;
+			if (quand) { $('.quand-1740', av).textContent = quand; }
+		});
+		// Message en pleine largeur : sans la fiche du personnage
+		if ($('.registre, .pleine-largeur', zone)) {
+			var post = zone.closest('.post-1740');
+			if (post) { post.classList.add('pleine-1740'); }
+		}
+	}
+
 	function initCodes() {
 		$$('.postbody .content, #preview .content').forEach(function (zone) {
 			if (zone.dataset.codes1740) { return; }
@@ -2027,6 +2161,7 @@
 			$$('.filet', zone).forEach(function (f) {
 				if (!$('.l-1740', f)) { f.innerHTML = '<span class="l-1740"></span>'; f.setAttribute('aria-hidden', 'true'); }
 			});
+			initRegistre(zone);
 		});
 	}
 

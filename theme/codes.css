@@ -274,7 +274,7 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 }
 
 /* Les sauts de ligne n'abîment pas les blocs (le JS retire les autres) */
-:is(.postbody, #preview) .content :is(.page, .bandeau, .colonnes, .cadre, .champs, .liste, .filet, .medaillons, .rp-infos) > br { display: none; }
+:is(.postbody, #preview) .content :is(.page, .bandeau, .colonnes, .cadre, .champs, .liste, .filet, .medaillons, .rp-infos, .registre) > br { display: none; }
 
 /* ---------- Petits écrans ---------- */
 @media (max-width: 640px) {
@@ -365,4 +365,150 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 	:is(.postbody, #preview) .content .rp-infos { grid-template-columns: 1fr; }
 	:is(.postbody, #preview) .content .rp-infos > .case-1740 + .case-1740 { border-left: none; border-top: 1px solid var(--ligne); }
 	:is(.postbody, #preview) .content .page > .rp-infos:last-child { margin: 18px -16px -18px; }
+}
+
+/* ==========================================================================
+   MESSAGE EN PLEINE LARGEUR (registre…) : sans la fiche du personnage
+   Le JS pose .pleine-1740 sur un message qui contient .registre ou .pleine-largeur
+   ========================================================================== */
+body#modernbb .post-1740.pleine-1740 .msg-grille-1740 { grid-template-columns: minmax(0, 1fr) !important; }
+body#modernbb .post-1740.pleine-1740 .postprofile.fiche-1740 { display: none !important; }
+
+/* ==========================================================================
+   REGISTRE DES ÂMES
+   ========================================================================== */
+:is(.postbody, #preview) .content .registre { margin: 0 0 14px; }
+:is(.postbody, #preview) .content .registre > .ame { display: none; }  /* données brutes, remplacées par le JS */
+:is(.postbody, #preview) .content .filtres-1740 {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	gap: 10px 14px;
+	margin: 0 0 20px;
+	padding: 12px 16px;
+	border: 1px solid var(--ligne);
+	background: rgba(14, 13, 10, 0.55);
+}
+:is(.postbody, #preview) .content .filtre-1740 { display: flex; flex-direction: column; gap: 4px; }
+:is(.postbody, #preview) .content .filtre-1740 label { font-family: 'Alegreya SC', serif; font-size: 13px; letter-spacing: 0.12em; color: var(--accent); }
+html body#modernbb :is(.postbody, #preview) .content .filtre-1740 select { min-height: 34px; padding: 3px 8px !important; font-size: 15px !important; }
+:is(.postbody, #preview) .content .compte-1740 { margin-left: auto; align-self: center; font-size: 15px; font-style: italic; color: var(--texte-doux); }
+:is(.postbody, #preview) .content .ames-1740 { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 16px; }
+:is(.postbody, #preview) .content .ames-1740 > [hidden] { display: none !important; }
+:is(.postbody, #preview) .content .ames-1740 .vide-1740 { grid-column: 1 / -1; padding: 20px; text-align: center; font-style: italic; color: var(--texte-doux); }
+:is(.postbody, #preview) .content .fiche-ame-1740 {
+	position: relative;
+	display: grid;
+	grid-template-columns: 132px minmax(0, 1fr);
+	gap: 18px;
+	padding: 16px;
+	border: 1px solid var(--ligne);
+	background: #15130F;
+}
+:is(.postbody, #preview) .content .fiche-ame-1740::before {
+	content: "";
+	position: absolute;
+	top: -5px;
+	left: 50%;
+	width: 8px;
+	height: 8px;
+	margin-left: -4px;
+	transform: rotate(45deg);
+	border: 1px solid var(--accent);
+	background: #17150F;
+}
+/* Médaillon : celui de la liste des membres */
+:is(.postbody, #preview) .content .medaillon-1740 {
+	position: relative;
+	align-self: center;
+	justify-self: center;
+	width: 112px;
+	height: 138px;
+	margin: 12px 0;
+	padding: 4px;
+	box-sizing: border-box;
+	border: 1px solid var(--accent);
+	border-radius: 50%;
+	background: var(--fond-nuit);
+	box-shadow: 0 0 0 4px #15130F, 0 0 0 5px var(--ligne-forte), 0 0 0 9px #15130F, 0 0 0 10px var(--ligne);
+}
+:is(.postbody, #preview) .content .medaillon-1740::before,
+:is(.postbody, #preview) .content .medaillon-1740::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	z-index: 2;
+	width: 8px;
+	height: 8px;
+	background: #15130F;
+	border: 1px solid var(--accent);
+	transform: translateX(-50%) rotate(45deg);
+}
+:is(.postbody, #preview) .content .medaillon-1740::before { top: -14px; }
+:is(.postbody, #preview) .content .medaillon-1740::after { bottom: -14px; }
+:is(.postbody, #preview) .content .medaillon-1740 span { display: block; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; }
+html body#modernbb :is(.postbody, #preview) .content .medaillon-1740 img {
+	display: block;
+	width: 100% !important;
+	height: 100% !important;
+	max-width: none !important;
+	object-fit: cover;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	filter: brightness(0.88) saturate(0.85) sepia(0.1);
+}
+:is(.postbody, #preview) .content .fiche-ame-1740 .nom-1740 { margin: 0; font-family: 'Grenze Gotisch', serif; font-size: 24px; font-weight: 500; line-height: 1.05; color: var(--texte-clair); }
+:is(.postbody, #preview) .content .fiche-ame-1740 .fc-1740 { margin: 2px 0 8px; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+:is(.postbody, #preview) .content .fiche-ame-1740 .ch-1740 { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; font-size: 14px; }
+:is(.postbody, #preview) .content .fiche-ame-1740 .ch-1740 > span { padding: 3px 0; border-bottom: 1px dotted var(--ligne); }
+:is(.postbody, #preview) .content .fiche-ame-1740 .ch-1740 > .l-1740 { font-family: 'Alegreya SC', serif; font-size: 13px; letter-spacing: 0.06em; color: var(--texte-doux); }
+:is(.postbody, #preview) .content .fiche-ame-1740 .pacte-1740 {
+	display: inline-block;
+	margin-top: 8px;
+	padding: 1px 9px;
+	border: 1px solid #6A5A44;
+	background: var(--fond-nuit);
+	font-family: 'Alegreya SC', serif;
+	font-size: 13px;
+	letter-spacing: 0.08em;
+	color: var(--ocre-doux);
+}
+:is(.postbody, #preview) .content .fiche-ame-1740 .pacte-1740.sans { color: var(--texte-doux); border-color: var(--ligne); }
+:is(.postbody, #preview) .content .fiche-ame-1740 .mort-1740 { margin-top: 6px; font-size: 14px; font-style: italic; color: var(--ocre-doux); }
+:is(.postbody, #preview) .content .fiche-ame-1740.defunte { opacity: 0.72; }
+:is(.postbody, #preview) .content .fiche-ame-1740.defunte .medaillon-1740 img { filter: grayscale(1) brightness(0.8); }
+
+/* Avis de décès (Le Veilleur) */
+:is(.postbody, #preview) .content .avis-deces {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	gap: 16px;
+	margin: 20px 0;
+	padding: 16px 20px;
+	border: 1px solid #4E2A22;
+	background: rgba(40, 18, 14, 0.35);
+}
+:is(.postbody, #preview) .content .avis-deces .bougie-1740 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 46px;
+	height: 46px;
+	border-radius: 50%;
+	background: radial-gradient(circle at 40% 35%, #9A5444, #6E3A2E 70%);
+	box-shadow: 0 0 0 2px #4E2A22, inset 0 0 0 5px rgba(0, 0, 0, 0.18);
+	color: #E8C9B8;
+}
+:is(.postbody, #preview) .content .avis-deces .bougie-1740 svg { width: 24px; height: 24px; }
+:is(.postbody, #preview) .content .avis-deces .qui-1740 { display: block; font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.12em; color: #C48C78; }
+:is(.postbody, #preview) .content .avis-deces .msg-1740 { margin: 2px 0 0; font-size: 16px; line-height: 1.55; }
+:is(.postbody, #preview) .content .avis-deces .quand-1740 { display: block; margin-top: 4px; font-size: 14px; font-style: italic; color: var(--texte-doux); }
+
+@media (max-width: 640px) {
+	:is(.postbody, #preview) .content .ames-1740 { grid-template-columns: 1fr; }
+	:is(.postbody, #preview) .content .fiche-ame-1740 { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+	:is(.postbody, #preview) .content .fiche-ame-1740 .ch-1740 { text-align: left; }
+	:is(.postbody, #preview) .content .compte-1740 { margin-left: 0; }
 }
