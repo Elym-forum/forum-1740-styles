@@ -684,8 +684,9 @@ html body#modernbb :is(.postbody, #preview, .balises-1740) .content .avis-deces 
 :is(.postbody, #preview, .balises-1740) .content .espace { letter-spacing: 0.3em; }
 :is(.postbody, #preview, .balises-1740) .content .barre { text-decoration: line-through; text-decoration-color: #8E4A3A; }
 /* Flouté : révélé au clic, avec son avertissement */
-:is(.postbody, #preview, .balises-1740) .content .flou { filter: blur(5px); cursor: pointer; user-select: none; transition: filter 0.4s; }
-:is(.postbody, #preview, .balises-1740) .content .flou.vu-1740 { filter: none; cursor: auto; user-select: auto; }
+html body#modernbb :is(.postbody, #preview, .balises-1740) .content .flou { filter: blur(5px); cursor: pointer; user-select: none; transition: filter 0.4s; }
+html body#modernbb :is(.postbody, #preview) .content .flou:is(:hover, :focus-visible, .vu-1740) { filter: none !important; cursor: auto; user-select: auto; }
+html body#modernbb :is(.postbody, #preview) .content .flou * { filter: none; }
 :is(.postbody, #preview, .balises-1740) .content .tw-1740 {
 	display: inline-block;
 	margin-right: 6px;
