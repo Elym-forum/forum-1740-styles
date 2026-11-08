@@ -287,8 +287,7 @@ html body#modernbb #main-content fieldset.polls dd.sondage-res-1740 {
    AVIS ET CONFIRMATIONS (message_body, confirm_body)
    ========================================================================== */
 html body#modernbb .sujet-cadre-1740.avis-1740 {
-	max-width: 640px;
-	margin: 24px auto 18px !important;
+	margin: 0 0 18px !important;
 	padding: 28px 32px !important;
 	text-align: center;
 }
