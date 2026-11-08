@@ -948,9 +948,9 @@ html body#modernbb .sceditor-toolbar :is(
 	.sceditor-button-youtube,
 	.sceditor-button-headers,
 	.sceditor-button-font,
-	.sceditor-button-size,
+	.sceditor-button-removeformat,
 	.sceditor-button-emoticon,
 	.sceditor-button-source
 ) { display: none !important; }
 /* Un groupe vidé ne laisse pas de séparateur orphelin */
-html body#modernbb .sceditor-toolbar .sceditor-group:not(:has(.sceditor-button:not([style*="display: none"]):not(.sceditor-button-servimg, .sceditor-button-code, .sceditor-button-youtube, .sceditor-button-headers, .sceditor-button-font, .sceditor-button-size, .sceditor-button-emoticon, .sceditor-button-source, .sceditor-button-color))) { display: none !important; }
+html body#modernbb .sceditor-toolbar .sceditor-group:not(:has(.sceditor-button:not([style*="display: none"]):not(.sceditor-button-servimg, .sceditor-button-code, .sceditor-button-youtube, .sceditor-button-headers, .sceditor-button-font, .sceditor-button-removeformat, .sceditor-button-emoticon, .sceditor-button-source, .sceditor-button-color))) { display: none !important; }
