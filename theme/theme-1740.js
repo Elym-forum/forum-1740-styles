@@ -2289,6 +2289,11 @@
 					html += '<button type="button" class="puce-1740" data-g="' + gi + '" data-b="' + bi + '" title="Ajouter">' + (/^</.test(b[0]) ? b[0] : '<span>' + b[0] + '</span>') + '</button>';
 				});
 				html += '</div>';
+				if (grp.g === 'Couleurs') { html += '<div class="groupe-b-1740">Couleur libre</div><div class="couleur-libre-1740">'
+				+ '<label class="lecteur-1740" for="' + 'cl' + (++compteurBalises1740) + '">Choisir une couleur</label>'
+				+ '<input type="color" id="cl' + compteurBalises1740 + '" value="#a9b08f" class="nuancier-1740">'
+				+ '<button type="button" class="puce-1740 appliquer-1740">Appliquer</button>'
+				+ '<span class="recentes-1740" aria-label="Couleurs récentes"></span></div>'; }
 			});
 			html += '<p class="astuce-1740">Sélectionne du texte avant de cliquer pour l\'envelopper dans la balise. La boîte passe l\'éditeur en mode source, où les balises restent lisibles.</p></div>';
 			boite.innerHTML = html;
@@ -2297,8 +2302,11 @@
 				bouton.setAttribute('aria-expanded', String(!boite.hidden));
 			});
 			boite.addEventListener('click', function (e) {
+				var rec = e.target.closest('.recente-1740');
+				if (rec) { appliquerCouleur(ta, rec.dataset.c, boite); return; }
+				if (e.target.closest('.appliquer-1740')) { appliquerCouleur(ta, $('.nuancier-1740', boite).value, boite); return; }
 				var p = e.target.closest('.puce-1740');
-				if (!p) { return; }
+				if (!p || !p.dataset.g) { return; }
 				var b = BALISES_1740[p.dataset.g].l[p.dataset.b];
 				insererBalise(ta, b[1], b[2], b[3]);
 			});
@@ -2314,7 +2322,130 @@
 			placer();
 			var essais = 0;
 			var veille = setInterval(function () { if (placer() || ++essais > 20) { clearInterval(veille); } }, 300);
+			afficherRecentes(boite);
+			initOutilsEcriture(ta);
 		});
+	}
+
+	/* ---------- Couleur libre : nuancier et dernières couleurs ---------- */
+	var compteurBalises1740 = 0;
+	function lireRecentes() {
+		try { return JSON.parse(localStorage.getItem('couleurs1740') || '[]'); } catch (e) { return []; }
+	}
+	function afficherRecentes(boite) {
+		var zone = $('.recentes-1740', boite);
+		if (!zone) { return; }
+		zone.innerHTML = lireRecentes().map(function (c) {
+			return '<button type="button" class="recente-1740" data-c="' + c + '" style="background:' + c + '" title="' + c + '"><span class="lecteur-1740">' + c + '</span></button>';
+		}).join('');
+	}
+	function appliquerCouleur(ta, c, boite) {
+		if (!/^#[0-9a-f]{6}$/i.test(c)) { return; }
+		var l = lireRecentes().filter(function (x) { return x.toLowerCase() !== c.toLowerCase(); });
+		l.unshift(c);
+		try { localStorage.setItem('couleurs1740', JSON.stringify(l.slice(0, 10))); } catch (e) {}
+		$$('.balises-1740').forEach(afficherRecentes);
+		insererBalise(ta, '[color=' + c + ']', '[/color]', 'texte');
+	}
+
+	/* ---------- Sous l'éditeur : compteur de mots et brouillon ---------- */
+	function instanceEditeur(ta) {
+		try { if (window.jQuery && jQuery(ta).sceditor) { return jQuery(ta).sceditor('instance') || null; } } catch (e) {}
+		return null;
+	}
+	function valeurEditeur(ta) {
+		var inst = instanceEditeur(ta);
+		try { if (inst && inst.val) { return inst.val() || ''; } } catch (e) {}
+		return ta.value || '';
+	}
+	function ecrireEditeur(ta, v) {
+		var inst = instanceEditeur(ta);
+		try { if (inst && inst.val) { inst.val(v); return; } } catch (e) {}
+		ta.value = v;
+	}
+	function compterMots(v) {
+		var t = v.replace(/\[\/?[a-z*][^\]]*\]/gi, '').replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ');
+		return t.split(/\s+/).filter(function (m) { return /[0-9A-Za-zÀ-ÖØ-öø-ÿ]/.test(m); }).length;
+	}
+	function cleBrouillon() {
+		var u = location.pathname + location.search;
+		var m;
+		if ((m = u.match(/\/t(\d+)/)) || (m = u.match(/[?&]t=(\d+)/))) { return 'brouillon1740:sujet-' + m[1]; }
+		if (/mode=newtopic/.test(u) && (m = u.match(/[?&]f=(\d+)/))) { return 'brouillon1740:nouveau-' + m[1]; }
+		if (/mode=editpost/.test(u) && (m = u.match(/[?&]p=(\d+)/))) { return 'brouillon1740:edition-' + m[1]; }
+		if (/privmsg/.test(u)) { return 'brouillon1740:lettre-' + ((u.match(/[?&]u=(\d+)/) || u.match(/[?&]p=(\d+)/) || [0, 'nouvelle'])[1]); }
+		return 'brouillon1740:' + u;
+	}
+	function heureCourte(d) {
+		var h = d.getHours(), mn = d.getMinutes();
+		return h + ' h ' + (mn < 10 ? '0' : '') + mn;
+	}
+	function initOutilsEcriture(ta) {
+		var barre = document.createElement('div');
+		barre.className = 'outils-ecriture-1740';
+		barre.innerHTML = '<span class="mots-1740" aria-live="polite">0 mot</span><span class="etat-brouillon-1740"></span>';
+		var cle = cleBrouillon();
+		var dernier = null, aGarde = false;
+		function placerBarre() {
+			var cadre = $('.sceditor-container', ta.parentNode) || ta;
+			if (cadre.nextSibling !== barre) { cadre.parentNode.insertBefore(barre, cadre.nextSibling); }
+		}
+		placerBarre();
+		setTimeout(placerBarre, 1500);
+
+		// Un brouillon attend ?
+		var garde = null;
+		try { garde = JSON.parse(localStorage.getItem(cle) || 'null'); } catch (e) {}
+		if (garde && Date.now() - garde.d > 14 * 864e5) { try { localStorage.removeItem(cle); } catch (e) {} garde = null; }
+		if (garde && garde.v) {
+			setTimeout(function () {
+				if (valeurEditeur(ta).trim() === garde.v.trim()) { return; }
+				var avis = document.createElement('div');
+				avis.className = 'brouillon-avis-1740';
+				var d = new Date(garde.d);
+				avis.innerHTML = '<span>Un brouillon de ' + compterMots(garde.v) + ' mots, du ' + deux(d.getDate()) + '/' + deux(d.getMonth() + 1) + ' à ' + heureCourte(d) + ', t\'attend.</span>'
+					+ '<button type="button" class="puce-1740 restaurer-1740">Le reprendre</button>'
+					+ '<button type="button" class="puce-1740 jeter-1740">L\'effacer</button>';
+				barre.parentNode.insertBefore(avis, barre.nextSibling);
+				avis.addEventListener('click', function (e) {
+					if (e.target.closest('.restaurer-1740')) {
+						var actuel = valeurEditeur(ta).trim();
+						ecrireEditeur(ta, actuel ? actuel + '\n\n' + garde.v : garde.v);
+						avis.remove();
+					} else if (e.target.closest('.jeter-1740')) {
+						try { localStorage.removeItem(cle); } catch (e2) {}
+						avis.remove();
+					}
+				});
+			}, 1200);
+		}
+
+		function suivre() {
+			var v = valeurEditeur(ta);
+			var n = compterMots(v);
+			$('.mots-1740', barre).textContent = n + (n > 1 ? ' mots' : ' mot');
+			if (dernier === null) { dernier = v; return; }
+			if (v === dernier) { return; }
+			dernier = v;
+			try {
+				if (v.trim()) { localStorage.setItem(cle, JSON.stringify({ v: v, d: Date.now() })); aGarde = true; }
+				else if (aGarde) { localStorage.removeItem(cle); }
+				$('.etat-brouillon-1740', barre).textContent = v.trim() ? 'Brouillon gardé à ' + heureCourte(new Date()) : '';
+			} catch (e) {
+				$('.etat-brouillon-1740', barre).textContent = 'Brouillon impossible à garder ici';
+			}
+		}
+		setInterval(suivre, 2000);
+		ta.addEventListener('input', suivre);
+		// Message envoyé : le brouillon n'a plus lieu d'être (la prévisualisation le garde)
+		var form = ta.form || ta.closest('form');
+		if (form) {
+			form.addEventListener('submit', function (e) {
+				var b = e.submitter;
+				if (b && /preview|prévisualis/i.test((b.name || '') + ' ' + (b.value || ''))) { return; }
+				try { localStorage.removeItem(cle); } catch (e2) {}
+			});
+		}
 	}
 
 	function demarrer() {

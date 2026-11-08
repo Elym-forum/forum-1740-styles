@@ -793,3 +793,41 @@ html body#modernbb .balises-1740 .content .puce-1740 :is(.sous-titre, .murmure) 
 html body#modernbb .balises-1740 .content .puce-1740 .t3 { font-weight: 500 !important; }
 html body#modernbb .balises-1740 .content .puce-1740 .gras { font-weight: 700 !important; }
 html body#modernbb .balises-1740 .content p.astuce-1740 { font-size: 14px !important; line-height: 1.5 !important; font-style: italic; color: var(--texte-doux) !important; }
+
+/* Couleur libre */
+.balises-1740 .couleur-libre-1740 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.balises-1740 .nuancier-1740 { width: 44px; height: 34px; padding: 2px; border: 1px solid var(--ligne-forte); background: var(--fond-nuit); cursor: pointer; }
+.balises-1740 .recentes-1740 { display: inline-flex; flex-wrap: wrap; gap: 6px; margin-left: 6px; }
+.balises-1740 .recente-1740 { width: 26px; height: 26px; padding: 0; border: 1px solid var(--ligne-forte); outline: 2px solid var(--fond-nuit); outline-offset: -3px; cursor: pointer; }
+.balises-1740 .recente-1740:hover,
+.balises-1740 .recente-1740:focus-visible { border-color: var(--texte-clair); }
+
+/* Sous l'éditeur : compteur de mots et brouillon */
+.outils-ecriture-1740 {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	margin: 6px 0 0;
+	padding: 4px 2px;
+	font-family: 'Alegreya', Georgia, serif;
+	font-size: 14px;
+	font-style: italic;
+	color: var(--texte-doux);
+}
+.outils-ecriture-1740 .mots-1740 { font-style: normal; font-variant-numeric: oldstyle-nums; }
+.brouillon-avis-1740 {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 10px;
+	margin: 8px 0 0;
+	padding: 10px 14px;
+	border: 1px solid #6A5A44;
+	background: rgba(14, 13, 10, 0.6);
+	font-family: 'Alegreya', Georgia, serif;
+	font-size: 15px;
+	color: var(--texte);
+}
+.brouillon-avis-1740 > span { flex: 1; min-width: 220px; }
+.brouillon-avis-1740 .puce-1740 { min-height: 32px; padding: 3px 12px; border: 1px solid var(--ligne-forte); background: var(--fond-nuit); font-family: 'Alegreya SC', serif; font-size: 14px; letter-spacing: 0.08em; color: var(--texte); cursor: pointer; }
+.brouillon-avis-1740 .restaurer-1740 { border-color: var(--accent); background: rgba(var(--accent-rgb), 0.18); color: var(--texte-clair); }
