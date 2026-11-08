@@ -2289,11 +2289,6 @@
 					html += '<button type="button" class="puce-1740" data-g="' + gi + '" data-b="' + bi + '" title="Ajouter">' + (/^</.test(b[0]) ? b[0] : '<span>' + b[0] + '</span>') + '</button>';
 				});
 				html += '</div>';
-				if (grp.g === 'Couleurs') { html += '<div class="groupe-b-1740">Couleur libre</div><div class="couleur-libre-1740">'
-				+ '<label class="lecteur-1740" for="' + 'cl' + (++compteurBalises1740) + '">Choisir une couleur</label>'
-				+ '<input type="color" id="cl' + compteurBalises1740 + '" value="#a9b08f" class="nuancier-1740">'
-				+ '<button type="button" class="puce-1740 appliquer-1740">Appliquer</button>'
-				+ '<span class="recentes-1740" aria-label="Couleurs récentes"></span></div>'; }
 			});
 			html += '<p class="astuce-1740">Sélectionne du texte avant de cliquer pour l\'envelopper dans la balise. La boîte passe l\'éditeur en mode source, où les balises restent lisibles.</p></div>';
 			boite.innerHTML = html;
@@ -2302,9 +2297,6 @@
 				bouton.setAttribute('aria-expanded', String(!boite.hidden));
 			});
 			boite.addEventListener('click', function (e) {
-				var rec = e.target.closest('.recente-1740');
-				if (rec) { appliquerCouleur(ta, rec.dataset.c, boite); return; }
-				if (e.target.closest('.appliquer-1740')) { appliquerCouleur(ta, $('.nuancier-1740', boite).value, boite); return; }
 				var p = e.target.closest('.puce-1740');
 				if (!p || !p.dataset.g) { return; }
 				var b = BALISES_1740[p.dataset.g].l[p.dataset.b];
@@ -2320,10 +2312,82 @@
 				return cadre !== ta;
 			}
 			placer();
+			var pop = creerPopCouleurs(ta);
 			var essais = 0;
-			var veille = setInterval(function () { if (placer() || ++essais > 20) { clearInterval(veille); } }, 300);
-			afficherRecentes(boite);
+			var veille = setInterval(function () {
+				var ok = placer();
+				var barreOutils = ok && $('.sceditor-toolbar', ta.parentNode);
+				if (barreOutils && !$('.groupe-1740', barreOutils)) { brancherBarre(barreOutils, bouton, boite, pop); }
+				if ((barreOutils && $('.groupe-1740', barreOutils)) || ++essais > 30) { clearInterval(veille); }
+			}, 300);
 			initOutilsEcriture(ta);
+		});
+	}
+
+	/* ---------- Barre d'outils de l'éditeur : Balises et Couleur ---------- */
+	var ICONE_BALISES_1740 = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7V5h16v2"></path><path d="M12 5v14"></path><path d="M9 19h6"></path></svg>';
+	var ICONE_COULEUR_1740 = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.8 1.4-1.7-.3-1.2.5-2.3 1.7-2.3H17a4 4 0 0 0 4-4c0-5.5-4-10-9-10z"></path><circle cx="7.5" cy="11" r="1.2" fill="currentColor"></circle><circle cx="10" cy="7" r="1.2" fill="currentColor"></circle><circle cx="15" cy="7.5" r="1.2" fill="currentColor"></circle></svg>';
+	function creerPopCouleurs(ta) {
+		var pop = document.createElement('div');
+		pop.className = 'couleurs-pop-1740';
+		pop.hidden = true;
+		var id = 'cl' + (++compteurBalises1740);
+		pop.innerHTML = '<div class="couleurs-ligne-1740"><label for="' + id + '">Couleur</label>'
+			+ '<input type="color" id="' + id + '" value="#a9b08f" class="nuancier-1740">'
+			+ '<button type="button" class="puce-1740 appliquer-1740">Appliquer</button></div>'
+			+ '<div class="couleurs-titre-1740">Dernières couleurs</div>'
+			+ '<span class="recentes-1740"></span>';
+		pop.addEventListener('click', function (e) {
+			var rec = e.target.closest('.recente-1740');
+			if (rec) { appliquerCouleur(ta, rec.dataset.c); pop.hidden = true; return; }
+			if (e.target.closest('.appliquer-1740')) { appliquerCouleur(ta, $('.nuancier-1740', pop).value); pop.hidden = true; }
+		});
+		afficherRecentes(pop);
+		return pop;
+	}
+	function boutonBarre(cls, titre, icone, texte) {
+		var a = document.createElement('a');
+		a.className = 'sceditor-button ' + cls;
+		a.setAttribute('role', 'button');
+		a.setAttribute('tabindex', '0');
+		a.setAttribute('aria-label', titre);
+		a.title = titre;
+		a.innerHTML = '<span class="icone-1740">' + icone + (texte ? '<span>' + texte + '</span>' : '') + '</span>';
+		return a;
+	}
+	function brancherBarre(barreOutils, bouton, boite, pop) {
+		var groupe = document.createElement('div');
+		groupe.className = 'sceditor-group groupe-1740';
+		var bB = boutonBarre('bouton-balises-1740', 'Balises de mise en page', ICONE_BALISES_1740, 'Balises');
+		var bC = boutonBarre('bouton-couleur-1740', 'Couleur du texte', ICONE_COULEUR_1740, '');
+		groupe.appendChild(bB);
+		groupe.appendChild(bC);
+		barreOutils.insertBefore(groupe, barreOutils.firstChild);
+		barreOutils.style.position = 'relative';
+		barreOutils.appendChild(pop);
+		bouton.hidden = true;
+		function basculer(el, b) {
+			el.hidden = !el.hidden;
+			b.classList.toggle('active', !el.hidden);
+			b.setAttribute('aria-expanded', String(!el.hidden));
+		}
+		function activer(e, f) {
+			if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') { return; }
+			e.preventDefault(); e.stopPropagation(); f();
+		}
+		['click', 'keydown'].forEach(function (t) {
+			bB.addEventListener(t, function (e) { activer(e, function () { basculer(boite, bB); }); });
+			bC.addEventListener(t, function (e) {
+				activer(e, function () {
+					pop.style.left = bC.offsetLeft + 'px';
+					pop.style.top = (bC.offsetTop + bC.offsetHeight + 4) + 'px';
+					afficherRecentes(pop);
+					basculer(pop, bC);
+				});
+			});
+		});
+		document.addEventListener('click', function (e) {
+			if (!pop.hidden && !pop.contains(e.target) && !bC.contains(e.target)) { pop.hidden = true; bC.classList.remove('active'); }
 		});
 	}
 
@@ -2334,17 +2398,18 @@
 	}
 	function afficherRecentes(boite) {
 		var zone = $('.recentes-1740', boite);
+		if (zone && !lireRecentes().length) { zone.innerHTML = '<span class="aucune-1740">Aucune pour l\'instant</span>'; return; }
 		if (!zone) { return; }
 		zone.innerHTML = lireRecentes().map(function (c) {
 			return '<button type="button" class="recente-1740" data-c="' + c + '" style="background:' + c + '" title="' + c + '"><span class="lecteur-1740">' + c + '</span></button>';
 		}).join('');
 	}
-	function appliquerCouleur(ta, c, boite) {
+	function appliquerCouleur(ta, c) {
 		if (!/^#[0-9a-f]{6}$/i.test(c)) { return; }
 		var l = lireRecentes().filter(function (x) { return x.toLowerCase() !== c.toLowerCase(); });
 		l.unshift(c);
 		try { localStorage.setItem('couleurs1740', JSON.stringify(l.slice(0, 10))); } catch (e) {}
-		$$('.balises-1740').forEach(afficherRecentes);
+		$$('.couleurs-pop-1740').forEach(afficherRecentes);
 		insererBalise(ta, '[color=' + c + ']', '[/color]', 'texte');
 	}
 
