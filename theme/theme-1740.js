@@ -1284,6 +1284,7 @@
 		}
 
 		var I = window.FA_SUJETS_1740 || {};
+		try { if (I.lu) { localStorage.setItem('sujets1740', JSON.stringify(I)); } } catch (e) {}
 		function parmi(liste, src) { return (liste || []).some(function (x) { return memeImage(src, x); }); }
 		function etatDe(li) {
 			var src = li.getAttribute('data-icone') || '';
@@ -1657,13 +1658,67 @@
 		});
 	}
 
-	/* ---------- Onglets du profil : on retire ceux qui ne servent pas ---------- */
-	function nettoyerOngletsProfil() {
-		var inutiles = /^(amis et ignorés|membres suivis|favoris)$/i;
-		$$('#main-content a[href*="page_profil"], #main-content a[href*="mode=editprofile"]').forEach(function (a) {
-			if (!inutiles.test(a.textContent.trim())) { return; }
-			var li = a.closest('li') || a;
-			li.style.display = 'none';
+	/* ---------- Pages du profil sans tête (notifications, sujets surveillés) ---------- */
+	function enteteProfil() {
+		var onglets = $('#main-content #tabs');
+		if (!onglets || !$('a[href*="page_profil"]', onglets) || $('.page-tete-1740')) { return; }
+		var tete = document.createElement('section');
+		tete.className = 'cadre-orne sujet-cadre-1740 page-tete-1740 profil-tete-1740';
+		tete.innerHTML = '<span class="sujet-surtitre-1740">Ton foyer</span>'
+			+ '<h1 class="page-title">Mon profil</h1>'
+			+ '<svg class="ornement-1740" viewBox="0 0 220 14" width="220" height="14" aria-hidden="true"><path class="filet" d="M0 7 H96 M124 7 H220"></path><path class="losange" d="M110 1 L116 7 L110 13 L104 7 Z"></path><circle class="point" cx="100" cy="7" r="1.4"></circle><circle class="point" cx="120" cy="7" r="1.4"></circle></svg>';
+		onglets.parentNode.insertBefore(tete, onglets);
+	}
+
+	/* ---------- Sujets surveillés : icônes du thème et préfixes ---------- */
+	var SVG_ETAT_1740 = '<svg class="etat-sujet-1740" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">'
+		+ '<g class="e-nouveau"><circle class="disque" cx="12" cy="12" r="9"></circle><g class="petales"><circle cx="21" cy="12" r="9"></circle><circle cx="3" cy="12" r="9"></circle></g><circle class="coeur" cx="12" cy="12" r="2"></circle></g>'
+		+ '<g class="e-lu"><circle cx="12" cy="12" r="9"></circle></g>'
+		+ '<g class="e-scelle"><circle class="cire" cx="12" cy="12" r="9"></circle><circle class="empreinte" cx="12" cy="12" r="5"></circle></g>'
+		+ '<g class="e-annonce"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.3 6L12 16.4 6.6 19.4l1.3-6L3.4 9.3l6-.7z"></path></g>'
+		+ '<g class="e-epingle"><circle cx="12" cy="8" r="4"></circle><path d="M12 12v9"></path></g></svg>';
+	function initSurveilles() {
+		var table = $('#cp-main table.table1');
+		if (!table || !/watchsearch|favouritesearch/.test(location.search)) { return; }
+		var I = {};
+		try { I = JSON.parse(localStorage.getItem('sujets1740') || '{}'); } catch (e) {}
+		function parmi(liste, src) { return (liste || []).some(function (x) { return x && memeImage(src, x); }); }
+		function imageDe(td) {
+			var img = $('img', td);
+			if (img) { return img.getAttribute('src') || ''; }
+			var el = [td].concat($$('*', td));
+			for (var i = 0; i < el.length; i++) {
+				var bg = getComputedStyle(el[i]).backgroundImage;
+				if (bg && bg !== 'none') { return bg.replace(/^url\(["']?|["']?\)$/g, ''); }
+			}
+			return '';
+		}
+		$$('tbody tr', table).forEach(function (tr) {
+			var cases = tr.children;
+			if (cases.length < 3) { return; }
+			var icone = cases[0], titre = cases[1];
+			/* « Annonce: » / « Note: » devant le titre */
+			var type = '';
+			var gras = $('strong, b', titre);
+			if (gras && /:\s*$/.test(gras.textContent) && !gras.closest('a')) {
+				type = gras.textContent.replace(/:\s*$/, '').trim();
+				gras.remove();
+			}
+			var src = imageDe(icone);
+			var etat = 'lu';
+			if (/annonce/i.test(type) || parmi(I.annonce, src)) { etat = 'annonce'; }
+			else if (/note|post-it|épingl/i.test(type) || parmi(I.epingle, src)) { etat = 'epingle'; }
+			else if (parmi(I.scelle, src) || /lock/i.test(src)) { etat = 'scelle'; }
+			else if (parmi(I.nouveau, src) || /new|unread/i.test(src)) { etat = 'nouveau'; }
+			tr.classList.add('est-' + etat);
+			icone.classList.add('icone-surveille-1740');
+			icone.innerHTML = SVG_ETAT_1740;
+			if (etat === 'annonce' || etat === 'epingle') {
+				var marque = document.createElement('span');
+				marque.className = 'sujet-prefixe-1740';
+				marque.textContent = etat === 'annonce' ? 'Annonce' : 'Épinglé';
+				titre.insertBefore(marque, titre.firstChild);
+			}
 		});
 	}
 
@@ -1691,7 +1746,8 @@
 		if ($('.ames-1740')) { initRecensement(); }
 		if ($('#text_editor_textarea')) { initEditeur(); }
 		retirerTopicit();
-		nettoyerOngletsProfil();
+		enteteProfil();
+		initSurveilles();
 	}
 
 	if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', demarrer); }

@@ -389,24 +389,31 @@ html body#modernbb #main-content fieldset dd input[type="checkbox"] + label { di
 .profil-tete-1740:has(+ .onglets-profil-1740) .si-inscription-1740 { display: none; }
 .profil-tete-1740:has(+ .onglets-profil-1740) .si-profil-1740 { display: inline; }
 
-/* Onglets du profil : Informations, Préférences, Avatar… */
-body#modernbb .onglets-profil-1740 { margin: 0 0 18px; }
-body#modernbb .onglets-profil-1740 :is(ul, ol) {
-	display: flex;
-	flex-wrap: wrap;
+/* Onglets du profil (#tabs) : Informations, Préférences, Avatar, Notifications, Sujets surveillés */
+body#modernbb #main-content #tabs li:has(> a[href*="friendsfoes"]),
+body#modernbb #main-content #tabs li:has(> a[href*="page_profil=followers"]),
+body#modernbb #main-content #tabs li:has(> a[href*="favouritesearch"]) { display: none !important; }
+body#modernbb #main-content #tabs {
+	margin: 0 0 18px !important;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
+}
+body#modernbb #main-content #tabs ul {
+	display: flex !important;
 	flex-wrap: nowrap !important;
 	justify-content: center;
-	gap: 20px;
+	gap: 22px;
 	margin: 0 !important;
-	padding: 0 0 0 !important;
+	padding: 0 !important;
 	border: none !important;
 	border-bottom: 1px solid var(--ligne) !important;
 	background: none !important;
 	list-style: none;
 }
-body#modernbb .onglets-profil-1740 li { margin: 0 !important; padding: 0 !important; border: none !important; background: none !important; float: none !important; }
-body#modernbb .onglets-profil-1740 :is(a, span) {
-	display: inline-block;
+body#modernbb #main-content #tabs li { margin: 0 !important; padding: 0 !important; border: none !important; background: none !important; float: none !important; }
+body#modernbb #main-content #tabs li a {
+	display: inline-block !important;
 	margin: 0 0 -1px !important;
 	padding: 0 2px 10px !important;
 	border: none !important;
@@ -414,21 +421,117 @@ body#modernbb .onglets-profil-1740 :is(a, span) {
 	border-radius: 0 !important;
 	background: none !important;
 	box-shadow: none !important;
+	text-decoration: none !important;
+}
+body#modernbb #main-content #tabs li a span {
+	display: inline !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+	background: none !important;
 	font-family: 'Alegreya SC', serif !important;
 	font-size: 16px !important;
 	font-weight: 400 !important;
 	letter-spacing: 0.08em;
 	white-space: nowrap;
-	text-decoration: none !important;
+	color: var(--texte-doux) !important;
+	transition: color 0.3s;
+}
+body#modernbb #main-content #tabs li a:hover span { color: var(--texte-clair) !important; }
+body#modernbb #main-content #tabs li.activetab a { border-bottom-color: var(--accent) !important; }
+body#modernbb #main-content #tabs li.activetab a span { color: var(--texte-clair) !important; }
+body#modernbb #main-content #tabs :is(a, li, span, ul)::after,
+body#modernbb #main-content #tabs :is(a, li, span, ul)::before { display: none !important; }
+
+/* Pages du profil sans template habillé (notifications, sujets surveillés) :
+   chaque formulaire dans sa boîte */
+body#modernbb #cp-main .cp_notifs > form { display: block; margin-top: 18px; padding: 20px 24px; border: 1px solid var(--ligne); background: var(--surface) var(--img-grain); }
+body#modernbb #cp-main .cp_notifs { margin: 0 !important; padding: 0 !important; border: none !important; background: none !important; }
+
+/* Tableaux des pages du profil */
+html body#modernbb #main-content #cp-main table.table1 {
+	width: 100% !important;
+	margin: 0 !important;
+	border: none !important;
+	border-collapse: collapse !important;
+	border-spacing: 0 !important;
+	background: none !important;
+}
+html body#modernbb #main-content #cp-main table.table1 thead tr,
+html body#modernbb #main-content #cp-main table.table1 th {
+	background: none !important;
+	box-shadow: none !important;
+}
+html body#modernbb #main-content #cp-main table.table1 th {
+	padding: 0 10px 10px !important;
+	border: none !important;
+	border-bottom: 1px solid var(--ligne-forte) !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 15px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0.08em;
+	text-transform: none !important;
+	text-align: left;
+	vertical-align: bottom;
 	color: var(--texte-doux) !important;
 }
-body#modernbb .onglets-profil-1740 li a span { padding: 0 !important; margin: 0 !important; border: none !important; }
-body#modernbb .onglets-profil-1740 a:hover { color: var(--texte-clair) !important; }
-body#modernbb .onglets-profil-1740 :is(.activetab, .active, .selected, .current) > a,
-body#modernbb .onglets-profil-1740 :is(.activetab, .active, .selected, .current) > a span,
-body#modernbb .onglets-profil-1740 a:is(.activetab, .active, .selected, .current) { color: var(--texte-clair) !important; border-bottom-color: var(--accent) !important; }
-body#modernbb .onglets-profil-1740 :is(a, li)::after,
-body#modernbb .onglets-profil-1740 :is(a, li)::before { display: none !important; }
+html body#modernbb #main-content #cp-main table.table1 tbody tr { background: none !important; }
+html body#modernbb #main-content #cp-main table.table1 td {
+	padding: 9px 10px !important;
+	border: none !important;
+	border-bottom: 1px dotted var(--ligne) !important;
+	background: none !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	line-height: 1.4;
+	vertical-align: middle;
+	color: var(--texte) !important;
+}
+html body#modernbb #main-content #cp-main table.table1 tbody tr:hover td { background: rgba(var(--accent-rgb), 0.06) !important; }
+html body#modernbb #main-content #cp-main table.table1 td[align="middle"],
+html body#modernbb #main-content #cp-main table.table1 th[width="10%"] { text-align: center !important; }
+html body#modernbb #main-content #cp-main table.table1 th:last-child,
+html body#modernbb #main-content #cp-main table.table1 td:last-child { width: 48px; text-align: center !important; }
+html body#modernbb #main-content #cp-main table.table1 td a { color: var(--accent-lien) !important; text-decoration: none; }
+html body#modernbb #main-content #cp-main table.table1 td a:hover { color: var(--texte-clair) !important; }
+html body#modernbb #main-content #cp-main table.table1 td a .usr_grp_clr,
+html body#modernbb #main-content #cp-main table.table1 td a strong { font-weight: 500; }
+html body#modernbb #main-content #cp-main table.table1 td img { max-height: 28px; opacity: 0.8; filter: grayscale(1) sepia(0.35) brightness(0.9); }
+html body#modernbb #main-content #cp-main table.table1 input[disabled] { opacity: 0.35; cursor: not-allowed; }
+/* « Tout sélectionner :: Tout désélectionner » */
+html body#modernbb #main-content #cp-main p.right-box {
+	margin: 12px 0 0 !important;
+	text-align: right;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 15px !important;
+	font-style: italic;
+	color: var(--texte-doux) !important;
+}
+html body#modernbb #main-content #cp-main p.right-box a { color: var(--accent-lien) !important; font-size: 15px !important; }
+html body#modernbb #main-content #cp-main p.pagination:empty { display: none; }
+
+/* Sujets surveillés : polices et icônes du thème */
+html body#modernbb #main-content #cp-main table.table1 td :is(a, span, strong, b, div, p):not(.usr_grp_clr) { font-family: 'Alegreya', Georgia, serif !important; }
+html body#modernbb #main-content #cp-main table.table1 td a.topictitle,
+html body#modernbb #main-content #cp-main table.table1 td a[href^="/t"]:not([href*="#"]) {
+	font-size: 17px !important;
+	font-weight: 500 !important;
+	color: var(--texte-clair) !important;
+}
+html body#modernbb #main-content #cp-main table.table1 td.icone-surveille-1740 { width: 40px; padding-right: 0 !important; text-align: center !important; }
+html body#modernbb #main-content #cp-main table.table1 td.icone-surveille-1740 .etat-sujet-1740 { display: inline-block; vertical-align: middle; }
+.sujet-prefixe-1740 {
+	display: block;
+	margin-bottom: 2px;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 14px;
+	letter-spacing: 0.1em;
+	color: var(--ocre-doux);
+}
+.est-epingle .sujet-prefixe-1740 { color: var(--accent-clair); }
+
+/* « Sauter vers » : retiré, comme sur les autres pages */
+body#modernbb #main-content form[name="jumpbox"] { display: none !important; }
 
 /* Libellés : tous pareils, obligatoires ou non (Genre, Date de naissance…) */
 html body#modernbb #main-content #cp-main fieldset dl dt,
