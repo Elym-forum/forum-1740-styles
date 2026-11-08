@@ -204,8 +204,11 @@ html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
 :is(.postbody, #preview) .content img.image,
 :is(.postbody, #preview) .content .image img {
 	display: block;
+	width: 100%;
 	max-width: 100%;
 	height: auto;
+	max-height: 320px;
+	object-fit: cover;
 	margin: 0 auto 14px;
 	padding: 4px;
 	border: 1px solid var(--ligne-forte);
