@@ -449,7 +449,7 @@ body#modernbb #cp-main .cp_notifs > form { display: block; margin-top: 18px; pad
 body#modernbb #cp-main .cp_notifs { margin: 0 !important; padding: 0 !important; border: none !important; background: none !important; }
 
 /* Tableaux des pages du profil */
-html body#modernbb #main-content #cp-main table.table1 {
+html body#modernbb #main-content table.table1 {
 	width: 100% !important;
 	margin: 0 !important;
 	border: none !important;
@@ -457,12 +457,12 @@ html body#modernbb #main-content #cp-main table.table1 {
 	border-spacing: 0 !important;
 	background: none !important;
 }
-html body#modernbb #main-content #cp-main table.table1 thead tr,
-html body#modernbb #main-content #cp-main table.table1 th {
+html body#modernbb #main-content table.table1 thead tr,
+html body#modernbb #main-content table.table1 th {
 	background: none !important;
 	box-shadow: none !important;
 }
-html body#modernbb #main-content #cp-main table.table1 th {
+html body#modernbb #main-content table.table1 th {
 	padding: 0 10px 10px !important;
 	border: none !important;
 	border-bottom: 1px solid var(--ligne-forte) !important;
@@ -475,8 +475,8 @@ html body#modernbb #main-content #cp-main table.table1 th {
 	vertical-align: bottom;
 	color: var(--texte-doux) !important;
 }
-html body#modernbb #main-content #cp-main table.table1 tbody tr { background: none !important; }
-html body#modernbb #main-content #cp-main table.table1 td {
+html body#modernbb #main-content table.table1 tbody tr { background: none !important; }
+html body#modernbb #main-content table.table1 td {
 	padding: 9px 10px !important;
 	border: none !important;
 	border-bottom: 1px dotted var(--ligne) !important;
@@ -487,19 +487,19 @@ html body#modernbb #main-content #cp-main table.table1 td {
 	vertical-align: middle;
 	color: var(--texte) !important;
 }
-html body#modernbb #main-content #cp-main table.table1 tbody tr:hover td { background: rgba(var(--accent-rgb), 0.06) !important; }
-html body#modernbb #main-content #cp-main table.table1 td[align="middle"],
-html body#modernbb #main-content #cp-main table.table1 th[width="10%"] { text-align: center !important; }
-html body#modernbb #main-content #cp-main table.table1 th:last-child,
-html body#modernbb #main-content #cp-main table.table1 td:last-child { width: 48px; text-align: center !important; }
-html body#modernbb #main-content #cp-main table.table1 td a { color: var(--accent-lien) !important; text-decoration: none; }
-html body#modernbb #main-content #cp-main table.table1 td a:hover { color: var(--texte-clair) !important; }
-html body#modernbb #main-content #cp-main table.table1 td a .usr_grp_clr,
-html body#modernbb #main-content #cp-main table.table1 td a strong { font-weight: 500; }
-html body#modernbb #main-content #cp-main table.table1 td img { max-height: 28px; opacity: 0.8; filter: grayscale(1) sepia(0.35) brightness(0.9); }
-html body#modernbb #main-content #cp-main table.table1 input[disabled] { opacity: 0.35; cursor: not-allowed; }
+html body#modernbb #main-content table.table1 tbody tr:hover td { background: rgba(var(--accent-rgb), 0.06) !important; }
+html body#modernbb #main-content table.table1 td[align="middle"],
+html body#modernbb #main-content table.table1 th[width="10%"] { text-align: center !important; }
+html body#modernbb #main-content table.table1 th:last-child,
+html body#modernbb #main-content table.table1 td:last-child { width: 48px; text-align: center !important; }
+html body#modernbb #main-content table.table1 td a { color: var(--accent-lien) !important; text-decoration: none; }
+html body#modernbb #main-content table.table1 td a:hover { color: var(--texte-clair) !important; }
+html body#modernbb #main-content table.table1 td a .usr_grp_clr,
+html body#modernbb #main-content table.table1 td a strong { font-weight: 500; }
+html body#modernbb #main-content table.table1 td img { max-height: 28px; opacity: 0.8; filter: grayscale(1) sepia(0.35) brightness(0.9); }
+html body#modernbb #main-content table.table1 input[disabled] { opacity: 0.35; cursor: not-allowed; }
 /* « Tout sélectionner :: Tout désélectionner » */
-html body#modernbb #main-content #cp-main p.right-box {
+html body#modernbb #main-content p.right-box {
 	margin: 12px 0 0 !important;
 	text-align: right;
 	font-family: 'Alegreya', Georgia, serif !important;
@@ -507,19 +507,19 @@ html body#modernbb #main-content #cp-main p.right-box {
 	font-style: italic;
 	color: var(--texte-doux) !important;
 }
-html body#modernbb #main-content #cp-main p.right-box a { color: var(--accent-lien) !important; font-size: 15px !important; }
+html body#modernbb #main-content p.right-box a { color: var(--accent-lien) !important; font-size: 15px !important; }
 html body#modernbb #main-content #cp-main p.pagination:empty { display: none; }
 
 /* Sujets surveillés : polices et icônes du thème */
-html body#modernbb #main-content #cp-main table.table1 td :is(a, span, strong, b, div, p):not(.usr_grp_clr) { font-family: 'Alegreya', Georgia, serif !important; }
-html body#modernbb #main-content #cp-main table.table1 td a.topictitle,
-html body#modernbb #main-content #cp-main table.table1 td a[href^="/t"]:not([href*="#"]) {
+html body#modernbb #main-content table.table1 td :is(a, span, strong, b, div, p):not(.usr_grp_clr) { font-family: 'Alegreya', Georgia, serif !important; }
+html body#modernbb #main-content table.table1 td a.topictitle,
+html body#modernbb #main-content table.table1 td a[href^="/t"]:not([href*="#"]) {
 	font-size: 17px !important;
 	font-weight: 500 !important;
 	color: var(--texte-clair) !important;
 }
-html body#modernbb #main-content #cp-main table.table1 td.icone-surveille-1740 { width: 40px; padding-right: 0 !important; text-align: center !important; }
-html body#modernbb #main-content #cp-main table.table1 td.icone-surveille-1740 .etat-sujet-1740 { display: inline-block; vertical-align: middle; }
+html body#modernbb #main-content table.table1 td.icone-surveille-1740 { width: 40px; padding-right: 0 !important; text-align: center !important; }
+html body#modernbb #main-content table.table1 td.icone-surveille-1740 .etat-sujet-1740 { display: inline-block; vertical-align: middle; }
 .sujet-prefixe-1740 {
 	display: block;
 	margin-bottom: 2px;

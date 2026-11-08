@@ -1,0 +1,71 @@
+/* ==========================================================================
+   PAGES SECONDAIRES 1740 (© Elym) — recherche, groupes, confirmations,
+   modération. Les têtes de page sont posées par le JS (tetesSecondaires).
+   ========================================================================== */
+
+/* Tête posée par le JS : le nom d'un groupe garde la couleur du thème */
+body#modernbb .page-tete-1740 h1.page-title .usr_grp_clr { color: inherit !important; }
+
+/* ---------- Résultats de recherche ---------- */
+body#modernbb .recherche-1740 { margin: 0 0 18px; padding: 0; }
+body#modernbb .recherche-1740 .sujet-prefixe-1740 { margin-bottom: 0; }
+body#modernbb #main-content p.pagination:empty { display: none; }
+
+/* ---------- Tableaux de Forumactif (groupes, etc.) ---------- */
+body#modernbb #main-content .forumbg-table {
+	margin: 0 0 18px !important;
+	padding: 16px 20px !important;
+	border: 1px solid var(--ligne) !important;
+	border-radius: 0 !important;
+	background: var(--surface) var(--img-grain) !important;
+	box-shadow: none !important;
+}
+body#modernbb #main-content .forumbg-table > .inner { padding: 0 !important; background: none !important; border: none !important; }
+html body#modernbb #main-content table.table1 tr.row3 td {
+	padding: 16px 10px 6px !important;
+	border-bottom: 1px solid var(--ligne) !important;
+	font-family: 'Alegreya SC', serif !important;
+	font-size: 15px !important;
+	letter-spacing: 0.12em;
+	color: var(--accent-clair) !important;
+}
+html body#modernbb #main-content table.table1 tbody tr.row3:hover td { background: none !important; }
+html body#modernbb #main-content table.table1 td p.center { margin: 0; text-align: center; font-size: 15px; font-style: italic; color: var(--texte-doux); }
+html body#modernbb #main-content table.table1 td .mobile-visible { display: none; }
+html body#modernbb #main-content table.table1 th.pm,
+html body#modernbb #main-content table.table1 th.website,
+html body#modernbb #main-content table.table1 th.posts { text-align: center; }
+html body#modernbb #main-content .forumbg-table table.table1 td:not(:nth-child(2)) { text-align: center !important; }
+html body#modernbb #main-content .forumbg-table table.table1 td[colspan] { text-align: left !important; }
+
+/* ---------- Listes déroulantes hors formulaires habillés (modération…) ---------- */
+html body#modernbb #main-content select {
+	min-height: 36px;
+	padding: 4px 8px !important;
+	border: 1px solid var(--ligne-forte) !important;
+	border-radius: 0 !important;
+	background: var(--fond-nuit) !important;
+	box-shadow: none !important;
+	font-family: 'Alegreya', Georgia, serif !important;
+	font-size: 16px !important;
+	color: var(--texte) !important;
+}
+
+/* ---------- Pages de confirmation et de modération ---------- */
+/* Fil d'Ariane laissé par Forumactif au-dessus des panneaux */
+body#modernbb #main-content > p:has(> a.nav) {
+	margin: 0 0 12px;
+	font-family: 'Alegreya SC', serif;
+	font-size: 14px;
+	letter-spacing: 0.08em;
+	color: var(--texte-doux);
+}
+body#modernbb #main-content > p:has(> a.nav) a { color: var(--texte-doux) !important; }
+body#modernbb #main-content .panel fieldset > p,
+body#modernbb #main-content .panel .inner > p,
+body#modernbb #main-content .panel .content > p { font-size: 16px; }
+
+/* Noms colorés par groupe : la couleur du groupe l'emporte */
+html body#modernbb #main-content table.table1 td .usr_grp_clr strong,
+html body#modernbb #main-content table.table1 td a .usr_grp_clr { color: inherit; }
+html body#modernbb #main-content table.table1 td a:has(.usr_grp_clr) { color: inherit !important; }

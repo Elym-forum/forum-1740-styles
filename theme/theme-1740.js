@@ -1723,6 +1723,114 @@
 		});
 	}
 
+	/* ---------- Résultats de recherche (sujets) : même présentation que la liste des sujets ---------- */
+	function initRecherche() {
+		var listes = $$('#main-content ul.topiclist.topics.search');
+		if (!listes.length) { return; }
+		var I = {};
+		try { I = JSON.parse(localStorage.getItem('sujets1740') || '{}'); } catch (e) {}
+		function parmi(l, src) { return (l || []).some(function (x) { return x && memeImage(src, x); }); }
+		listes.forEach(function (ul) {
+			var bloc = ul.closest('.forabg') || ul.parentNode;
+			var entete = $('ul.topiclist li.header', bloc);
+			var col = function (sel, def) { var el = entete && $(sel, entete); return el ? el.textContent.trim() : def; };
+			var cadre = document.createElement('div');
+			cadre.className = 'liste-1740 recherche-1740';
+			cadre.innerHTML = '<div class="groupes-1740"><div class="groupe-1740 boite-1740"><div class="groupe-tete-1740">'
+				+ '<span></span><span class="groupe-nom-1740">' + echapper(col('dt', 'Sujets')) + '</span>'
+				+ '<span class="groupe-col-1740">' + echapper(col('dd.posts', 'Réponses')) + '</span>'
+				+ '<span class="groupe-col-1740">' + echapper(col('dd.views', 'Vues')) + '</span>'
+				+ '<span class="groupe-col-1740 groupe-dernier-1740">Dernier écrit</span></div>'
+				+ '<ul class="topiclist topics groupe-liste-1740"></ul></div></div>';
+			var dest = $('.groupe-liste-1740', cadre);
+			$$('li.row', ul).forEach(function (li) {
+				var dl = $('dl', li);
+				if (!dl) { return; }
+				var src = (dl.getAttribute('style') || '').replace(/^.*url\(['"]?|['"]?\).*$/g, '');
+				var gras = $('.topic-title-container > strong, .topic-title-container > b', dl);
+				var type = gras ? gras.textContent.replace(/:\s*$/, '').trim() : '';
+				var etat = 'lu';
+				if (/annonce/i.test(type) || parmi(I.annonce, src) || /announce|global/i.test(src)) { etat = 'annonce'; }
+				else if (/note|post-it|épingl/i.test(type) || parmi(I.epingle, src) || /sticky/i.test(src)) { etat = 'epingle'; }
+				else if (parmi(I.scelle, src) || /lock/i.test(src)) { etat = 'scelle'; }
+				else if (parmi(I.nouveau, src) || /unread|_new/i.test(src)) { etat = 'nouveau'; }
+				var titre = $('a.topictitle', dl);
+				var auteur = $('.topic-author', dl);
+				var dernier = $('dd.lastpost', dl);
+				var rang = document.createElement('li');
+				rang.className = 'row sujet-1740 est-' + etat;
+				rang.innerHTML = SVG_ETAT_1740 + '<div class="sujet-infos-1740"><h2 class="topic-title"></h2></div>'
+					+ '<span class="sujet-nb-1740 posts"></span><span class="sujet-nb-1740 views"></span>'
+					+ '<div class="sujet-dernier-1740 lastpost"><span class="sujet-dernier-infos-1740"><span class="dernier-auteur-1740"></span><span class="dernier-date-1740"></span></span><span class="dernier-lien-1740"></span></div>';
+				var infos = $('.sujet-infos-1740', rang);
+				if (etat === 'annonce' || etat === 'epingle') {
+					var marque = document.createElement('span');
+					marque.className = 'sujet-prefixe-1740';
+					marque.textContent = etat === 'annonce' ? 'Annonce' : 'Épinglé';
+					infos.insertBefore(marque, infos.firstChild);
+				}
+				if (titre) { titre.textContent = titre.textContent.trim(); $('h2', rang).appendChild(titre); }
+				if (auteur) { infos.appendChild(auteur); }
+				var p = $('dd.posts', dl), v = $('dd.views', dl);
+				$('.posts', rang).textContent = p ? p.textContent.trim() : '';
+				$('.views', rang).textContent = v ? v.textContent.trim() : '';
+				if (dernier) {
+					var nom = $('a[href^="/u"]', dernier);
+					var lien = $('a[href*="#"]', dernier);
+					var date = dernier.textContent.replace(/Derniers? Messages?/i, '');
+					if (nom) { date = date.replace(nom.textContent, ''); $('.dernier-auteur-1740', rang).appendChild(nom); }
+					$('.dernier-date-1740', rang).textContent = date.replace(/\s+/g, ' ').trim();
+					if (lien) { $('.dernier-lien-1740', rang).appendChild(lien); }
+				}
+				dest.appendChild(rang);
+			});
+			bloc.parentNode.insertBefore(cadre, bloc);
+			bloc.remove();
+		});
+	}
+
+	/* ---------- Têtes de page pour les pages sans template (recherche, groupe…) ---------- */
+	var ORNEMENT_1740 = '<svg class="ornement-1740" viewBox="0 0 220 14" width="220" height="14" aria-hidden="true"><path class="filet" d="M0 7 H96 M124 7 H220"></path><path class="losange" d="M110 1 L116 7 L110 13 L104 7 Z"></path><circle class="point" cx="100" cy="7" r="1.4"></circle><circle class="point" cx="120" cy="7" r="1.4"></circle></svg>';
+	function poserTete(avant, surtitre, titre) {
+		var tete = document.createElement('section');
+		tete.className = 'cadre-orne sujet-cadre-1740 page-tete-1740';
+		tete.innerHTML = '<span class="sujet-surtitre-1740">' + echapper(surtitre) + '</span><h1 class="page-title">' + echapper(titre) + '</h1>' + ORNEMENT_1740;
+		avant.parentNode.insertBefore(tete, avant);
+		return tete;
+	}
+	function tetesSecondaires() {
+		var zone = $('#main-content');
+		if (!zone || $('.page-tete-1740', zone)) { return; }
+		// Recherche : « 6 résultats trouvés pour … »
+		var sous = $('.sub-header', zone);
+		var h1 = sous && $('h1.page-title', sous);
+		if (h1) {
+			var texte = h1.textContent.trim();
+			var nombre = (texte.match(/^(\d+)\s+r[ée]sultats?/i) || [])[1];
+			var chemin = $('.sub-header-path', sous);
+			var dernier = chemin ? chemin.textContent.split('::').pop().trim() : '';
+			var titre = dernier && !/recherche avanc/i.test(dernier) ? dernier
+				: (texte.split(/\spour\s*:?\s*/i)[1] || 'Recherche').replace(/^voir les\s+/i, '');
+			titre = titre.charAt(0).toUpperCase() + titre.slice(1);
+			var sur = nombre ? (nombre === '1' ? '1 résultat' : nombre + ' résultats') : 'Recherche';
+			poserTete(sous, sur, titre);
+			sous.remove();
+			return;
+		}
+		// Page d'un groupe
+		if (/^\/g\d+/.test(location.pathname)) {
+			var t = $(':scope > h1.page-title', zone);
+			if (t) { poserTete(t, 'Groupe', t.textContent.trim()); t.remove(); }
+		}
+	}
+
+	/* ---------- Lignes « La date/heure actuelle… » et « Dernière visite… » : retirées ---------- */
+	function retirerDates() {
+		$$('#main-content > p').forEach(function (p) {
+			if (/^\s*(La date\/heure actuelle|Dernière visite)/i.test(p.textContent)) { p.remove(); }
+		});
+	}
+
 	function demarrer() {
 		document.documentElement.classList.add('theme-1740');
 		lireReglages();
@@ -1749,6 +1857,9 @@
 		retirerTopicit();
 		enteteProfil();
 		initSurveilles();
+		retirerDates();
+		tetesSecondaires();
+		initRecherche();
 	}
 
 	if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', demarrer); }
