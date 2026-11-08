@@ -2281,7 +2281,7 @@
 			bouton.innerHTML = 'Balises <span class="fl" aria-hidden="true">▾</span>';
 			var boite = document.createElement('div');
 			boite.className = 'balises-1740';
-			boite.hidden = true;
+			boite.setAttribute('aria-hidden', 'true');
 			var html = '<div class="content">';
 			BALISES_1740.forEach(function (grp, gi) {
 				html += '<div class="groupe-b-1740">' + grp.g + '</div><div class="puces-1740">';
@@ -2293,8 +2293,9 @@
 			html += '<p class="astuce-1740">Sélectionne du texte avant de cliquer pour l\'envelopper dans la balise. La boîte passe l\'éditeur en mode source, où les balises restent lisibles.</p></div>';
 			boite.innerHTML = html;
 			bouton.addEventListener('click', function () {
-				boite.hidden = !boite.hidden;
-				bouton.setAttribute('aria-expanded', String(!boite.hidden));
+				var ouvert = boite.classList.toggle('ouvert-1740');
+				boite.setAttribute('aria-hidden', String(!ouvert));
+				bouton.setAttribute('aria-expanded', String(ouvert));
 			});
 			boite.addEventListener('click', function (e) {
 				var p = e.target.closest('.puce-1740');
@@ -2358,18 +2359,25 @@
 	function brancherBarre(barreOutils, bouton, boite, pop) {
 		var groupe = document.createElement('div');
 		groupe.className = 'sceditor-group groupe-1740';
-		var bB = boutonBarre('bouton-balises-1740', 'Balises de mise en page', ICONE_BALISES_1740, 'Balises');
-		var bC = boutonBarre('bouton-couleur-1740', 'Couleur du texte', ICONE_COULEUR_1740, '');
+		var bB = boutonBarre('bouton-balises-1740', 'Balises de mise en page', '', 'Balises');
+		var bC = boutonBarre('bouton-couleur-1740', 'Couleur du texte', ICONE_COULEUR_1740, 'Couleur');
 		groupe.appendChild(bB);
 		groupe.appendChild(bC);
 		barreOutils.insertBefore(groupe, barreOutils.firstChild);
-		barreOutils.style.position = 'relative';
-		barreOutils.appendChild(pop);
+		// La fenêtre vit hors de la barre (qui coupe ce qui dépasse) et se place sous le bouton
+		document.body.appendChild(pop);
 		bouton.hidden = true;
 		function basculer(el, b) {
-			el.hidden = !el.hidden;
-			b.classList.toggle('active', !el.hidden);
-			b.setAttribute('aria-expanded', String(!el.hidden));
+			var ouvert;
+			if (el === boite) {
+				ouvert = boite.classList.toggle('ouvert-1740');
+				boite.setAttribute('aria-hidden', String(!ouvert));
+			} else {
+				el.hidden = !el.hidden;
+				ouvert = !el.hidden;
+			}
+			b.classList.toggle('active', ouvert);
+			b.setAttribute('aria-expanded', String(ouvert));
 		}
 		function activer(e, f) {
 			if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') { return; }
@@ -2379,8 +2387,9 @@
 			bB.addEventListener(t, function (e) { activer(e, function () { basculer(boite, bB); }); });
 			bC.addEventListener(t, function (e) {
 				activer(e, function () {
-					pop.style.left = bC.offsetLeft + 'px';
-					pop.style.top = (bC.offsetTop + bC.offsetHeight + 4) + 'px';
+					var r = bC.getBoundingClientRect();
+					pop.style.left = Math.max(8, Math.min(r.left + window.scrollX, window.scrollX + document.documentElement.clientWidth - 280)) + 'px';
+					pop.style.top = (r.bottom + window.scrollY + 6) + 'px';
 					afficherRecentes(pop);
 					basculer(pop, bC);
 				});
