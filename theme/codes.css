@@ -86,9 +86,8 @@
 :is(.postbody, #preview) .content .titre::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--ligne-forte), transparent); }
 :is(.postbody, #preview) .content .titre .n-1740 {
 	position: relative;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
+	display: inline-grid;
+	place-items: center;
 	flex: none;
 	width: 30px;
 	height: 30px;
@@ -104,7 +103,7 @@
 	border: 1px solid var(--accent);
 	background: rgba(var(--accent-rgb), 0.18);
 }
-:is(.postbody, #preview) .content .titre .n-1740 > span { position: relative; }
+:is(.postbody, #preview) .content .titre .n-1740 > span { position: relative; display: block; line-height: 1; letter-spacing: 0; text-indent: 0; padding-top: 1px; }
 
 /* ---------- Texte ---------- */
 :is(.postbody, #preview) .content .texte {
@@ -114,13 +113,12 @@
 	text-align: justify;
 	hyphens: auto;
 }
-:is(.postbody, #preview) .content .lettrine { display: flow-root; }
-:is(.postbody, #preview) .content .lettrine::first-letter {
-	float: left;
-	margin: 4px 6px 0 0;
-	font-family: 'Grenze Gotisch', serif;
-	font-size: 58px;
-	line-height: 0.8;
+html body#modernbb :is(.postbody, #preview) .content .lettrine { font-family: 'Alegreya', Georgia, serif !important; font-weight: 400 !important; }
+html body#modernbb :is(.postbody, #preview) .content .lettrine::first-letter {
+	font-family: 'Grenze Gotisch', serif !important;
+	font-size: 2.9em;
+	line-height: 0.9;
+	margin-right: 2px;
 	color: var(--accent-clair);
 }
 :is(.postbody, #preview) .content .note { margin: 6px 0 12px; font-size: 15px; font-style: italic; color: var(--texte-doux); }
@@ -154,8 +152,8 @@
 }
 :is(.postbody, #preview) .content .exergue::before,
 :is(.postbody, #preview) .content .exergue::after { position: absolute; font-family: 'Grenze Gotisch', serif; font-size: 64px; font-style: normal; line-height: 1; color: var(--ligne-forte); }
-:is(.postbody, #preview) .content .exergue::before { content: "«"; left: 0; top: 4px; }
-:is(.postbody, #preview) .content .exergue::after { content: "»"; right: 0; bottom: -14px; }
+:is(.postbody, #preview) .content .exergue::before { content: "«"; left: 0; top: 50%; transform: translateY(-50%); }
+:is(.postbody, #preview) .content .exergue::after { content: "»"; right: 0; top: 50%; transform: translateY(-50%); }
 :is(.postbody, #preview) .content .exergue .source-1740 {
 	display: block;
 	margin-top: 8px;
@@ -248,6 +246,10 @@
 	justify-content: flex-end;
 	gap: 12px;
 	margin-top: 22px;
+	padding: 4px 4px 4px 0 !important;
+	border: none !important;
+	max-height: none !important;
+	overflow: visible !important;
 	font-size: 16px;
 	font-style: italic;
 	color: var(--texte-doux);
