@@ -1,5 +1,5 @@
 /* ==========================================================================
-   FORUM 1740 — SCRIPT DU THÈME (© Elym)
+   FORUM 1740 \u2014 SCRIPT DU THÈME (© Elym)
    Thèmes, musique, barre d'outils, accueil et mise en forme de l'index.
    Les réglages modifiables sont dans window.CONFIG_1740 (overall_header).
    ========================================================================== */
@@ -687,7 +687,7 @@
 		}
 
 		function etiquette(joue) {
-			var texte = joue ? 'Couper l’ambiance sonore' : 'Jouer l’ambiance sonore';
+			var texte = joue ? 'Couper l\u2019ambiance sonore' : 'Jouer l\u2019ambiance sonore';
 			bouton.setAttribute('aria-pressed', joue ? 'true' : 'false');
 			bouton.setAttribute('aria-label', texte);
 			bouton.title = texte;
@@ -749,7 +749,7 @@
 	}
 
 	/* ------------------------------------------------------------------
-	   5. Dates Forumactif → horodatage (pour trier les derniers écrits)
+	   5. Dates Forumactif \u2192 horodatage (pour trier les derniers écrits)
 	   ------------------------------------------------------------------ */
 	var MOIS = { jan: 0, 'fév': 1, fev: 1, mar: 2, avr: 3, mai: 4, juin: 5, juil: 6, 'aoû': 7, aou: 7, sep: 8, oct: 9, nov: 10, 'déc': 11, dec: 11 };
 
@@ -796,7 +796,7 @@
 		// État : nouveau, lu ou scellé (comparaison avec les icônes de la légende)
 		var icone = li.getAttribute('data-icone') || '';
 		var etat = 'lu';
-		// 1) icônes de la légende ; 2) à défaut, le nom de l'image de Forumactif (forum_unread…, …_locked…)
+		// 1) icônes de la légende ; 2) à défaut, le nom de l'image de Forumactif (forum_unread\u2026, \u2026_locked\u2026)
 		if (memeImage(icone, ICONES.nouveau) || /unread|_new/i.test(icone)) { etat = 'nouveau'; }
 		else if (memeImage(icone, ICONES.scelle) || /lock/i.test(icone)) { etat = 'scelle'; }
 		li.classList.add('est-' + etat);
@@ -861,7 +861,7 @@
 			if (!auteur) {
 				li.classList.add('sans-message');
 				var ligneVide = $('.dernier-ligne', li);
-				if (ligneVide) { ligneVide.innerHTML = '<span class="dernier-vide">Aucun écrit pour l’instant</span>'; }
+				if (ligneVide) { ligneVide.innerHTML = '<span class="dernier-vide">Aucun écrit pour l\u2019instant</span>'; }
 				placerEtat(li);
 				return;
 			}
@@ -1041,7 +1041,7 @@
 		ecrits.sort(function (a, b) { return b.quand - a.quand; });
 		var liste = ecrits.slice(0, CONFIG.nbDerniersEcrits || 6);
 		if (!liste.length) {
-			zone.innerHTML = '<p class="derniers-vide">Rien n’a encore été écrit.</p>';
+			zone.innerHTML = '<p class="derniers-vide">Rien n\u2019a encore été écrit.</p>';
 			return;
 		}
 		zone.innerHTML = liste.map(function (e) {
@@ -1051,7 +1051,7 @@
 			return '<div class="ecrit">' + avatar +
 				'<div class="ecrit-infos"><a class="ecrit-titre" href="' + echapper(e.lien) + '" title="' + echapper(e.titreComplet) + '">' + echapper(e.titre) + '</a>' +
 				'<span class="ecrit-meta">' + echapper(e.auteur) + ' · ' + echapper(e.date) + '</span></div>' +
-				'<a class="ecrit-fleche" href="' + echapper(e.lien) + '" aria-label="Aller au dernier message">→</a></div>';
+				'<a class="ecrit-fleche" href="' + echapper(e.lien) + '" aria-label="Aller au dernier message">\u2192</a></div>';
 		}).join('');
 	}
 
@@ -1140,7 +1140,7 @@
 		});
 	}
 
-	// Les liens de recherche (nouveaux messages, sans réponse…) rejoignent le bas de l'accueil
+	// Les liens de recherche (nouveaux messages, sans réponse\u2026) rejoignent le bas de l'accueil
 	function deplacerRaccourcis() {
 		var liste = $('ul.linklist.top');
 		var accueil = $('#accueil-1740');
@@ -1189,7 +1189,7 @@
 			a.textContent = /^arr/.test(t) ? 'Ne plus surveiller' : 'Surveiller';
 		});
 		$$('.post-1740 .topic-date').forEach(function (el) {
-			// Seul le premier nœud texte contient la date (le reste : votes éventuels)
+			// Seul le premier n\u0153ud texte contient la date (le reste : votes éventuels)
 			var n = el.firstChild;
 			while (n && !(n.nodeType === 3 && n.nodeValue.trim())) { n = n.nextSibling; }
 			if (!n) { return; }
@@ -1276,7 +1276,7 @@
 		var liens = $$('.forum-page-1740 .ariane-1740 a.nav');
 		if (surtitre && liens.length > 1) { surtitre.textContent = liens[liens.length - 2].textContent.trim(); }
 
-		// « Utilisateurs parcourant actuellement ce forum : » → seulement les noms
+		// « Utilisateurs parcourant actuellement ce forum : » \u2192 seulement les noms
 		var parcourent = $('.parcourent-texte-1740');
 		if (parcourent) {
 			var premier = parcourent.firstChild;
@@ -1409,7 +1409,7 @@
 		var titre = $('.lettres-titre-1740');
 		if (titre && !titre.textContent.trim().replace(/^Lettres$/, '')) { titre.textContent = DOSSIERS_1740[dossier].titre; }
 
-		// « Votre boîte de réception est pleine à 2% » → « Coffret rempli à 2 % »
+		// « Votre boîte de réception est pleine à 2% » \u2192 « Coffret rempli à 2 % »
 		$$('.coffret-1740').forEach(function (c) {
 			if (c.classList.contains('dossier-1740')) { c.textContent = DOSSIERS_1740[dossier].titre; return; }
 			var pct = c.textContent.match(/(\d+)\s*%/);
@@ -1431,7 +1431,7 @@
 			if (longue) { el.title = el.textContent.trim(); el.textContent = longue; }
 		});
 
-		// Lettre ouverte : « Correspondance de [expéditeur] », « A » → « à »
+		// Lettre ouverte : « Correspondance de [expéditeur] », « A » \u2192 « à »
 		var lue = $('.lettre-lue-1740');
 		if (lue) {
 			var exp = $('.lettre-expediteur-1740', lue);
@@ -1600,7 +1600,7 @@
 			var fc = $('.ame-fc-1740', carte);
 			if (!url || !fc) { return; }
 			var connu = memoire[url];
-			if (connu && Date.now() - connu.t < UNE_JOURNEE) { fc.textContent = connu.v || '—'; return; }
+			if (connu && Date.now() - connu.t < UNE_JOURNEE) { fc.textContent = connu.v || '\u2014'; return; }
 			var charge = false;
 			function charger() {
 				if (charge || !window.fetch) { return; }
@@ -1609,11 +1609,11 @@
 					.then(function (r) { return r.text(); })
 					.then(function (html) {
 						var v = lireFaceclaim(html);
-						fc.textContent = v || '—';
+						fc.textContent = v || '\u2014';
 						memoire[url] = { v: v, t: Date.now() };
 						try { localStorage.setItem('faceclaims1740', JSON.stringify(memoire)); } catch (e) {}
 					})
-					.catch(function () { fc.textContent = '—'; charge = false; });
+					.catch(function () { fc.textContent = '\u2014'; charge = false; });
 			}
 			carte.addEventListener('mouseenter', charger);
 			carte.addEventListener('focusin', charger);
@@ -1789,7 +1789,7 @@
 		});
 	}
 
-	/* ---------- Têtes de page pour les pages sans template (recherche, groupe…) ---------- */
+	/* ---------- Têtes de page pour les pages sans template (recherche, groupe\u2026) ---------- */
 	var ORNEMENT_1740 = '<svg class="ornement-1740" viewBox="0 0 220 14" width="220" height="14" aria-hidden="true"><path class="filet" d="M0 7 H96 M124 7 H220"></path><path class="losange" d="M110 1 L116 7 L110 13 L104 7 Z"></path><circle class="point" cx="100" cy="7" r="1.4"></circle><circle class="point" cx="120" cy="7" r="1.4"></circle></svg>';
 	function poserTete(avant, surtitre, titre) {
 		var tete = document.createElement('section');
@@ -1801,7 +1801,7 @@
 	function tetesSecondaires() {
 		var zone = $('#main-content');
 		if (!zone || $('.page-tete-1740', zone)) { return; }
-		// Recherche : « 6 résultats trouvés pour … »
+		// Recherche : « 6 résultats trouvés pour \u2026 »
 		var sous = /^\/search/.test(location.pathname) ? $('.sub-header', zone) : null;
 		var h1 = sous && $('h1.page-title', sous);
 		if (h1) {
@@ -1840,7 +1840,7 @@
 		}
 	}
 
-	/* ---------- Lignes « La date/heure actuelle… » et « Dernière visite… » : retirées ---------- */
+	/* ---------- Lignes « La date/heure actuelle\u2026 » et « Dernière visite\u2026 » : retirées ---------- */
 	function retirerDates() {
 		$$('#main-content > p').forEach(function (p) {
 			if (/^\s*(La date\/heure actuelle|Dernière visite)/i.test(p.textContent)) { p.remove(); }
@@ -1867,12 +1867,12 @@
 		});
 	}
 
-	/* ---------- « Dernière édition… » : retirée des messages ---------- */
+	/* ---------- « Dernière édition\u2026 » : retirée des messages ---------- */
 	function nettoyerEditions() {
 		$$('.edited-message').forEach(function (el) { el.remove(); });
 	}
 
-	/* ---------- Codes de messages : liste, champs, exergue, signature, titres… ---------- */
+	/* ---------- Codes de messages : liste, champs, exergue, signature, titres\u2026 ---------- */
 	var BLOCS_1740 = ['page', 'bandeau', 'surtitre', 'grand-titre', 'titre', 'texte', 'note', 'liste', 'exergue', 'cadre', 'colonnes', 'champs', 'filet', 'signature', 'centre', 'image', 'medaillons', 'rp-infos', 'registre', 'avis-deces', 'pleine-largeur', 'lettre', 'journal', 'avis', 'livre', 'remede', 'comptine', 'incantation', 't1', 't2', 't3', 'sous-titre', 'intertitre', 'date', 'sign', 'jour', 'entete', 'titre-avis', 'par', 'chap', 'chap-titre', 'folio', 'r-titre', 'r-sous', 'c-titre'];
 	function estBloc(n) {
 		return n && n.nodeType === 1 && BLOCS_1740.some(function (c) { return n.classList.contains(c); });
@@ -1917,7 +1917,7 @@
 	   Plus tard : la même fonction recevra les lignes d'une feuille Google (mêmes noms de champs). */
 	var BOUGIE_1740 = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21h6"></path><path d="M10 21V11h4v10"></path><path d="M12 11V9"></path><path d="M12 7c-1-1-1-2 0-3s1-2 0-3"></path></svg>';
 	function cleChamp(t) {
-		return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '');
+		return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z]/g, '');
 	}
 	function lireAmesMessage(reg) {
 		return $$(':scope > .ame', reg).map(function (el) {
@@ -1945,7 +1945,7 @@
 		if (/c[ée]libat/i.test(t) || !t) { return 'Célibataire'; }
 		return 'Autre';
 	}
-	function sansPacte(t) { return !t || /^(aucun|aucune|non|-|—|sans)\b/i.test(t); }
+	function sansPacte(t) { return !t || /^(aucun|aucune|non|-|\u2014|sans)\b/i.test(t); }
 	function construireRegistre(reg, ames) {
 		var donnees = ames.map(function (a) {
 			var union = texteDe(a.union);
@@ -2245,9 +2245,9 @@
 			['<span class="lune">Lune</span>', '<span class="lune">', '</span>']
 		] },
 		{ g: 'Gabarits de RP', l: [
-			['Bannière gravée', '<div class="page">\n<div class="bandeau">\n<a class="musique" href="LIEN DE LA MUSIQUE"></a>\n<div class="surtitre">Une phrase d\'ambiance</div>\n<div class="grand-titre">Titre du RP</div>\n</div>\n<div class="texte lettrine">', '</div>\n<div class="rp-infos">Lieu|Saison, moment|@"Nom"</div>\n</div>', 'Le texte du RP…'],
-			['Bannière avec image', '<div class="page">\n<div class="bandeau">\n<img class="fond" src="ADRESSE DE L\'IMAGE" alt="" />\n<a class="musique" href="LIEN DE LA MUSIQUE"></a>\n<div class="surtitre">Une phrase d\'ambiance</div>\n<div class="grand-titre">Titre du RP</div>\n</div>\n<div class="texte lettrine">', '</div>\n<div class="rp-infos">Lieu|Saison, moment|@"Nom"</div>\n</div>', 'Le texte du RP…'],
-			['Avec médaillons', '<div class="page">\n<div class="bandeau">\n<img class="fond" src="ADRESSE DE L\'IMAGE" alt="" />\n<a class="musique" href="LIEN DE LA MUSIQUE"></a>\n<div class="surtitre">Une phrase d\'ambiance</div>\n<div class="grand-titre">Titre du RP</div>\n</div>\n<div class="medaillons"><img src="GIF 1" alt="" /><img src="GIF 2" alt="" /></div>\n<div class="texte lettrine">', '</div>\n<div class="rp-infos">Lieu|Saison, moment|@"Nom"</div>\n</div>', 'Le texte du RP…']
+			['Bannière gravée', '<div class="page">\n<div class="bandeau">\n<a class="musique" href="LIEN DE LA MUSIQUE"></a>\n<div class="surtitre">Une phrase d\'ambiance</div>\n<div class="grand-titre">Titre du RP</div>\n</div>\n<div class="texte lettrine">', '</div>\n<div class="rp-infos">Lieu|Saison, moment|@"Nom"</div>\n</div>', 'Le texte du RP\u2026'],
+			['Bannière avec image', '<div class="page">\n<div class="bandeau">\n<img class="fond" src="ADRESSE DE L\'IMAGE" alt="" />\n<a class="musique" href="LIEN DE LA MUSIQUE"></a>\n<div class="surtitre">Une phrase d\'ambiance</div>\n<div class="grand-titre">Titre du RP</div>\n</div>\n<div class="texte lettrine">', '</div>\n<div class="rp-infos">Lieu|Saison, moment|@"Nom"</div>\n</div>', 'Le texte du RP\u2026'],
+			['Avec médaillons', '<div class="page">\n<div class="bandeau">\n<img class="fond" src="ADRESSE DE L\'IMAGE" alt="" />\n<a class="musique" href="LIEN DE LA MUSIQUE"></a>\n<div class="surtitre">Une phrase d\'ambiance</div>\n<div class="grand-titre">Titre du RP</div>\n</div>\n<div class="medaillons"><img src="GIF 1" alt="" /><img src="GIF 2" alt="" /></div>\n<div class="texte lettrine">', '</div>\n<div class="rp-infos">Lieu|Saison, moment|@"Nom"</div>\n</div>', 'Le texte du RP\u2026']
 		] }
 	];
 	function insererBalise(zoneTexte, avant, apres, defaut) {
@@ -2278,7 +2278,7 @@
 			bouton.type = 'button';
 			bouton.className = 'balises-bouton-1740';
 			bouton.setAttribute('aria-expanded', 'false');
-			bouton.innerHTML = 'Balises <span class="fl" aria-hidden="true">▾</span>';
+			bouton.innerHTML = 'Balises <span class="fl" aria-hidden="true">\u25be</span>';
 			var boite = document.createElement('div');
 			boite.className = 'balises-1740';
 			boite.setAttribute('aria-hidden', 'true');
@@ -2328,12 +2328,12 @@
 
 	/* ---------- Emojis : une sélection dans l'esprit du forum, et les récents ---------- */
 	var EMOJIS_1740 = [
-		['Visages', '😀 😊 🙂 😉 😄 😂 🥲 😅 😍 🥰 😘 😏 😌 🤔 🙄 😐 😶 😬 😳 🥺 😢 😭 😱 😨 😰 😡 😤 😴 🤫 🤭 😈 💀 👻'],
-		['Gestes', '👋 👍 👎 👏 🙌 🤝 🙏 ✋ 🤞 💪 🫂'],
-		['Nature', '🌲 🌳 🌿 🍃 🍂 🍁 🌾 🍄 🌸 🥀 🌙 🌑 🌕 ⭐ ✨ ☀️ 🌫️ 🌧️ ⛈️ ❄️ 🔥 💧 🌊 🪨'],
-		['Créatures', '🐺 🦉 🐦‍⬛ 🦇 🐍 🕷️ 🐈‍⬛ 🐀 🦌 🐗 🐐 🐑 🐴 🐓 🦋 🪲 🐌 🐟'],
-		['Objets', '🕯️ 🗝️ 📜 🪶 ✉️ 📖 ⚱️ 🪓 🔪 🪵 ⛓️ 🔔 🧪 🫖 🍷 🍺 🍞 🧀 🍎 🧶 🪡'],
-		['Signes', '❤️ 🖤 🤍 💔 ❣️ 💤 ❗ ❓ ✔️ ✖️ ➡️ ⏳']
+		['Visages', '\ud83d\ude00 \ud83d\ude0a \ud83d\ude42 \ud83d\ude09 \ud83d\ude04 \ud83d\ude02 \ud83e\udd72 \ud83d\ude05 \ud83d\ude0d \ud83e\udd70 \ud83d\ude18 \ud83d\ude0f \ud83d\ude0c \ud83e\udd14 \ud83d\ude44 \ud83d\ude10 \ud83d\ude36 \ud83d\ude2c \ud83d\ude33 \ud83e\udd7a \ud83d\ude22 \ud83d\ude2d \ud83d\ude31 \ud83d\ude28 \ud83d\ude30 \ud83d\ude21 \ud83d\ude24 \ud83d\ude34 \ud83e\udd2b \ud83e\udd2d \ud83d\ude08 \ud83d\udc80 \ud83d\udc7b'],
+		['Gestes', '\ud83d\udc4b \ud83d\udc4d \ud83d\udc4e \ud83d\udc4f \ud83d\ude4c \ud83e\udd1d \ud83d\ude4f \u270b \ud83e\udd1e \ud83d\udcaa \ud83e\udec2'],
+		['Nature', '\ud83c\udf32 \ud83c\udf33 \ud83c\udf3f \ud83c\udf43 \ud83c\udf42 \ud83c\udf41 \ud83c\udf3e \ud83c\udf44 \ud83c\udf38 \ud83e\udd40 \ud83c\udf19 \ud83c\udf11 \ud83c\udf15 \u2b50 \u2728 \u2600\ufe0f \ud83c\udf2b\ufe0f \ud83c\udf27\ufe0f \u26c8\ufe0f \u2744\ufe0f \ud83d\udd25 \ud83d\udca7 \ud83c\udf0a \ud83e\udea8'],
+		['Créatures', '\ud83d\udc3a \ud83e\udd89 \ud83d\udc26\u200d\u2b1b \ud83e\udd87 \ud83d\udc0d \ud83d\udd77\ufe0f \ud83d\udc08\u200d\u2b1b \ud83d\udc00 \ud83e\udd8c \ud83d\udc17 \ud83d\udc10 \ud83d\udc11 \ud83d\udc34 \ud83d\udc13 \ud83e\udd8b \ud83e\udeb2 \ud83d\udc0c \ud83d\udc1f'],
+		['Objets', '\ud83d\udd6f\ufe0f \ud83d\udddd\ufe0f \ud83d\udcdc \ud83e\udeb6 \u2709\ufe0f \ud83d\udcd6 \u26b1\ufe0f \ud83e\ude93 \ud83d\udd2a \ud83e\udeb5 \u26d3\ufe0f \ud83d\udd14 \ud83e\uddea \ud83e\uded6 \ud83c\udf77 \ud83c\udf7a \ud83c\udf5e \ud83e\uddc0 \ud83c\udf4e \ud83e\uddf6 \ud83e\udea1'],
+		['Signes', '\u2764\ufe0f \ud83d\udda4 \ud83e\udd0d \ud83d\udc94 \u2763\ufe0f \ud83d\udca4 \u2757 \u2753 \u2714\ufe0f \u2716\ufe0f \u27a1\ufe0f \u23f3']
 	];
 	function lireEmojisRecents() {
 		try { return JSON.parse(localStorage.getItem('emojis1740') || '[]'); } catch (e) { return []; }
@@ -2416,7 +2416,7 @@
 		groupe.className = 'sceditor-group groupe-1740';
 		var bB = boutonBarre('bouton-balises-1740', 'Balises de mise en page', '', 'Balises');
 		var bC = boutonBarre('bouton-couleur-1740', 'Couleur du texte', ICONE_COULEUR_1740, 'Couleur');
-		var bE = boutonBarre('bouton-emojis-1740', 'Emojis', '<span class="emoji-icone-1740" aria-hidden="true">☺</span>', 'Emojis');
+		var bE = boutonBarre('bouton-emojis-1740', 'Emojis', '<span class="emoji-icone-1740" aria-hidden="true">\u263a</span>', 'Emojis');
 		groupe.appendChild(bB);
 		groupe.appendChild(bC);
 		groupe.appendChild(bE);
@@ -2620,7 +2620,7 @@
 			b.setAttribute('aria-label', 'Copier le code');
 			b.addEventListener('click', function () {
 				copierTexte(code.innerText.replace(/ /g, ' ')).then(function () {
-					b.textContent = 'Copié ✓';
+					b.textContent = 'Copié \u2713';
 					b.classList.add('fait-1740');
 				}, function () {
 					b.textContent = 'Échec';
