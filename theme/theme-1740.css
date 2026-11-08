@@ -2816,6 +2816,10 @@ body#modernbb .post.revue-msg-1740 {
 /* Mention « Dernière édition par… » : retirée */
 body#modernbb .edited-message { display: none !important; }
 
+/* Page « Poster » : la colonne des smileys est retirée (le bouton smiley de la barre la remplace) */
+html body#modernbb .ecriture-1740 #postingbox #smiley-box { display: none !important; }
+html body#modernbb .ecriture-1740 #postingbox fieldset.fields1 { grid-template-columns: minmax(0, 1fr); }
+
 /* ---------- liste.css ---------- */
 /* ==========================================================================
    LISTE DES SUJETS 1740 (© Elym) — page d'un forum
