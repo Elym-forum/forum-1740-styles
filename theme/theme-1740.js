@@ -2756,6 +2756,49 @@
 		["bitch", "https://2img.net/u/4411/70/16/94/smiles/3442718624.png", ":bitch:"],
 		["rip", "https://2img.net/u/4411/70/16/94/smiles/1662637656.gif", ":rip:"]
 	];
+	/* Smileys dans les messages : le code texte (:sleep:) devient l'image, hors blocs de code */
+	function initSmileys() {
+		var parCode = {};
+		SMILEYS_1740.forEach(function (sm) { parCode[sm[2]] = sm; });
+		var codes = Object.keys(parCode).sort(function (a, b) { return b.length - a.length; });
+		if (!codes.length) { return; }
+		var motif = new RegExp(codes.map(function (c) { return c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|'), 'g');
+		var exclus = /^(CODE|PRE|TEXTAREA|SCRIPT|STYLE|INPUT|BUTTON)$/;
+		$$('.postbody .content, #preview .content, .signature_div, .sig-content').forEach(function (zone) {
+			if (zone.dataset.smileys1740) { return; }
+			zone.dataset.smileys1740 = '1';
+			var noeuds = [];
+			var tw = document.createTreeWalker(zone, NodeFilter.SHOW_TEXT, {
+				acceptNode: function (n) {
+					if (n.nodeValue.indexOf(':') < 0) { return NodeFilter.FILTER_REJECT; }
+					for (var p = n.parentNode; p && p !== zone; p = p.parentNode) {
+						if (exclus.test(p.nodeName) || (p.classList && (p.classList.contains('codebox') || p.classList.contains('cont_code')))) { return NodeFilter.FILTER_REJECT; }
+					}
+					return NodeFilter.FILTER_ACCEPT;
+				}
+			});
+			while (tw.nextNode()) { noeuds.push(tw.currentNode); }
+			noeuds.forEach(function (n) {
+				var t = n.nodeValue;
+				motif.lastIndex = 0;
+				if (!motif.test(t)) { return; }
+				motif.lastIndex = 0;
+				var frag = document.createDocumentFragment(), dernier = 0, m;
+				while ((m = motif.exec(t))) {
+					if (m.index > dernier) { frag.appendChild(document.createTextNode(t.slice(dernier, m.index))); }
+					var sm = parCode[m[0]];
+					var img = document.createElement('img');
+					img.src = sm[1]; img.alt = sm[2]; img.title = sm[0];
+					img.className = 'smiley-aff-1740';
+					img.loading = 'lazy';
+					frag.appendChild(img);
+					dernier = m.index + m[0].length;
+				}
+				if (dernier < t.length) { frag.appendChild(document.createTextNode(t.slice(dernier))); }
+				n.parentNode.replaceChild(frag, n);
+			});
+		});
+	}
 	function lireEmojisRecents() {
 		try { return JSON.parse(localStorage.getItem('emojis1740') || '[]'); } catch (e) { return []; }
 	}
@@ -3291,6 +3334,7 @@
 		initSondage();
 		nettoyerEditions();
 		initCodes();
+		initSmileys();
 		initBalisesEditeur();
 		initCopierCodes();
 	}
